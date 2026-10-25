@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Udyog Sathi - Evidence-Grounded Government Scheme Discovery, Deterministic Eligibility Engine, and Multilingual AI Assistance for MSMEs in Odisha.">
+  <meta name="theme-color" content="#0b132b">
+  <title>Udyog Sathi | Government of Odisha MSME Scheme Discovery & Assistance</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, Noto Sans Oriya -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/animations.css">
+</head>
+<body>
+
+  <!-- Top Odisha Government Branding Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="emblem-badge" aria-label="Government of Odisha Seal">
+          🏛️
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">
+            <span data-i18n="app_title">Udyog Sathi</span>
+            <span class="brand-odia-title">| ଉଦ୍ୟୋଗ ସାଥୀ</span>
+          </div>
+          <div class="brand-subtitle" data-i18n="app_tagline">Department of MSME, Government of Odisha</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Live Backend Connectivity Pill -->
+        <div class="status-indicator-pill" id="systemHealthBadge" title="Real-time backend status">
+          <span class="pulse-dot active" id="systemStatusDot"></span>
+          <span id="systemStatusText" style="font-size: 0.775rem; font-weight: 500;">Connecting...</span>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="lang-selector-wrapper">
+          <select id="languageSelect" class="lang-select" aria-label="Select Language">
+            <option value="en">English (EN)</option>
+            <option value="od">ଓଡ଼ିଆ (OD)</option>
+            <option value="hi">हिन्दी (HI)</option>
+          </select>
+        </div>
+
+        <!-- User Authentication & Profile Badge -->
+        <button id="btnAuthTrigger" class="btn btn-outline btn-sm" onclick="window.app.openAuthModal('login')" data-i18n="nav_login">
+          Sign In / Register
+        </button>
+        <div id="userProfileBadge" style="display: none; align-items: center; gap: 0.5rem;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section & System Metrics -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span data-i18n="hero_badge">Official Government Notification Grounded</span>
+      </div>
+      <h1 class="hero-heading" data-i18n="hero_title">
+        Verified MSME Schemes & Subsidies for Odisha Entrepreneurs
+      </h1>
+      <p class="hero-description" data-i18n="hero_subtitle">
+        Zero-hallucination policy discovery powered by verified legal notifications, deterministic eligibility math, and evidence-grounded AI assistance in Odia, Hindi, and English.
+      </p>
+
+      <!-- Live Verified Metrics Bar -->
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <div class="metric-value" id="statSchemesCount">2 Verified Schemes</div>
+          <div class="metric-label" data-i18n="metric_verified_schemes">Published Legal Gazettes</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">100% Deterministic</div>
+          <div class="metric-label" data-i18n="metric_three_valued_logic">3-Valued Logic Engine</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-value">Zero Fake Data</div>
+          <div class="metric-label" data-i18n="metric_zero_mock">Statutory Proof Citations</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navigation Tab Bar -->
+  <nav class="tabs-nav-bar" role="tablist" aria-label="Main Navigation">
+    <div class="tabs-container">
+      <button class="nav-tab-btn active" data-tab="catalogue" role="tab" aria-selected="true" id="tabBtnCatalogue">
+        <span class="tab-icon">📋</span>
+        <span data-i18n="tab_catalogue">Scheme Catalogue</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="eligibility" role="tab" aria-selected="false" id="tabBtnEligibility">
+        <span class="tab-icon">⚖️</span>
+        <span data-i18n="tab_eligibility">Eligibility Evaluator</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="assistant" role="tab" aria-selected="false" id="tabBtnAssistant">
+        <span class="tab-icon">💬</span>
+        <span data-i18n="tab_assistant">AI Sathi & Voice</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="tracker" role="tab" aria-selected="false" id="tabBtnTracker">
+        <span class="tab-icon">📂</span>
+        <span data-i18n="tab_tracker">Application Tracker</span>
+      </button>
+      <button class="nav-tab-btn" data-tab="admin" role="tab" aria-selected="false" id="tabBtnAdmin">
+        <span class="tab-icon">🛡️</span>
+        <span data-i18n="tab_admin">Reviewer Queue</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Viewport Area -->
+  <main class="main-content-area">
+
+    <!-- TAB 1: SCHEME CATALOGUE -->
+    <section class="tab-content-panel active" id="tab-catalogue" role="tabpanel" aria-labelledby="tabBtnCatalogue">
+      <div class="section-container">
+
+        <!-- Search & Filter Controls -->
+        <div class="filter-toolbar">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="schemeSearchInput"
+              class="search-input"
+              placeholder="Search schemes by name, keyword, or subsidy type (e.g. CM-SRIM, solar, capital)..."
+              aria-label="Search published schemes"
+            />
+          </div>
+
+          <div class="filter-chip-group">
+            <span class="filter-label" data-i18n="filter_sector">Sector:</span>
+            <button class="chip-btn sector-filter-btn active" data-sector="">All Sectors</button>
+            <button class="chip-btn sector-filter-btn" data-sector="manufacturing">Manufacturing</button>
+            <button class="chip-btn sector-filter-btn" data-sector="service">Service</button>
+          </div>
+
+          <div class="filter-chip-group">
+            <span class="filter-label" data-i18n="filter_class">Enterprise Class:</span>
+            <button class="chip-btn class-filter-btn active" data-class="">All Classes</button>
+            <button class="chip-btn class-filter-btn" data-class="micro">Micro</button>
+            <button class="chip-btn class-filter-btn" data-class="small">Small</button>
+            <button class="chip-btn class-filter-btn" data-class="medium">Medium</button>
+          </div>
+        </div>
+
+        <!-- Schemes Grid -->
+        <div class="schemes-grid" id="schemesGrid" aria-live="polite">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: DETERMINISTIC ELIGIBILITY EVALUATOR -->
+    <section class="tab-content-panel" id="tab-eligibility" role="tabpanel" aria-labelledby="tabBtnEligibility" style="display: none;">
+      <div class="section-container">
+
+        <div class="eligibility-intro-banner">
+          <div style="font-size: 1.5rem;">⚖️</div>
+          <div>
+            <h3 style="font-size: 1.15rem; color: #ffffff; margin-bottom: 0.25rem;" data-i18n="eligibility_header">
+              Deterministic Three-Valued Eligibility Evaluator
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;" data-i18n="eligibility_disclaimer">
+              Evaluates your enterprise against verified legal rules using 3-valued mathematical logic (Passed, Failed, Unknown).
+              No generative LLM guesswork: caps, formulas, and clauses are strictly computed from official Government of Odisha notifications.
+            </p>
+          </div>
+        </div>
+
+        <div class="two-column-layout">
+          <!-- Left Column: Business Profile Input Form -->
+          <div class="profile-form-card">
+            <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem;" data-i18n="profile_form_title">
+              Enterprise Profile & Operational Parameters
+            </h3>
+
+            <form id="eligibilityForm">
+              <div class="form-group">
+                <label for="eligibilitySchemeSelect" class="form-label">Evaluate Against Scheme:</label>
+                <select id="eligibilitySchemeSelect" class="form-select">
+                  <option value="">All Published Odisha Schemes (Batch Scan)</option>
+                  <option value="OD-MSME-C0B98FA5">CM-SRIM 2024 (Interest Subvention)</option>
+                  <option value="OD-MSME-AFD17307">IPR 2022 (Capital Investment Subsidy)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="prof_name" class="form-label" data-i18n="field_enterprise_name">Enterprise Name:</label>
+                <input type="text" id="prof_name" class="form-input" placeholder="e.g. Utkal Renewable Solutions LLP" value="Utkal Green Tech">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_class" class="form-label" data-i18n="field_class">Enterprise Class:</label>
+                  <select id="prof_class" class="form-select">
+                    <option value="micro">Micro (Investment &lt; ₹1 Cr, Turnover &lt; ₹5 Cr)</option>
+                    <option value="small">Small (Investment &lt; ₹10 Cr, Turnover &lt; ₹50 Cr)</option>
+                    <option value="medium">Medium (Investment &lt; ₹50 Cr, Turnover &lt; ₹250 Cr)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof_sector" class="form-label" data-i18n="field_sector">Sector / Activity:</label>
+                  <select id="prof_sector" class="form-select">
+                    <option value="manufacturing">Manufacturing</option>
+                    <option value="service">Service</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_state" class="form-label" data-i18n="field_state">Enterprise State:</label>
+                  <select id="prof_state" class="form-select">
+                    <option value="Odisha">Odisha (State Jurisdiction)</option>
+                    <option value="Other">Outside Odisha (Ineligible)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof_district" class="form-label" data-i18n="field_district">District:</label>
+                  <select id="prof_district" class="form-select">
+                    <option value="Khordha">Khordha (Zone B)</option>
+                    <option value="Sundargarh">Sundargarh (Zone A)</option>
+                    <option value="Kalahandi">Kalahandi (Zone A)</option>
+                    <option value="Ganjam">Ganjam (Zone B)</option>
+                    <option value="Cuttack">Cuttack (Zone B)</option>
+                    <option value="Balasore">Balasore (Zone B)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_production_status" class="form-label" data-i18n="field_production_status">Commercial Production:</label>
+                  <select id="prof_production_status" class="form-select">
+                    <option value="in_production">Commenced Commercial Production</option>
+                    <option value="under_implementation">Under Implementation</option>
+                    <option value="not_started">Not Yet Started</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="prof_udyam" class="form-label" data-i18n="field_udyam">Udyam Registered:</label>
+                  <select id="prof_udyam" class="form-select">
+                    <option value="true">Yes, Valid Udyam Certificate Held</option>
+                    <option value="false">No, Unregistered</option>
+                    <option value="">Unknown / Not Disclosed</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_investment" class="form-label" data-i18n="field_investment">Plant &amp; Machinery (₹):</label>
+                  <input type="number" id="prof_investment" class="form-input" placeholder="e.g. 2500000" value="2500000">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof_turnover" class="form-label" data-i18n="field_turnover">Annual Turnover (₹):</label>
+                  <input type="number" id="prof_turnover" class="form-input" placeholder="e.g. 4500000" value="4500000">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_loan" class="form-label" data-i18n="field_loan">Sanctioned Working Capital Loan (₹):</label>
+                  <input type="number" id="prof_loan" class="form-input" placeholder="e.g. 1000000" value="1000000">
+                </div>
+
+                <div class="form-group">
+                  <label for="prof_interest" class="form-label" data-i18n="field_interest">Annual Interest Paid (₹):</label>
+                  <input type="number" id="prof_interest" class="form-input" placeholder="e.g. 120000" value="120000">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 1.25rem;">
+                <button type="submit" id="btnRunEligibility" class="btn btn-primary" style="width: 100%; justify-content: center;" data-i18n="btn_evaluate">
+                  ⚖️ Evaluate Eligibility (Deterministic Engine)
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: Evaluation Results Stream -->
+          <div class="results-viewport-card" id="eligibilityResultsContainer">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <h3 class="empty-title">Ready for Assessment</h3>
+              <p class="empty-desc">
+                Fill in your enterprise profile parameters on the left and click <strong>Evaluate Eligibility</strong> to execute the deterministic logic engine against official Odisha MSME gazettes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: AI SATHI ADVISOR & VOICE -->
+    <section class="tab-content-panel" id="tab-assistant" role="tabpanel" aria-labelledby="tabBtnAssistant" style="display: none;">
+      <div class="section-container">
+
+        <div class="chat-wrapper-card">
+          <!-- Chat Header -->
+          <div class="chat-header-bar">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                🤖
+              </div>
+              <div>
+                <h3 style="font-size: 1.05rem; color: #ffffff;" data-i18n="chat_title">AI Sathi Policy Advisor</h3>
+                <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem;">
+                  <span class="pulse-dot active" style="width: 6px; height: 6px;"></span>
+                  <span>Active Model: Groq Qwen 2.5 27B | Sarvam Odia Voice</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Optional Scheme Scope Filter -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="chatSchemeFilter" style="font-size: 0.75rem; color: var(--text-muted);">Scope:</label>
+              <select id="chatSchemeFilter" class="form-select" style="font-size: 0.8rem; padding: 4px 8px; width: auto;">
+                <option value="">All Published Schemes</option>
+                <option value="OD-MSME-C0B98FA5">CM-SRIM 2024</option>
+                <option value="OD-MSME-AFD17307">IPR 2022</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Suggested Questions Bar -->
+          <div class="suggested-queries-bar">
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Suggested:</span>
+            <button class="chip-btn suggested-query-btn" data-query="What is the interest subsidy rate for micro enterprises under CM-SRIM?">
+              Interest subsidy under CM-SRIM?
+            </button>
+            <button class="chip-btn suggested-query-btn" data-query="How much capital investment subsidy is offered for solar/EV manufacturing under IPR 2022?">
+              Solar/EV subsidy under IPR 2022?
+            </button>
+            <button class="chip-btn suggested-query-btn" data-query="Am I eligible for CM-SRIM if my enterprise is outside Odisha?">
+              Eligibility outside Odisha?
+            </button>
+          </div>
+
+          <!-- Message History Stream -->
+          <div class="chat-messages-container" id="chatMessages" aria-live="polite">
+            <!-- Initial Welcome Message -->
+            <div class="chat-bubble assistant">
+              <div style="font-weight: 600; font-size: 0.85rem; color: var(--accent-saffron); margin-bottom: 0.4rem;">
+                AI Sathi Advisor | ନମସ୍କାର (Namaskar)
+              </div>
+              <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-primary);">
+                Welcome to Udyog Sathi. I provide evidence-grounded answers strictly based on published Odisha Department of MSME legal notifications and gazettes.
+                Every response includes exact legal page citations, verified SHA-256 hashes, and voice synthesis in Odia (ଓଡ଼ିଆ).
+              </p>
+              <div style="margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-muted);">
+                ⚖️ Zero-Mock Guarantee: If a condition is not stated in official gazettes, I will state that the evidence is inconclusive rather than hallucinate.
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input Bar -->
+          <form id="chatForm" class="chat-input-bar">
+            <input
+              type="text"
+              id="chatInput"
+              class="form-input"
+              placeholder="Ask a question about Odisha MSME schemes, subsidies, or documents..."
+              autocomplete="off"
+              required
+              aria-label="Ask AI Sathi Advisor"
+            />
+            <button type="submit" id="btnSendMessage" class="btn btn-primary" style="padding: 0.75rem 1.25rem;">
+              Send ↗
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: USER-MANAGED APPLICATION TRACKER -->
+    <section class="tab-content-panel" id="tab-tracker" role="tabpanel" aria-labelledby="tabBtnTracker" style="display: none;">
+      <div class="section-container">
+
+        <!-- Transparency Notice -->
+        <div class="transparency-notice-card">
+          <div style="font-size: 1.5rem;">ℹ️</div>
+          <div>
+            <h4 style="font-size: 1rem; color: #ffffff; margin-bottom: 0.2rem;">User-Managed Compliance Ledger</h4>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); line-height: 1.5;">
+              In strict accordance with Udyog Sathi anti-mock rules, application tracking is self-managed by your enterprise.
+              We do not impersonate government databases or simulate live status synchronization. Record your official acknowledgement numbers and audit remarks here.
+            </p>
+          </div>
+        </div>
+
+        <div id="trackerListContainer">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 5: REVIEWER GOVERNANCE & SIGN-OFF -->
+    <section class="tab-content-panel" id="tab-admin" role="tabpanel" aria-labelledby="tabBtnAdmin" style="display: none;">
+      <div class="section-container">
+
+        <div class="admin-banner-card">
+          <div style="font-size: 1.5rem;">🛡️</div>
+          <div>
+            <h4 style="font-size: 1.05rem; color: #ffffff; margin-bottom: 0.2rem;">Statutory Scheme Verification Queue</h4>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); line-height: 1.5;">
+              Reviewer governance portal for departmental officers (role: <code>scheme_reviewer</code> or <code>platform_admin</code>).
+              Inspect OCR extraction dossiers against original gazette PDFs before signing off to live catalogue.
+            </p>
+          </div>
+        </div>
+
+        <div id="adminQueueContainer">
+          <div class="skeleton skeleton-card"></div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODALS -->
+
+  <!-- Modal 1: Scheme Detail & Legal Evidence Modal -->
+  <div class="modal-overlay" id="schemeDetailModal" role="dialog" aria-modal="true" aria-labelledby="schemeModalTitle">
+    <div class="modal-card" id="schemeDetailContent">
+      <!-- Populated dynamically by catalogue.js -->
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Application Tracking Modal -->
+  <div class="modal-overlay" id="addApplicationModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; color: #ffffff;">Record Official Scheme Filing</h3>
+        <button class="modal-close" onclick="window.tracker.closeAddModal()">&times;</button>
+      </div>
+      <form id="addApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="appSchemeSelect" class="form-label">Official Scheme Filed:</label>
+            <select id="appSchemeSelect" class="form-select" required>
+              <option value="">-- Choose Verified Scheme --</option>
+            </select>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="appStatusSelect" class="form-label">Current Status:</label>
+              <select id="appStatusSelect" class="form-select" required>
+                <option value="draft">Draft (Preparing Docs)</option>
+                <option value="submitted">Submitted on Portal</option>
+                <option value="under_scrutiny">Under Departmental Scrutiny</option>
+                <option value="queried">Queried (Clarification Needed)</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="disbursed">Benefit Disbursed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="appFilingDate" class="form-label">Filing Date:</label>
+              <input type="date" id="appFilingDate" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="appAckRef" class="form-label">Official Acknowledgement / Application Number:</label>
+            <input type="text" id="appAckRef" class="form-input" placeholder="e.g. OD-MSME-2024-88419">
+          </div>
+
+          <div class="form-group">
+            <label for="appPortalUrl" class="form-label">Submission Portal URL:</label>
+            <input type="url" id="appPortalUrl" class="form-input" placeholder="https://msme.odisha.gov.in" value="https://msme.odisha.gov.in">
+          </div>
+
+          <div class="form-group">
+            <label for="appNotes" class="form-label">Internal Compliance Notes:</label>
+            <textarea id="appNotes" class="form-input" rows="2" placeholder="Record DIC office submission date, dealing assistant name, query deadlines..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 1rem 1.5rem; background: var(--bg-tertiary); display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.tracker.closeAddModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Tracking Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Edit Application Modal -->
+  <div class="modal-overlay" id="editApplicationModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 1.15rem; color: #ffffff;">Update Filing Record</h3>
+          <div style="font-size: 0.8rem; color: var(--text-muted);"><span id="editAppSchemeName"></span> (<span id="editAppId"></span>)</div>
+        </div>
+        <button class="modal-close" onclick="window.tracker.closeEditModal()">&times;</button>
+      </div>
+      <form id="editApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="editAppStatusSelect" class="form-label">Status:</label>
+            <select id="editAppStatusSelect" class="form-select" required>
+              <option value="draft">Draft (Preparing Docs)</option>
+              <option value="submitted">Submitted on Portal</option>
+              <option value="under_scrutiny">Under Departmental Scrutiny</option>
+              <option value="queried">Queried (Clarification Needed)</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="disbursed">Benefit Disbursed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="editAppAckRef" class="form-label">Acknowledgement Reference:</label>
+            <input type="text" id="editAppAckRef" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="editAppNotes" class="form-label">Updated Notes:</label>
+            <textarea id="editAppNotes" class="form-input" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 1rem 1.5rem; background: var(--bg-tertiary); display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.tracker.closeEditModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Reviewer Dossier Modal -->
+  <div class="modal-overlay" id="reviewerDossierModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 750px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 1.15rem; color: #ffffff;">Departmental Scheme Verification Dossier</h3>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Compare extraction against legal notification</div>
+        </div>
+        <button class="modal-close" onclick="window.admin.closeDossierModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="reviewerDossierContent">
+        <!-- Loaded by admin.js -->
+      </div>
+      <form id="verifySchemeForm">
+        <div style="padding: 1rem 1.5rem; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle);">
+          <div class="form-group">
+            <label for="dossierNotes" class="form-label" style="color: var(--accent-gold);">
+              Audit Verification Notes (Min 10 characters confirming check against gazette):
+            </label>
+            <textarea id="dossierNotes" class="form-input" rows="2" placeholder="e.g. Verified against Department of MSME Gazette Notification No. 12948/MSME. Caps and eligibility confirmed." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="padding: 1rem 1.5rem; background: var(--bg-tertiary); display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.admin.closeDossierModal()">Cancel</button>
+          <button type="submit" id="btnSubmitSignOff" class="btn btn-primary btn-sm">Sign-Off &amp; Publish Scheme</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Authentication (Login / Register) Modal -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <div class="auth-tabs-toggle">
+          <button type="button" id="authTabLogin" class="auth-toggle-btn active" onclick="window.app.toggleAuthView('login')">Sign In</button>
+          <button type="button" id="authTabRegister" class="auth-toggle-btn" onclick="window.app.toggleAuthView('register')">Register Enterprise</button>
+        </div>
+        <button class="modal-close" onclick="window.app.closeAuthModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Sign In Form -->
+        <div id="authLoginSection">
+          <form id="loginForm">
+            <div id="loginError" class="auth-error-banner" style="display: none;"></div>
+            <div class="form-group">
+              <label for="loginEmail" class="form-label">Email Address:</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="entrepreneur@odishamsme.in" required>
+            </div>
+            <div class="form-group">
+              <label for="loginPassword" class="form-label">Password:</label>
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.75rem;">
+              Sign In to Account
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="authRegisterSection" style="display: none;">
+          <form id="registerForm">
+            <div id="registerError" class="auth-error-banner" style="display: none;"></div>
+            <div class="form-group">
+              <label for="regEnterpriseName" class="form-label">Enterprise Name:</label>
+              <input type="text" id="regEnterpriseName" class="form-input" placeholder="e.g. Konark Precision Engineering" required>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regEmail" class="form-label">Email Address:</label>
+                <input type="email" id="regEmail" class="form-input" placeholder="founder@konark.in" required>
+              </div>
+              <div class="form-group">
+                <label for="regPassword" class="form-label">Password:</label>
+                <input type="password" id="regPassword" class="form-input" placeholder="••••••••" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regClass" class="form-label">Enterprise Class:</label>
+                <select id="regClass" class="form-select">
+                  <option value="micro">Micro</option>
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="regSector" class="form-label">Sector:</label>
+                <select id="regSector" class="form-select">
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="service">Service</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regDistrict" class="form-label">District (Odisha):</label>
+                <input type="text" id="regDistrict" class="form-input" placeholder="e.g. Khordha" value="Khordha">
+              </div>
+              <div class="form-group">
+                <label for="regUdyamNumber" class="form-label">Udyam Reg. Number (Optional):</label>
+                <input type="text" id="regUdyamNumber" class="form-input" placeholder="UDYAM-OD-00-0000000">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.75rem;">
+              Complete Enterprise Registration
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div>
+          <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 0.4rem;">
+            Udyog Sathi | Department of MSME
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; max-width: 420px;">
+            Unified AI-powered scheme advisory and deterministic eligibility portal for Micro, Small &amp; Medium Enterprises in the State of Odisha.
+          </p>
+        </div>
+        <div>
+          <div style="font-weight: 600; color: #ffffff; font-size: 0.85rem; margin-bottom: 0.4rem;">Statutory Portals</div>
+          <ul style="list-style: none; padding: 0; font-size: 0.8rem; line-height: 1.8;">
+            <li><a href="https://msme.odisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal);">Odisha MSME Department ↗</a></li>
+            <li><a href="https://investodisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal);">GO-SWIFT Single Window ↗</a></li>
+            <li><a href="https://udyamregistration.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal);">National Udyam Portal ↗</a></li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight: 600; color: #ffffff; font-size: 0.85rem; margin-bottom: 0.4rem;">Zero-Mock Compliance</div>
+          <p style="font-size: 0.775rem; color: var(--text-muted); line-height: 1.4;">
+            All calculations, conditions, and AI citations reference official gazette notifications published by the Government of Odisha. Final sanction of any incentive is subject to statutory departmental scrutiny.
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom-bar">
+        <span>© 2026 Udyog Sathi. Built for the entrepreneurs of Odisha.</span>
+        <span>Version 1.0.0-phase5 | Connected to Live Ingestion Engine</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Frontend JavaScript Controllers -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/catalogue.js"></script>
+  <script src="/static/js/eligibility.js"></script>
+  <script src="/static/js/assistant.js"></script>
+  <script src="/static/js/tracker.js"></script>
+  <script src="/static/js/admin.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

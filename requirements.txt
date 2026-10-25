@@ -1,0 +1,13 @@
+# Udyog Sathi Production Dependencies
+fastapi==0.141.1
+uvicorn==0.52.1
+pydantic==2.13.4
+pydantic-settings==2.14.2
+SQLAlchemy==2.0.51
+alembic==1.20.1
+pymupdf==1.28.2
+pytesseract==0.3.13
+httpx==0.28.1
+groq==0.37.1
+python-dotenv==1.2.2
+pytest==9.1.1

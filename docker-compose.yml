@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: udyog-sathi:latest
+    container_name: udyog_sathi_app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - API_PREFIX=/api/v1
+      - CORS_ORIGINS=*
+      - AI_PRIMARY_PROVIDER=groq
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - SARVAM_API_KEY=${SARVAM_API_KEY:-}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
