@@ -3,12 +3,14 @@ Scheme Catalogue & Document Provenance API Router.
 Enforces zero-mock production data: returns only verified, published government scheme records.
 """
 
+import math
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
 from apps.api.schemas.schemes import (
     DocumentChecklistResponse,
+    PaginatedSchemesResponse,
     SchemeDetailResponse,
     SchemeSummaryResponse,
     VerifiedBenefitResponse,
@@ -26,20 +28,19 @@ from services.scheme_ingestion.models import (
 router = APIRouter(prefix="/schemes", tags=["Schemes"])
 
 
-@router.get("", response_model=List[SchemeSummaryResponse])
-def list_published_schemes(
-    search: Optional[str] = Query(None, description="Search keyword in scheme title or summary"),
-    sector: Optional[str] = Query(None, description="Filter by sector, e.g. 'manufacturing'"),
-    enterprise_class: Optional[str] = Query(None, description="Filter by enterprise class ('micro', 'small', 'medium')"),
-    page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Items per page"),
-    db: Session = Depends(get_db)
+def _build_schemes_query(
+    db: Session,
+    search: Optional[str] = None,
+    sector: Optional[str] = None,
+    enterprise_class: Optional[str] = None,
+    category: Optional[str] = None,
+    jurisdiction: Optional[str] = None,
+    scheme_type: Optional[str] = None,
+    application_status: Optional[str] = None,
+    claim_status: Optional[str] = None,
+    organization: Optional[str] = None,
+    is_rolling: Optional[bool] = None,
 ):
-    """
-    Retrieves published schemes from the verified government catalogue.
-    CRITICAL NO-MOCK RULE: Queries return only records where status == 'published'.
-    Empty search results produce honest empty lists, never mock records.
-    """
     query = db.query(SchemeModel).filter(SchemeModel.status == SchemeStatus.PUBLISHED.value)
 
     if search:
@@ -49,8 +50,28 @@ def list_published_schemes(
             (SchemeModel.summary.ilike(search_term))
         )
 
+    if category:
+        query = query.filter(SchemeModel.category == category)
+
+    if jurisdiction and jurisdiction.lower() != "all":
+        query = query.filter(SchemeModel.jurisdiction.ilike(f"%{jurisdiction.strip()}%"))
+
+    if scheme_type and scheme_type.lower() != "all":
+        query = query.filter(SchemeModel.scheme_type == scheme_type.strip())
+
+    if application_status:
+        query = query.filter(SchemeModel.application_status == application_status)
+
+    if claim_status:
+        query = query.filter(SchemeModel.claim_status == claim_status)
+
+    if organization:
+        query = query.filter(SchemeModel.organization.ilike(f"%{organization}%"))
+
+    if is_rolling is not None:
+        query = query.filter(SchemeModel.is_rolling == is_rolling)
+
     if sector:
-        # Check if scheme has rule matching sector
         query = query.join(SchemeModel.eligibility_rules).filter(
             EligibilityRuleModel.attribute_name == "sector",
             EligibilityRuleModel.value_json.contains({"value": [sector.lower()]})
@@ -62,27 +83,136 @@ def list_published_schemes(
             EligibilityRuleModel.value_json.contains({"value": [enterprise_class.lower()]})
         )
 
-    total_schemes = query.distinct().offset((page - 1) * limit).limit(limit).all()
+    return query
 
-    return [
-        SchemeSummaryResponse(
-            scheme_id=s.id,
-            official_name=s.official_name,
-            official_name_odia=s.official_name_odia,
-            department=s.department,
-            implementing_agency=s.implementing_agency,
-            jurisdiction=s.jurisdiction,
-            summary=s.summary,
-            status=s.status,
-            version=s.version,
-            effective_date=s.effective_date,
-            expiry_date=s.expiry_date,
-            source_url=s.source_url,
-            document_sha256=s.document_sha256,
-            published_at=s.published_at,
-        )
-        for s in total_schemes
-    ]
+
+def _serialize_scheme_summary(s: SchemeModel) -> SchemeSummaryResponse:
+    return SchemeSummaryResponse(
+        scheme_id=s.id,
+        official_name=s.official_name,
+        official_name_odia=s.official_name_odia,
+        department=s.department,
+        implementing_agency=s.implementing_agency,
+        jurisdiction=s.jurisdiction,
+        summary=s.summary,
+        status=s.status,
+        version=s.version,
+        effective_date=s.effective_date,
+        expiry_date=s.expiry_date,
+        category=s.category or "finance_credit",
+        organization=s.organization,
+        scheme_type=s.scheme_type or "government_scheme",
+        interest_rate_published=s.interest_rate_published,
+        max_loan_limit=s.max_loan_limit,
+        collateral_requirement=s.collateral_requirement,
+        application_status=s.application_status or "unknown",
+        claim_status=s.claim_status or "unknown",
+        application_start_date=s.application_start_date,
+        application_deadline=s.application_deadline,
+        claim_deadline=s.claim_deadline,
+        is_rolling=s.is_rolling or False,
+        financial_year_cycle=s.financial_year_cycle,
+        last_verified_at=s.last_verified_at,
+        official_application_url=s.official_application_url,
+        official_guidelines_url=s.official_guidelines_url,
+        official_notification_url=s.official_notification_url,
+        confidence_score=s.confidence_score or 1.0,
+        source_url=s.source_url,
+        document_sha256=s.document_sha256,
+        published_at=s.published_at,
+    )
+
+
+@router.get("", response_model=List[SchemeSummaryResponse])
+def list_published_schemes(
+    response: Response,
+    search: Optional[str] = Query(None, description="Search keyword in scheme title or summary"),
+    sector: Optional[str] = Query(None, description="Filter by sector, e.g. 'manufacturing'"),
+    enterprise_class: Optional[str] = Query(None, description="Filter by enterprise class ('micro', 'small', 'medium')"),
+    category: Optional[str] = Query(None, description="Filter by category (e.g. 'finance_credit', 'subsidy_incentives')"),
+    jurisdiction: Optional[str] = Query(None, description="Filter by jurisdiction ('Odisha', 'Central')"),
+    scheme_type: Optional[str] = Query(None, description="Filter by scheme type ('government_scheme', 'bank_product')"),
+    application_status: Optional[str] = Query(None, description="Filter by application status (e.g. 'open', 'closing_soon', 'closed')"),
+    claim_status: Optional[str] = Query(None, description="Filter by claim status (e.g. 'claims_open', 'rolling_claims')"),
+    organization: Optional[str] = Query(None, description="Filter by issuing organization (e.g. 'SBI', 'SIDBI', 'Ministry of MSME')"),
+    is_rolling: Optional[bool] = Query(None, description="Filter by rolling availability"),
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(20, ge=1, le=100, description="Items per page"),
+    db: Session = Depends(get_db)
+):
+    """
+    Retrieves published schemes from the verified government & banking catalogue.
+    CRITICAL NO-MOCK RULE: Queries return only records where status == 'published'.
+    Sets pagination response headers X-Total-Count, X-Total-Pages, X-Current-Page, X-Page-Size.
+    """
+    query = _build_schemes_query(
+        db=db,
+        search=search,
+        sector=sector,
+        enterprise_class=enterprise_class,
+        category=category,
+        jurisdiction=jurisdiction,
+        scheme_type=scheme_type,
+        application_status=application_status,
+        claim_status=claim_status,
+        organization=organization,
+        is_rolling=is_rolling,
+    )
+
+    total_count = query.distinct().count()
+    total_pages = max(1, math.ceil(total_count / limit)) if total_count > 0 else 1
+
+    response.headers["X-Total-Count"] = str(total_count)
+    response.headers["X-Total-Pages"] = str(total_pages)
+    response.headers["X-Current-Page"] = str(page)
+    response.headers["X-Page-Size"] = str(limit)
+
+    records = query.distinct().offset((page - 1) * limit).limit(limit).all()
+    return [_serialize_scheme_summary(s) for s in records]
+
+
+@router.get("/paginated", response_model=PaginatedSchemesResponse)
+def list_published_schemes_paginated(
+    search: Optional[str] = Query(None, description="Search keyword in scheme title or summary"),
+    sector: Optional[str] = Query(None, description="Filter by sector, e.g. 'manufacturing'"),
+    enterprise_class: Optional[str] = Query(None, description="Filter by enterprise class ('micro', 'small', 'medium')"),
+    category: Optional[str] = Query(None, description="Filter by category (e.g. 'finance_credit', 'subsidy_incentives')"),
+    jurisdiction: Optional[str] = Query(None, description="Filter by jurisdiction ('Odisha', 'Central')"),
+    scheme_type: Optional[str] = Query(None, description="Filter by scheme type ('government_scheme', 'bank_product')"),
+    application_status: Optional[str] = Query(None, description="Filter by application status (e.g. 'open', 'closing_soon', 'closed')"),
+    claim_status: Optional[str] = Query(None, description="Filter by claim status (e.g. 'claims_open', 'rolling_claims')"),
+    organization: Optional[str] = Query(None, description="Filter by issuing organization (e.g. 'SBI', 'SIDBI', 'Ministry of MSME')"),
+    is_rolling: Optional[bool] = Query(None, description="Filter by rolling availability"),
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(20, ge=1, le=100, description="Items per page"),
+    db: Session = Depends(get_db)
+):
+    """Returns schemes with an explicit pagination JSON envelope."""
+    query = _build_schemes_query(
+        db=db,
+        search=search,
+        sector=sector,
+        enterprise_class=enterprise_class,
+        category=category,
+        jurisdiction=jurisdiction,
+        scheme_type=scheme_type,
+        application_status=application_status,
+        claim_status=claim_status,
+        organization=organization,
+        is_rolling=is_rolling,
+    )
+
+    total_count = query.distinct().count()
+    total_pages = max(1, math.ceil(total_count / limit)) if total_count > 0 else 1
+    records = query.distinct().offset((page - 1) * limit).limit(limit).all()
+
+    return PaginatedSchemesResponse(
+        items=[_serialize_scheme_summary(s) for s in records],
+        total=total_count,
+        page=page,
+        page_size=limit,
+        total_pages=total_pages,
+    )
 
 
 @router.get("/{scheme_id}", response_model=SchemeDetailResponse)
@@ -151,6 +281,24 @@ def get_scheme_details(
         version=scheme.version,
         effective_date=scheme.effective_date,
         expiry_date=scheme.expiry_date,
+        category=scheme.category or "finance_credit",
+        organization=scheme.organization,
+        scheme_type=scheme.scheme_type or "government_scheme",
+        interest_rate_published=scheme.interest_rate_published,
+        max_loan_limit=scheme.max_loan_limit,
+        collateral_requirement=scheme.collateral_requirement,
+        application_status=scheme.application_status or "unknown",
+        claim_status=scheme.claim_status or "unknown",
+        application_start_date=scheme.application_start_date,
+        application_deadline=scheme.application_deadline,
+        claim_deadline=scheme.claim_deadline,
+        is_rolling=scheme.is_rolling or False,
+        financial_year_cycle=scheme.financial_year_cycle,
+        last_verified_at=scheme.last_verified_at,
+        official_application_url=scheme.official_application_url,
+        official_guidelines_url=scheme.official_guidelines_url,
+        official_notification_url=scheme.official_notification_url,
+        confidence_score=scheme.confidence_score or 1.0,
         verified_eligibility_rules=rules,
         verified_benefits=benefits,
         required_documents=scheme.required_documents or [],

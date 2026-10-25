@@ -1,6 +1,22 @@
 # Udyog Sathi — Development Prompt Pack
 
-This folder contains the master engineering instructions and six phase-wise prompts for building Udyog Sathi as a real-data, real-integration application.
+## 🚀 Quick Run & Launch (Single Command)
+
+To run the project instantly without re-scanning files:
+```bash
+./run.sh
+# or
+./build.sh
+# or
+make run
+```
+- **Web App**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health/ready
+- **Stop Server**: `./build.sh --stop` (or `make stop`)
+- **Run Tests**: `./build.sh --test` (or `make test`)
+
+---
 
 ## Core rule
 

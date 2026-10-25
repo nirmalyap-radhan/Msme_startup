@@ -22,6 +22,7 @@
 | 4. RAG and AI integrations | Completed | `services/ai_gateway/`, `services/rag/`, `apps/api/routers/rag.py`, `docs/architecture/rag-and-ai.md`, 57/57 tests passing, Groq qwen/qwen3.8-27b & Sarvam bulbul:v3/translate verified | None |
 | 5. Frontend product flows | Completed | `apps/web/`, `apps/api/main.py`, `tests/unit/test_frontend_product.py`, `docs/architecture/frontend-product.md`, 64/64 tests passing, zero-mock audit passing | None |
 | 6. Testing and deployment | Completed | `Dockerfile`, `docker-compose.yml`, `docs/quality/test-report.md`, `docs/security/security-review.md`, `docs/deployment/runbook.md`, `docs/deployment/rollback-and-recovery.md`, 69/69 tests passing | None |
+| 7. UI/UX Portal Redesign | Completed | Redesigned frontend to match target reference government portal (Odisha/MSME theme, clean navy/white header, photographic hero & category cards, floating personalized search, quick actions, authentic gazette updates); 69/69 tests passing; zero-mock audit passing. | None |
 
 ## Real data metrics
 

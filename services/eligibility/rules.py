@@ -54,6 +54,15 @@ class BenefitCalculationResult(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class BusinessBenefitStatus(str, Enum):
+    ELIGIBLE_AND_OPEN = "eligible_and_currently_open"
+    ELIGIBLE_AND_CLAIMABLE = "eligible_and_claimable"
+    POTENTIALLY_ELIGIBLE = "potentially_eligible"
+    ELIGIBLE_BUT_CLOSED = "eligible_but_currently_closed"
+    INELIGIBLE = "ineligible"
+    STATUS_UNVERIFIED = "status_unverified"
+
+
 class EligibilityAssessment(BaseModel):
     scheme_id: str
     scheme_name: str
@@ -61,7 +70,16 @@ class EligibilityAssessment(BaseModel):
     jurisdiction: str
     source_url: str
     outcome: EligibilityOutcome
+    benefit_status: BusinessBenefitStatus = BusinessBenefitStatus.STATUS_UNVERIFIED
+    application_status: str = "unknown"
+    claim_status: str = "unknown"
+    is_claimable: bool = False
     summary_reason: str
+    disclaimer: str = (
+        "Preliminary eligibility assessment based on verified scheme guidelines. "
+        "Final eligibility, sanction, reimbursement, and disbursement remain subject to "
+        "the administering institution's official rules, scrutiny, and approval."
+    )
     conditions_passed: List[ConditionEvaluationResult] = Field(default_factory=list)
     conditions_failed: List[ConditionEvaluationResult] = Field(default_factory=list)
     conditions_unknown: List[ConditionEvaluationResult] = Field(default_factory=list)

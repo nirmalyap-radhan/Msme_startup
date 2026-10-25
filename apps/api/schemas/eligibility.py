@@ -43,13 +43,17 @@ class SingleSchemeAssessmentResponse(BaseModel):
     jurisdiction: str
     source_url: str
     outcome: EligibilityOutcome
+    benefit_status: str = "status_unverified"
+    application_status: str = "unknown"
+    claim_status: str = "unknown"
+    is_claimable: bool = False
     summary_reason: str
     conditions_passed: List[ConditionEvaluationResult] = Field(default_factory=list)
     conditions_failed: List[ConditionEvaluationResult] = Field(default_factory=list)
     conditions_unknown: List[ConditionEvaluationResult] = Field(default_factory=list)
     targeted_followup_questions: List[Dict[str, Any]] = Field(default_factory=list)
     benefit_estimates: List[BenefitCalculationResult] = Field(default_factory=list)
-    disclaimer: str = "Assessment is advisory and based on verified rules. Government authorities hold sole jurisdiction over actual approval."
+    disclaimer: str = "Preliminary advisory assessment based on verified scheme guidelines. Final eligibility, sanction, reimbursement, and disbursement remain subject to administering institution rules, scrutiny, and approval."
 
     model_config = ConfigDict(from_attributes=True)
 

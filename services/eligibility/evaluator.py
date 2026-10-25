@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from services.eligibility.benefit_calculator import BenefitCalculator
 from services.eligibility.rules import (
+    BusinessBenefitStatus,
     ConditionEvaluationResult,
     EligibilityAssessment,
     EligibilityOutcome,
@@ -204,10 +205,10 @@ class DeterministicEligibilityEvaluator:
         Evaluates a complete scheme against an applicant profile using three-valued logic.
         """
         scheme_id = getattr(scheme, "id", None) or getattr(scheme, "scheme_id", "OD-SCHEME")
-        scheme_name = getattr(scheme, "official_name", "Official Scheme")
-        department = getattr(scheme, "department", "Department of MSME, Government of Odisha")
-        jurisdiction = getattr(scheme, "jurisdiction", "Odisha")
-        source_url = getattr(scheme, "source_url", "https://msme.odisha.gov.in")
+        scheme_name = getattr(scheme, "official_name", None) or "Official Scheme"
+        department = getattr(scheme, "department", None) or "Department of MSME, Government of Odisha"
+        jurisdiction = getattr(scheme, "jurisdiction", None) or "Odisha"
+        source_url = getattr(scheme, "source_url", None) or "https://msme.odisha.gov.in"
         raw_status = getattr(scheme, "status", "published")
         status = raw_status.value if hasattr(raw_status, "value") else str(raw_status).lower()
 
@@ -220,6 +221,10 @@ class DeterministicEligibilityEvaluator:
                 jurisdiction=jurisdiction,
                 source_url=source_url,
                 outcome=EligibilityOutcome.RULES_UNVERIFIED,
+                benefit_status=BusinessBenefitStatus.STATUS_UNVERIFIED,
+                application_status="verification_required",
+                claim_status="verification_required",
+                is_claimable=False,
                 summary_reason="Scheme rules are currently in draft or pending reviewer verification. Cannot assess official eligibility.",
                 conditions_passed=[],
                 conditions_failed=[],
@@ -276,6 +281,28 @@ class DeterministicEligibilityEvaluator:
                 benefits_list = getattr(scheme, "candidate_benefits", [])
             benefit_estimates = BenefitCalculator.calculate_benefits(benefits_list, applicant_profile)
 
+        # 4. Derive 6-state Business Benefit Status based on outcome + lifecycle statuses
+        app_status = getattr(scheme, "application_status", "open") or "open"
+        claim_status = getattr(scheme, "claim_status", "unknown") or "unknown"
+        is_rolling = getattr(scheme, "is_rolling", False)
+        is_claimable = claim_status in ("claims_open", "rolling_claims")
+
+        if outcome == EligibilityOutcome.NOT_ELIGIBLE_UNDER_VERIFIED_RULES:
+            benefit_status = BusinessBenefitStatus.INELIGIBLE
+        elif outcome == EligibilityOutcome.MORE_INFORMATION_REQUIRED:
+            benefit_status = BusinessBenefitStatus.POTENTIALLY_ELIGIBLE
+        elif outcome == EligibilityOutcome.RULES_UNVERIFIED:
+            benefit_status = BusinessBenefitStatus.STATUS_UNVERIFIED
+        else:  # POTENTIAL_MATCH
+            if is_claimable:
+                benefit_status = BusinessBenefitStatus.ELIGIBLE_AND_CLAIMABLE
+            elif app_status in ("open", "closing_soon") or is_rolling:
+                benefit_status = BusinessBenefitStatus.ELIGIBLE_AND_OPEN
+            elif app_status in ("closed", "discontinued", "suspended"):
+                benefit_status = BusinessBenefitStatus.ELIGIBLE_BUT_CLOSED
+            else:
+                benefit_status = BusinessBenefitStatus.STATUS_UNVERIFIED
+
         return EligibilityAssessment(
             scheme_id=scheme_id,
             scheme_name=scheme_name,
@@ -283,6 +310,10 @@ class DeterministicEligibilityEvaluator:
             jurisdiction=jurisdiction,
             source_url=source_url,
             outcome=outcome,
+            benefit_status=benefit_status,
+            application_status=app_status,
+            claim_status=claim_status,
+            is_claimable=is_claimable,
             summary_reason=summary_reason,
             conditions_passed=passed,
             conditions_failed=failed,

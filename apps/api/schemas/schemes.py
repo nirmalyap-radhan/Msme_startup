@@ -19,11 +19,37 @@ class SchemeSummaryResponse(BaseModel):
     version: str
     effective_date: Optional[str] = None
     expiry_date: Optional[str] = None
+    category: str = "finance_credit"
+    organization: Optional[str] = None
+    scheme_type: str = "government_scheme"
+    interest_rate_published: Optional[str] = None
+    max_loan_limit: Optional[str] = None
+    collateral_requirement: Optional[str] = None
+    application_status: str = "unknown"
+    claim_status: str = "unknown"
+    application_start_date: Optional[datetime] = None
+    application_deadline: Optional[datetime] = None
+    claim_deadline: Optional[datetime] = None
+    is_rolling: bool = False
+    financial_year_cycle: Optional[str] = None
+    last_verified_at: Optional[datetime] = None
+    official_application_url: Optional[str] = None
+    official_guidelines_url: Optional[str] = None
+    official_notification_url: Optional[str] = None
+    confidence_score: float = 1.0
     source_url: str
     document_sha256: str
     published_at: Optional[datetime] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class PaginatedSchemesResponse(BaseModel):
+    items: List[SchemeSummaryResponse]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
 
 
 class VerifiedRuleResponse(BaseModel):
@@ -67,6 +93,24 @@ class SchemeDetailResponse(BaseModel):
     version: str
     effective_date: Optional[str] = None
     expiry_date: Optional[str] = None
+    category: str = "finance_credit"
+    organization: Optional[str] = None
+    scheme_type: str = "government_scheme"
+    interest_rate_published: Optional[str] = None
+    max_loan_limit: Optional[str] = None
+    collateral_requirement: Optional[str] = None
+    application_status: str = "unknown"
+    claim_status: str = "unknown"
+    application_start_date: Optional[datetime] = None
+    application_deadline: Optional[datetime] = None
+    claim_deadline: Optional[datetime] = None
+    is_rolling: bool = False
+    financial_year_cycle: Optional[str] = None
+    last_verified_at: Optional[datetime] = None
+    official_application_url: Optional[str] = None
+    official_guidelines_url: Optional[str] = None
+    official_notification_url: Optional[str] = None
+    confidence_score: float = 1.0
     verified_eligibility_rules: List[VerifiedRuleResponse] = Field(default_factory=list)
     verified_benefits: List[VerifiedBenefitResponse] = Field(default_factory=list)
     required_documents: List[str] = Field(default_factory=list)

@@ -132,13 +132,19 @@ class HybridSchemeRetriever:
                 top_p = top_passages[0]
                 top_passage_words = set(self._tokenize(top_p.text_content + " " + (top_p.section_heading or "")))
                 matched_content_words = [t for t in content_query_tokens if t in top_passage_words]
-                coverage = len(matched_content_words) / len(content_query_tokens)
 
-                # Sufficient evidence requires either >= 35% of content words or at least 2 distinct matching content words
-                if len(content_query_tokens) <= 2:
-                    has_sufficient_evidence = (len(matched_content_words) >= 1)
+                # Check if query has mixed regional script words (e.g. Odia or Hindi) alongside Latin scheme codes
+                latin_tokens = list(set([t for t in content_query_tokens if re.match(r'^[a-z0-9]', t)]))
+                if len(latin_tokens) >= 1 and len(latin_tokens) < len(content_query_tokens):
+                    matched_latin = [t for t in latin_tokens if t in top_passage_words]
+                    has_sufficient_evidence = (len(matched_latin) >= 1 and max_score >= 5.0)
                 else:
-                    has_sufficient_evidence = (coverage >= 0.35 and len(matched_content_words) >= 2)
+                    unique_content_tokens = list(set(content_query_tokens))
+                    coverage = len(set(matched_content_words)) / len(unique_content_tokens)
+                    if len(unique_content_tokens) <= 2:
+                        has_sufficient_evidence = (len(matched_content_words) >= 1)
+                    else:
+                        has_sufficient_evidence = (coverage >= 0.35 and len(matched_content_words) >= 2)
 
             return top_passages, has_sufficient_evidence
 

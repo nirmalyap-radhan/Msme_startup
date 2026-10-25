@@ -116,19 +116,38 @@ class EligibilityController {
     const container = document.getElementById('eligibilityResultsContainer');
     if (!container) return;
 
-    let bannerClass = 'potential_match';
-    let bannerTitle = 'POTENTIAL MATCH — FULLY ELIGIBLE';
-    let bannerDesc = a.summary_reason;
+    // 6-State Business Benefit Status Configuration
+    const benefitStatus = a.benefit_status || 'STATUS_UNVERIFIED';
+    let bannerStyle = 'background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46;';
+    let bannerIcon = '🎉';
+    let bannerTitle = 'ELIGIBLE & ACTIVELY ACCEPTING APPLICATIONS';
+    let bannerDesc = a.summary_reason || 'Enterprise satisfies verified eligibility conditions and applications are currently accepted.';
 
-    if (a.outcome === 'more_information_required') {
-      bannerClass = 'more_information_required';
-      bannerTitle = 'LIKELY ELIGIBLE — MORE INFORMATION REQUIRED';
-    } else if (a.outcome === 'not_eligible_under_verified_rules') {
-      bannerClass = 'not_eligible_under_verified_rules';
+    if (benefitStatus === 'ELIGIBLE_AND_CLAIMABLE') {
+      bannerStyle = 'background: #f0fdf4; border: 1px solid #86efac; color: #166534;';
+      bannerIcon = '💰';
+      bannerTitle = 'ELIGIBLE & OPEN FOR REIMBURSEMENT / CLAIMS';
+      bannerDesc = a.summary_reason || 'Enterprise qualifies to lodge subsidy or reimbursement claims during this operational window.';
+    } else if (benefitStatus === 'POTENTIALLY_ELIGIBLE') {
+      bannerStyle = 'background: #fffbeb; border: 1px solid #fde68a; color: #92400e;';
+      bannerIcon = '💡';
+      bannerTitle = 'POTENTIALLY ELIGIBLE — MISSING INFORMATION REQUIRED';
+      bannerDesc = a.summary_reason || 'Enterprise is likely eligible. Answer missing criteria below to finalize assessment.';
+    } else if (benefitStatus === 'ELIGIBLE_BUT_CLOSED') {
+      bannerStyle = 'background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155;';
+      bannerIcon = '⏳';
+      bannerTitle = 'ELIGIBLE BUT CURRENTLY CLOSED';
+      bannerDesc = a.summary_reason || 'Enterprise meets the statutory criteria, but the application window is presently closed. Monitor for next cycle opening.';
+    } else if (benefitStatus === 'INELIGIBLE') {
+      bannerStyle = 'background: #fef2f2; border: 1px solid #fecaca; color: #991b1b;';
+      bannerIcon = '🛑';
       bannerTitle = 'NOT ELIGIBLE UNDER VERIFIED RULES';
-    } else if (a.outcome === 'rules_unverified') {
-      bannerClass = 'not_eligible_under_verified_rules';
-      bannerTitle = 'SCHEME RULES UNVERIFIED';
+      bannerDesc = a.summary_reason || 'Enterprise fails one or more mandatory statutory conditions in the official gazette.';
+    } else if (benefitStatus === 'STATUS_UNVERIFIED') {
+      bannerStyle = 'background: #f8fafc; border: 1px solid #e2e8f0; color: #475569;';
+      bannerIcon = '🔍';
+      bannerTitle = 'SCHEME STATUS UNVERIFIED';
+      bannerDesc = a.summary_reason || 'Rules or application availability require departmental verification.';
     }
 
     // Benefits section
@@ -137,26 +156,26 @@ class EligibilityController {
       benefitsHtml = a.benefit_estimates.map(b => {
         if (b.status === 'calculated') {
           return `
-            <div class="benefit-calc-card">
-              <div style="font-size: 0.85rem; font-weight: 700; color: #34d399; text-transform: uppercase;">
+            <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 8px; padding: 1rem; margin-top: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <div style="font-size: 0.8rem; font-weight: 700; color: #047857; text-transform: uppercase;">
                 ${this.escapeHtml(b.benefit_type.replace(/_/g, ' '))}
               </div>
-              <div class="benefit-amount">₹${b.estimated_amount_inr.toLocaleString('en-IN')}</div>
-              <div style="font-size: 0.9rem; color: #ffffff; margin-top: 0.25rem;">
-                ${this.escapeHtml(b.applied_formula)}
+              <div style="font-size: 1.5rem; font-weight: 800; color: #047857; margin-top: 0.2rem;">₹${b.estimated_amount_inr.toLocaleString('en-IN')}</div>
+              <div style="font-size: 0.875rem; color: #334155; margin-top: 0.25rem;">
+                Formula: <code>${this.escapeHtml(b.applied_formula)}</code>
               </div>
-              <div style="font-size: 0.775rem; color: var(--text-muted); margin-top: 0.35rem;">
-                Citation: ${this.escapeHtml(b.source_clause)} (Page ${b.source_page || 1})
+              <div style="font-size: 0.775rem; color: #64748b; margin-top: 0.35rem;">
+                Statutory Source: ${this.escapeHtml(b.source_clause)} (Page ${b.source_page || 1})
               </div>
             </div>
           `;
         } else {
           return `
-            <div style="background: rgba(245, 158, 11, 0.08); border: 1px dashed rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem;">
-              <div style="font-weight: 700; color: #fbbf24; font-size: 0.9rem;">
+            <div style="background: #fffbeb; border: 1px dashed #fcd34d; border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+              <div style="font-weight: 700; color: #92400e; font-size: 0.875rem;">
                 ${this.escapeHtml(b.benefit_type.replace(/_/g, ' '))} — Additional Inputs Required
               </div>
-              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+              <p style="font-size: 0.825rem; color: #78350f; margin-top: 0.25rem;">
                 ${this.escapeHtml(b.assumptions_notes)}
               </p>
             </div>
@@ -168,24 +187,24 @@ class EligibilityController {
     // Passed Conditions
     const passedHtml = a.conditions_passed && a.conditions_passed.length > 0
       ? a.conditions_passed.map(c => `
-          <div style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.875rem;">
-            <span style="color: #34d399; font-weight: bold;">✓</span>
+          <div style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.85rem;">
+            <span style="color: #059669; font-weight: bold;">✓</span>
             <div>
-              <div style="color: #ffffff;"><strong>${this.escapeHtml(c.attribute_name)}:</strong> ${this.escapeHtml(c.reasoning)}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">${this.escapeHtml(c.source_clause || '')} (Page ${c.source_page || 1})</div>
+              <div style="color: #0c1e3d;"><strong>${this.escapeHtml(c.attribute_name)}:</strong> ${this.escapeHtml(c.reasoning)}</div>
+              <div style="font-size: 0.75rem; color: #64748b;">${this.escapeHtml(c.source_clause || '')} (Page ${c.source_page || 1})</div>
             </div>
           </div>
         `).join('')
-      : '<p style="color: var(--text-muted); font-size: 0.85rem;">None evaluated.</p>';
+      : '<p style="color: #64748b; font-size: 0.85rem;">None evaluated.</p>';
 
     // Failed Conditions
     const failedHtml = a.conditions_failed && a.conditions_failed.length > 0
       ? a.conditions_failed.map(c => `
-          <div style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.875rem;">
-            <span style="color: #f87171; font-weight: bold;">✕</span>
+          <div style="display: flex; align-items: flex-start; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.85rem;">
+            <span style="color: #dc2626; font-weight: bold;">✕</span>
             <div>
-              <div style="color: #fca5a5;"><strong>${this.escapeHtml(c.attribute_name)}:</strong> ${this.escapeHtml(c.reasoning)}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">${this.escapeHtml(c.source_clause || '')} (Page ${c.source_page || 1})</div>
+              <div style="color: #991b1b;"><strong>${this.escapeHtml(c.attribute_name)}:</strong> ${this.escapeHtml(c.reasoning)}</div>
+              <div style="font-size: 0.75rem; color: #64748b;">${this.escapeHtml(c.source_clause || '')} (Page ${c.source_page || 1})</div>
             </div>
           </div>
         `).join('')
@@ -195,15 +214,15 @@ class EligibilityController {
     let questionsHtml = '';
     if (a.targeted_followup_questions && a.targeted_followup_questions.length > 0) {
       questionsHtml = `
-        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-accent); border-radius: var(--radius-md); padding: 1.25rem; margin-top: 1.25rem;">
-          <h4 style="color: var(--accent-gold); font-size: 1rem; margin-bottom: 0.75rem;">
-            Answer Missing Questions to Finalize Eligibility:
+        <div style="background: #ffffff; border: 1px solid #fde68a; border-radius: 8px; padding: 1.25rem; margin-top: 1.25rem;">
+          <h4 style="color: #92400e; font-size: 0.95rem; margin-bottom: 0.75rem; font-weight: 700;">
+            Missing Criteria Needed to Finalize Eligibility:
           </h4>
           ${a.targeted_followup_questions.map(q => `
             <div class="form-group" style="margin-bottom: 0.85rem;">
-              <label class="form-label" style="color: #ffffff;">${this.escapeHtml(q.question)}</label>
+              <label class="form-label" style="color: #0c1e3d; font-size: 0.85rem;">${this.escapeHtml(q.question)}</label>
               ${this.renderInlineQuestionInput(q)}
-              <div style="font-size: 0.725rem; color: var(--text-muted); margin-top: 0.2rem;">Mandatory per ${this.escapeHtml(q.source_clause || 'Notification')}</div>
+              <div style="font-size: 0.725rem; color: #64748b; margin-top: 0.2rem;">Source: ${this.escapeHtml(q.source_clause || 'Notification')}</div>
             </div>
           `).join('')}
           <button class="btn btn-primary btn-sm" onclick="window.eligibility.runEvaluation()" style="margin-top: 0.5rem;">
@@ -214,38 +233,35 @@ class EligibilityController {
     }
 
     container.innerHTML = `
-      <div class="glass-card fade-in" style="margin-top: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
           <div>
-            <div class="scheme-dept">${this.escapeHtml(a.department)}</div>
-            <h3 style="color: #ffffff;">${this.escapeHtml(a.scheme_name)}</h3>
+            <div style="font-size: 0.75rem; font-weight: 700; color: #1366d9; text-transform: uppercase;">${this.escapeHtml(a.department)}</div>
+            <h3 style="color: #0c1e3d; font-size: 1.25rem; font-weight: 800; margin-top: 2px;">${this.escapeHtml(a.scheme_name)}</h3>
           </div>
-          <span class="badge ${bannerClass === 'potential_match' ? 'badge-verified' : (bannerClass === 'more_information_required' ? 'badge-pending' : 'badge-saffron')}">
-            ${this.escapeHtml(a.outcome)}
-          </span>
+          <span class="badge badge-info" style="font-weight: 700;">${this.escapeHtml(benefitStatus)}</span>
         </div>
 
-        <div class="outcome-banner ${bannerClass}">
-          <div style="font-size: 1.5rem; line-height: 1;">
-            ${bannerClass === 'potential_match' ? '🎉' : (bannerClass === 'more_information_required' ? '💡' : '🛑')}
-          </div>
+        <!-- 6-State Outcome Banner -->
+        <div style="${bannerStyle} border-radius: 8px; padding: 1.25rem; display: flex; align-items: flex-start; gap: 1rem;">
+          <div style="font-size: 2rem; line-height: 1;">${bannerIcon}</div>
           <div>
-            <div style="font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem;">${bannerTitle}</div>
-            <div style="font-size: 0.9rem; opacity: 0.95;">${this.escapeHtml(bannerDesc)}</div>
+            <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem;">${bannerTitle}</div>
+            <div style="font-size: 0.875rem; line-height: 1.5;">${this.escapeHtml(bannerDesc)}</div>
           </div>
         </div>
 
         ${benefitsHtml}
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.25rem;">
-          <div style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-            <h4 style="color: #34d399; font-size: 0.95rem; margin-bottom: 0.75rem;">Verified Criteria Satisfied</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 0.5rem;">
+          <div style="background: #ffffff; padding: 1.25rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <h4 style="color: #047857; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Verified Criteria Satisfied</h4>
             ${passedHtml}
           </div>
 
           ${failedHtml ? `
-            <div style="background: rgba(15, 23, 42, 0.5); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
-              <h4 style="color: #f87171; font-size: 0.95rem; margin-bottom: 0.75rem;">Disqualifying Legal Criteria</h4>
+            <div style="background: #ffffff; padding: 1.25rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <h4 style="color: #dc2626; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">Disqualifying Legal Criteria</h4>
               ${failedHtml}
             </div>
           ` : ''}
@@ -253,8 +269,9 @@ class EligibilityController {
 
         ${questionsHtml}
 
-        <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
-          * ${this.escapeHtml(a.disclaimer)}
+        <!-- Statutory Legal Disclaimer -->
+        <div style="margin-top: 1rem; font-size: 0.775rem; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 0.75rem; line-height: 1.5;">
+          <strong>* Statutory Disclaimer:</strong> ${this.escapeHtml(a.disclaimer || 'Eligibility evaluation indicates preliminary statutory match based on verified legal clauses and does not constitute sanction, guarantee, or approval by the sanctioning authority.')}
         </div>
       </div>
     `;
@@ -312,30 +329,50 @@ class EligibilityController {
     if (!container) return;
 
     container.innerHTML = `
-      <div class="glass-card fade-in" style="margin-top: 2rem;">
-        <h3 style="color: #ffffff; margin-bottom: 0.5rem;">Batch Eligibility Assessment Results</h3>
-        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-          Evaluated against <strong>${batch.total_evaluated}</strong> published Odisha schemes.
-          Matches: <strong style="color: #34d399;">${batch.eligible_count}</strong> |
-          More Info Needed: <strong style="color: #fbbf24;">${batch.more_info_count}</strong> |
-          Ineligible: <strong style="color: #f87171;">${batch.ineligible_count}</strong>
-        </p>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem;">
+          <h3 style="color: #0c1e3d; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.35rem;">Batch Eligibility Assessment Results</h3>
+          <p style="color: #64748b; font-size: 0.85rem;">
+            Evaluated against <strong>${batch.total_evaluated}</strong> published schemes.
+            Eligible: <strong style="color: #059669;">${batch.eligible_count}</strong> |
+            More Info Needed: <strong style="color: #d97706;">${batch.more_info_count}</strong> |
+            Ineligible: <strong style="color: #dc2626;">${batch.ineligible_count}</strong>
+          </p>
+        </div>
 
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-          ${batch.assessments.map(a => `
-            <div style="background: var(--bg-tertiary); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.25rem;">
-              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                <h4 style="color: #ffffff; font-size: 1.1rem;">${this.escapeHtml(a.scheme_name)}</h4>
-                <span class="badge ${a.outcome === 'potential_match' ? 'badge-verified' : (a.outcome === 'more_information_required' ? 'badge-pending' : 'badge-saffron')}">
-                  ${this.escapeHtml(a.outcome)}
-                </span>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          ${batch.assessments.map(a => {
+            const bStatus = a.benefit_status || 'STATUS_UNVERIFIED';
+            let badgeClass = 'badge-info';
+            if (bStatus === 'ELIGIBLE_AND_OPEN' || bStatus === 'ELIGIBLE_AND_CLAIMABLE') badgeClass = 'badge-success';
+            else if (bStatus === 'POTENTIALLY_ELIGIBLE') badgeClass = 'badge-warning';
+            else if (bStatus === 'INELIGIBLE') badgeClass = 'badge-danger';
+
+            return `
+              <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <div>
+                    <div style="font-size: 0.725rem; font-weight: 700; color: #1366d9; text-transform: uppercase;">${this.escapeHtml(a.department)}</div>
+                    <h4 style="color: #0c1e3d; font-size: 1.05rem; font-weight: 700; margin-top: 2px;">${this.escapeHtml(a.scheme_name)}</h4>
+                  </div>
+                  <span class="badge ${badgeClass}">${this.escapeHtml(bStatus)}</span>
+                </div>
+                <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.75rem; line-height: 1.5;">${this.escapeHtml(a.summary_reason)}</p>
+                <div style="display: flex; gap: 0.5rem;">
+                  <button class="btn btn-primary btn-sm" onclick="window.catalogue.openSchemeModal('${a.scheme_id}')">
+                    Inspect Statutory Clauses
+                  </button>
+                  <button class="btn btn-outline btn-sm" onclick="document.getElementById('eligibilitySchemeSelect').value='${a.scheme_id}'; window.eligibility.runEvaluation();">
+                    Detailed Assessment
+                  </button>
+                </div>
               </div>
-              <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">${this.escapeHtml(a.summary_reason)}</p>
-              <button class="btn btn-secondary btn-sm" onclick="window.catalogue.openSchemeModal('${a.scheme_id}')">
-                Inspect Rules & Citations
-              </button>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
+        </div>
+
+        <div style="font-size: 0.75rem; color: #64748b; line-height: 1.4; padding: 0.5rem 0;">
+          * Statutory Disclaimer: Evaluation indicates preliminary statutory eligibility based on verified legal clauses and does not guarantee sanction by the administrative authority.
         </div>
       </div>
     `;

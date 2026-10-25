@@ -28,6 +28,27 @@ class SchemeStatus(str, Enum):
     WITHDRAWN = "withdrawn"
 
 
+class ApplicationStatus(str, Enum):
+    UPCOMING = "upcoming"
+    OPEN = "open"
+    CLOSING_SOON = "closing_soon"
+    CLOSED = "closed"
+    SUSPENDED = "suspended"
+    DISCONTINUED = "discontinued"
+    UNKNOWN = "unknown"
+    VERIFICATION_REQUIRED = "verification_required"
+
+
+class ClaimStatus(str, Enum):
+    CLAIMS_OPEN = "claims_open"
+    CLAIMS_CLOSING_SOON = "claims_closing_soon"
+    CLAIMS_CLOSED = "claims_closed"
+    ROLLING_CLAIMS = "rolling_claims"
+    NOT_APPLICABLE = "not_applicable"
+    UNKNOWN = "unknown"
+    VERIFICATION_REQUIRED = "verification_required"
+
+
 class IngestionJobStatus(str, Enum):
     STARTED = "started"
     FETCHED = "fetched"
@@ -35,6 +56,15 @@ class IngestionJobStatus(str, Enum):
     NORMALIZED = "normalized"
     FAILED = "failed"
     COMPLETED = "completed"
+
+
+class UpdateEventType(str, Enum):
+    NEW_SCHEME = "new_scheme"
+    AMENDMENT = "amendment"
+    DEADLINE_EXTENSION = "deadline_extension"
+    WINDOW_OPEN = "application_window_open"
+    POLICY_GAZETTE = "policy_gazette"
+    BANK_PRODUCT = "bank_product"
 
 
 # ==============================================================================
@@ -106,6 +136,24 @@ class CandidateSchemeRecord(BaseModel):
     version: str = "1.0"
     effective_date: Optional[str] = None
     expiry_date: Optional[str] = None
+    category: str = "finance_credit"
+    organization: Optional[str] = None
+    scheme_type: str = "government_scheme"
+    interest_rate_published: Optional[str] = None
+    max_loan_limit: Optional[str] = None
+    collateral_requirement: Optional[str] = None
+    application_status: ApplicationStatus = ApplicationStatus.UNKNOWN
+    claim_status: ClaimStatus = ClaimStatus.UNKNOWN
+    application_start_date: Optional[datetime] = None
+    application_deadline: Optional[datetime] = None
+    claim_deadline: Optional[datetime] = None
+    is_rolling: bool = False
+    financial_year_cycle: Optional[str] = None
+    official_application_url: Optional[str] = None
+    official_guidelines_url: Optional[str] = None
+    official_notification_url: Optional[str] = None
+    confidence_score: float = 1.0
+    status_history: List[Dict[str, Any]] = Field(default_factory=list)
     candidate_eligibility: List[CandidateEligibilityCondition] = Field(default_factory=list)
     candidate_benefits: List[CandidateBenefit] = Field(default_factory=list)
     required_documents: List[str] = Field(default_factory=list)
@@ -145,6 +193,23 @@ class PublishedSchemeRecord(BaseModel):
     version: str
     effective_date: Optional[str]
     expiry_date: Optional[str]
+    category: str = "finance_credit"
+    organization: Optional[str] = None
+    scheme_type: str = "government_scheme"
+    interest_rate_published: Optional[str] = None
+    max_loan_limit: Optional[str] = None
+    collateral_requirement: Optional[str] = None
+    application_status: ApplicationStatus = ApplicationStatus.UNKNOWN
+    claim_status: ClaimStatus = ClaimStatus.UNKNOWN
+    application_start_date: Optional[datetime] = None
+    application_deadline: Optional[datetime] = None
+    claim_deadline: Optional[datetime] = None
+    is_rolling: bool = False
+    financial_year_cycle: Optional[str] = None
+    official_application_url: Optional[str] = None
+    official_guidelines_url: Optional[str] = None
+    official_notification_url: Optional[str] = None
+    confidence_score: float = 1.0
     eligibility_rules: List[CandidateEligibilityCondition]
     benefits: List[CandidateBenefit]
     required_documents: List[str]
@@ -154,6 +219,27 @@ class PublishedSchemeRecord(BaseModel):
     last_verified_at: datetime
     verified_by_reviewer: str
     verification_notes: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class UpdateEventSchema(BaseModel):
+    id: str = Field(default_factory=lambda: f"UPD-{uuid4().hex[:8].upper()}")
+    title: str
+    summary: str
+    update_type: str = "new_scheme"
+    source_name: str
+    source_type: str = "odisha_govt"
+    source_url: str
+    official_document_url: Optional[str] = None
+    publication_date: Optional[datetime] = None
+    effective_date: Optional[str] = None
+    detected_at: datetime = Field(default_factory=datetime.utcnow)
+    scheme_id: Optional[str] = None
+    category: str = "finance_credit"
+    is_verified: bool = True
+    verification_notes: Optional[str] = None
+    raw_evidence: Dict[str, Any] = Field(default_factory=dict)
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -227,6 +313,26 @@ class SchemeModel(Base):
     version = Column(String(16), default="1.0")
     effective_date = Column(String(32), nullable=True)
     expiry_date = Column(String(32), nullable=True)
+    category = Column(String(64), default="finance_credit", index=True)
+    organization = Column(String(256), nullable=True, index=True)
+    scheme_type = Column(String(64), default="government_scheme", index=True)
+    interest_rate_published = Column(String(128), nullable=True)
+    max_loan_limit = Column(String(128), nullable=True)
+    collateral_requirement = Column(String(256), nullable=True)
+    application_status = Column(String(32), default=ApplicationStatus.UNKNOWN.value, index=True)
+    claim_status = Column(String(32), default=ClaimStatus.UNKNOWN.value, index=True)
+    application_start_date = Column(DateTime, nullable=True)
+    application_deadline = Column(DateTime, nullable=True, index=True)
+    claim_deadline = Column(DateTime, nullable=True, index=True)
+    is_rolling = Column(Boolean, default=False)
+    financial_year_cycle = Column(String(32), nullable=True)
+    last_verified_at = Column(DateTime, default=datetime.utcnow)
+    next_verification_at = Column(DateTime, nullable=True)
+    official_application_url = Column(Text, nullable=True)
+    official_guidelines_url = Column(Text, nullable=True)
+    official_notification_url = Column(Text, nullable=True)
+    confidence_score = Column(Float, default=1.0)
+    status_history = Column(JSON, default=list)
     required_documents = Column(JSON, default=list)
     application_process = Column(Text, nullable=True)
     official_portal_url = Column(Text, nullable=True)
@@ -241,6 +347,8 @@ class SchemeModel(Base):
     eligibility_rules = relationship("EligibilityRuleModel", back_populates="scheme", cascade="all, delete-orphan")
     benefits = relationship("BenefitRuleModel", back_populates="scheme", cascade="all, delete-orphan")
     review_events = relationship("ReviewEventModel", back_populates="scheme", cascade="all, delete-orphan")
+    deadline_alerts = relationship("SchemeDeadlineAlertModel", back_populates="scheme", cascade="all, delete-orphan")
+    update_events = relationship("UpdateEventModel", back_populates="scheme", cascade="all, delete-orphan")
 
 
 class EligibilityRuleModel(Base):
@@ -362,4 +470,76 @@ class ApplicationTrackingModel(Base):
 
     user = relationship("UserProfileModel", back_populates="applications")
     scheme = relationship("SchemeModel")
+
+
+class DiscoveredSourceRegistryModel(Base):
+    __tablename__ = "discovered_sources"
+
+    id = Column(String(64), primary_key=True)
+    name = Column(String(256), nullable=False)
+    source_type = Column(String(64), nullable=False, index=True)  # central_govt, odisha_govt, bank_psu, bank_private, dfi
+    base_url = Column(Text, nullable=False)
+    discovery_endpoint = Column(Text, nullable=False)
+    discovery_method = Column(String(64), default="html_directory")  # html_directory, sitemap, rss_atom, api
+    polling_frequency_hours = Column(Integer, default=24)
+    last_checked_at = Column(DateTime, nullable=True)
+    last_successful_at = Column(DateTime, nullable=True)
+    health_status = Column(String(32), default="healthy", index=True)  # healthy, failing, unreachable
+    error_count = Column(Integer, default=0)
+    last_error_message = Column(Text, nullable=True)
+    is_enabled = Column(Boolean, default=True, index=True)
+    headers_config = Column(JSON, default=dict)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class SchemeDeadlineAlertModel(Base):
+    __tablename__ = "scheme_deadline_alerts"
+
+    id = Column(String(64), primary_key=True)
+    scheme_id = Column(String(64), ForeignKey("schemes.id", ondelete="CASCADE"), nullable=False, index=True)
+    alert_type = Column(String(64), nullable=False, index=True)  # application_deadline_30d, 14d, 7d, 3d, 1d, etc.
+    target_date = Column(DateTime, nullable=True)
+    days_remaining = Column(Integer, nullable=True)
+    message = Column(Text, nullable=False)
+    is_dismissed = Column(Boolean, default=False, index=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    scheme = relationship("SchemeModel", back_populates="deadline_alerts")
+
+
+class DiscoveryAuditLogModel(Base):
+    __tablename__ = "discovery_audit_logs"
+
+    id = Column(String(64), primary_key=True)
+    scheme_id = Column(String(64), ForeignKey("schemes.id", ondelete="SET NULL"), nullable=True, index=True)
+    source_id = Column(String(64), nullable=True, index=True)
+    event_type = Column(String(64), nullable=False, index=True)
+    previous_state = Column(JSON, default=dict)
+    new_state = Column(JSON, default=dict)
+    supporting_evidence = Column(Text, nullable=True)
+    source_clause_or_url = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class UpdateEventModel(Base):
+    __tablename__ = "update_events"
+
+    id = Column(String(64), primary_key=True)
+    title = Column(String(512), nullable=False, index=True)
+    summary = Column(Text, nullable=False)
+    update_type = Column(String(64), nullable=False, index=True)  # 'new_scheme', 'amendment', 'deadline_extension', 'application_window_open', 'policy_gazette', 'bank_product'
+    source_name = Column(String(256), nullable=False)
+    source_type = Column(String(64), nullable=False, index=True)  # 'odisha_govt', 'central_govt', 'bank_psu', 'bank_private', 'dfi'
+    source_url = Column(Text, nullable=False)
+    official_document_url = Column(Text, nullable=True)
+    publication_date = Column(DateTime, nullable=True, index=True)
+    effective_date = Column(String(32), nullable=True)
+    detected_at = Column(DateTime, default=datetime.utcnow, index=True)
+    scheme_id = Column(String(64), ForeignKey("schemes.id", ondelete="SET NULL"), nullable=True, index=True)
+    category = Column(String(64), default="finance_credit", index=True)
+    is_verified = Column(Boolean, default=True, index=True)
+    verification_notes = Column(Text, nullable=True)
+    raw_evidence = Column(JSON, default=dict)
+
+    scheme = relationship("SchemeModel", back_populates="update_events")
 

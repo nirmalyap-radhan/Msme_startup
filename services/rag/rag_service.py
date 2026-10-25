@@ -45,7 +45,7 @@ class RAGService:
                     target_language="en-IN"
                 )
                 if trans_res.translated_text:
-                    retrieval_query = f"{query} {trans_res.translated_text}"
+                    retrieval_query = trans_res.translated_text
             except Exception:
                 pass  # Fall back to raw query
 
@@ -82,12 +82,39 @@ class RAGService:
                 audio_base64=audio_b64,
             )
 
-        # 4. Construct Grounded LLM Prompt
+        # 4. Inject Structured Lifecycle & Deadline Context (Requirement 9)
+        deadline_keywords = ["deadline", "closing", "last date", "due date", "open today", "accepting", "available", "when"]
+        structured_lifecycle_context = ""
+        if any(w in query.lower() for w in deadline_keywords):
+            session = self.retriever._get_session()
+            from services.scheme_ingestion.models import SchemeModel, SchemeStatus
+            active_schemes = session.query(SchemeModel).filter(
+                SchemeModel.status == SchemeStatus.PUBLISHED.value
+            ).all()
+            if active_schemes:
+                lines = ["OFFICIAL STRUCTURED SCHEME LIFECYCLE & DEADLINE FACTS:"]
+                for s in active_schemes:
+                    dl_str = s.application_deadline.strftime("%d-%b-%Y") if s.application_deadline else ("Rolling (No fixed deadline)" if s.is_rolling else "Not specified in gazette")
+                    claim_dl_str = s.claim_deadline.strftime("%d-%b-%Y") if s.claim_deadline else "N/A"
+                    lines.append(
+                        f"- Scheme: {s.official_name} | Application Status: {s.application_status or 'unknown'} "
+                        f"| Claim Status: {s.claim_status or 'unknown'} | Application Deadline: {dl_str} | Claim Deadline: {claim_dl_str}"
+                    )
+                structured_lifecycle_context = "\n".join(lines) + "\n\n"
+
         evidence_block = format_evidence_context(passages)
+        lang_instruction = ""
+        if target_lang == "od":
+            lang_instruction = "CRITICAL INSTRUCTION: You MUST write your entire response in ODIA language (ଓଡ଼ିଆ ଭାଷାରେ ଲେଖନ୍ତୁ) so local entrepreneurs can read it directly.\n\n"
+        elif target_lang == "hi":
+            lang_instruction = "CRITICAL INSTRUCTION: You MUST write your entire response in HINDI language (हिन्दी में उत्तर दें).\n\n"
+
         user_message_content = (
             f"CITIZEN QUESTION: {query}\n\n"
+            f"{lang_instruction}"
+            f"{structured_lifecycle_context}"
             f"VERIFIED EVIDENCE PASSAGES:\n{evidence_block}\n\n"
-            f"Provide an accurate, grounded answer citing the exact passages above."
+            f"Provide an accurate, grounded answer citing the exact passages and structured statuses above. Never invent dates."
         )
 
         messages = [

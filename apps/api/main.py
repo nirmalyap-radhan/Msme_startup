@@ -12,11 +12,14 @@ from fastapi.staticfiles import StaticFiles
 from apps.api.config import api_config
 from apps.api.routers.admin import router as admin_router
 from apps.api.routers.applications import router as applications_router
+from apps.api.routers.discovery import router as discovery_router
 from apps.api.routers.eligibility import router as eligibility_router
 from apps.api.routers.health import router as health_router
 from apps.api.routers.profiles import router as profiles_router
 from apps.api.routers.rag import router as rag_router
 from apps.api.routers.schemes import router as schemes_router
+from apps.api.routers.updates import router as updates_router
+from services.deadline_monitoring.scheduler import global_scheduler
 
 app = FastAPI(
     title=api_config.app_name,
@@ -26,6 +29,17 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_url="/openapi.json",
 )
+
+
+@app.on_event("startup")
+def on_app_startup():
+    global_scheduler.start()
+
+
+@app.on_event("shutdown")
+def on_app_shutdown():
+    global_scheduler.stop()
+
 
 # CORS Configuration
 app.add_middleware(
@@ -58,6 +72,8 @@ app.include_router(profiles_router, prefix=api_config.api_prefix)
 app.include_router(applications_router, prefix=api_config.api_prefix)
 app.include_router(rag_router, prefix=api_config.api_prefix)
 app.include_router(admin_router, prefix=api_config.api_prefix)
+app.include_router(discovery_router, prefix=api_config.api_prefix)
+app.include_router(updates_router, prefix=api_config.api_prefix)
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

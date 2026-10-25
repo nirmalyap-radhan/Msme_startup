@@ -67,11 +67,35 @@ class ApiClient {
     if (params.search) query.append('search', params.search);
     if (params.sector) query.append('sector', params.sector);
     if (params.enterprise_class) query.append('enterprise_class', params.enterprise_class);
+    if (params.category) query.append('category', params.category);
+    if (params.jurisdiction) query.append('jurisdiction', params.jurisdiction);
+    if (params.scheme_type) query.append('scheme_type', params.scheme_type);
+    if (params.application_status) query.append('application_status', params.application_status);
+    if (params.claim_status) query.append('claim_status', params.claim_status);
+    if (params.organization) query.append('organization', params.organization);
     if (params.page) query.append('page', params.page);
     if (params.limit) query.append('limit', params.limit);
 
     const qs = query.toString();
     return this.request(`/schemes${qs ? '?' + qs : ''}`);
+  }
+
+  async getPaginatedSchemes(params = {}) {
+    const query = new URLSearchParams();
+    if (params.search) query.append('search', params.search);
+    if (params.sector) query.append('sector', params.sector);
+    if (params.enterprise_class) query.append('enterprise_class', params.enterprise_class);
+    if (params.category) query.append('category', params.category);
+    if (params.jurisdiction) query.append('jurisdiction', params.jurisdiction);
+    if (params.scheme_type) query.append('scheme_type', params.scheme_type);
+    if (params.application_status) query.append('application_status', params.application_status);
+    if (params.claim_status) query.append('claim_status', params.claim_status);
+    if (params.organization) query.append('organization', params.organization);
+    if (params.page) query.append('page', params.page);
+    if (params.limit) query.append('limit', params.limit);
+
+    const qs = query.toString();
+    return this.request(`/schemes/paginated${qs ? '?' + qs : ''}`);
   }
 
   async getSchemeDetails(schemeId) {
@@ -80,6 +104,24 @@ class ApiClient {
 
   async getSchemeChecklist(schemeId) {
     return this.request(`/schemes/${encodeURIComponent(schemeId)}/checklist`);
+  }
+
+  // Official Announcements & Updates
+  async getUpdates(params = {}) {
+    const query = new URLSearchParams();
+    if (params.search) query.append('search', params.search);
+    if (params.update_type) query.append('update_type', params.update_type);
+    if (params.source_type) query.append('source_type', params.source_type);
+    if (params.category) query.append('category', params.category);
+    if (params.page) query.append('page', params.page);
+    if (params.limit) query.append('limit', params.limit);
+
+    const qs = query.toString();
+    return this.request(`/updates${qs ? '?' + qs : ''}`);
+  }
+
+  async getUpdateDetails(updateId) {
+    return this.request(`/updates/${encodeURIComponent(updateId)}`);
   }
 
   // Deterministic Eligibility Evaluation
@@ -163,6 +205,49 @@ class ApiClient {
     return this.request(`/applications/${encodeURIComponent(trackingId)}`, {
       method: 'PUT',
       body: JSON.stringify(updateData),
+    });
+  }
+
+  // Discovery, Deadlines & Administrative Monitoring
+  async getDiscoverySources(enabledOnly = false) {
+    return this.request(`/discovery/sources?enabled_only=${enabledOnly}`);
+  }
+
+  async pollSource(sourceId) {
+    return this.request(`/discovery/sources/${encodeURIComponent(sourceId)}/poll`, { method: 'POST' });
+  }
+
+  async runAllDiscovery() {
+    return this.request('/discovery/run', { method: 'POST' });
+  }
+
+  async getDeadlineAlerts(limit = 50) {
+    return this.request(`/discovery/alerts?limit=${limit}`);
+  }
+
+  async dismissAlert(alertId) {
+    return this.request(`/discovery/alerts/${encodeURIComponent(alertId)}/dismiss`, { method: 'POST' });
+  }
+
+  async triggerDeadlineRecheck() {
+    return this.request('/discovery/deadlines/recheck', { method: 'POST' });
+  }
+
+  async getAdminDashboardStats() {
+    return this.request('/admin/dashboard/stats');
+  }
+
+  async rejectScheme(schemeId, reason) {
+    return this.request(`/admin/schemes/${encodeURIComponent(schemeId)}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
+    });
+  }
+
+  async updateSchemeLifecycle(schemeId, updates) {
+    return this.request(`/admin/schemes/${encodeURIComponent(schemeId)}/update-lifecycle`, {
+      method: 'POST',
+      body: JSON.stringify(updates),
     });
   }
 }

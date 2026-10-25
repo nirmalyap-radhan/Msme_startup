@@ -28,6 +28,8 @@ from services.scheme_ingestion.models import (
     SchemeStatus,
     SourceDocumentModel,
     SourceDocumentSchema,
+    UpdateEventModel,
+    UpdateEventSchema,
 )
 
 
@@ -53,8 +55,26 @@ class SchemeStorageRepository:
         self.create_tables()
 
     def create_tables(self):
-        """Creates database schema if not present."""
+        """Creates database schema if not present and adds backward-compatible columns."""
         Base.metadata.create_all(bind=self.engine)
+        if self.db_url.startswith("sqlite"):
+            try:
+                with self.engine.connect() as conn:
+                    from sqlalchemy import text
+                    cursor = conn.execute(text("PRAGMA table_info(schemes)"))
+                    existing_cols = {row[1] for row in cursor.fetchall()}
+                    cols_to_add = [
+                        ("scheme_type", "VARCHAR(64) DEFAULT 'government_scheme'"),
+                        ("interest_rate_published", "VARCHAR(128)"),
+                        ("max_loan_limit", "VARCHAR(128)"),
+                        ("collateral_requirement", "VARCHAR(256)"),
+                    ]
+                    for col_name, col_type in cols_to_add:
+                        if col_name not in existing_cols:
+                            conn.execute(text(f"ALTER TABLE schemes ADD COLUMN {col_name} {col_type}"))
+                    conn.commit()
+            except Exception:
+                pass
 
     def get_session(self) -> Session:
         return self.SessionLocal()
@@ -135,6 +155,22 @@ class SchemeStorageRepository:
                 version=scheme.version,
                 effective_date=scheme.effective_date,
                 expiry_date=scheme.expiry_date,
+                category=getattr(scheme, "category", "finance_credit") or "finance_credit",
+                organization=getattr(scheme, "organization", None),
+                scheme_type=getattr(scheme, "scheme_type", "government_scheme") or "government_scheme",
+                interest_rate_published=getattr(scheme, "interest_rate_published", None),
+                max_loan_limit=getattr(scheme, "max_loan_limit", None),
+                collateral_requirement=getattr(scheme, "collateral_requirement", None),
+                application_status=scheme.application_status.value if hasattr(scheme.application_status, "value") else str(scheme.application_status),
+                claim_status=scheme.claim_status.value if hasattr(scheme.claim_status, "value") else str(scheme.claim_status),
+                application_start_date=scheme.application_start_date,
+                application_deadline=scheme.application_deadline,
+                claim_deadline=scheme.claim_deadline,
+                is_rolling=scheme.is_rolling,
+                financial_year_cycle=scheme.financial_year_cycle,
+                official_application_url=scheme.official_application_url,
+                official_guidelines_url=scheme.official_guidelines_url,
+                official_notification_url=scheme.official_notification_url,
                 required_documents=scheme.required_documents,
                 application_process=scheme.application_process,
                 official_portal_url=scheme.official_portal_url,
@@ -275,6 +311,71 @@ class SchemeStorageRepository:
                 verified_fields=verified_fields,
                 reviewed_at=datetime.utcnow(),
             )
+            session.commit()
+            session.refresh(scheme)
+            return scheme
+
+    def reject_candidate_scheme(
+        self,
+        scheme_id: str,
+        reviewer_id: str,
+        reviewer_name: str,
+        notes: str
+    ) -> SchemeModel:
+        with self.get_session() as session:
+            scheme = session.query(SchemeModel).filter(SchemeModel.id == scheme_id).first()
+            if not scheme:
+                raise ValueError(f"Scheme not found: {scheme_id}")
+
+            scheme.status = SchemeStatus.WITHDRAWN.value
+            review_event = ReviewEventModel(
+                id=ReviewEventSchema(scheme_id=scheme_id, reviewer_id=reviewer_id, reviewer_name=reviewer_name, action="REJECT", notes=notes).review_id,
+                scheme_id=scheme_id,
+                reviewer_id=reviewer_id,
+                reviewer_name=reviewer_name,
+                action="REJECT",
+                notes=notes,
+                verified_fields={},
+                reviewed_at=datetime.utcnow(),
+            )
+            session.add(review_event)
+            session.commit()
+            session.refresh(scheme)
+            return scheme
+
+    def update_scheme_lifecycle(
+        self,
+        scheme_id: str,
+        updates: Dict[str, Any],
+        reviewer_id: str,
+        reviewer_name: str,
+    ) -> SchemeModel:
+        with self.get_session() as session:
+            scheme = session.query(SchemeModel).filter(SchemeModel.id == scheme_id).first()
+            if not scheme:
+                raise ValueError(f"Scheme not found: {scheme_id}")
+
+            for k, v in updates.items():
+                if hasattr(scheme, k) and v is not None:
+                    setattr(scheme, k, v)
+
+            scheme.last_verified_at = datetime.utcnow()
+            review_event = ReviewEventModel(
+                id=ReviewEventSchema(
+                    scheme_id=scheme_id,
+                    reviewer_id=reviewer_id,
+                    reviewer_name=reviewer_name,
+                    action="UPDATE_LIFECYCLE",
+                    notes=updates.get("notes", "Lifecycle and deadline updated by officer"),
+                ).review_id,
+                scheme_id=scheme_id,
+                reviewer_id=reviewer_id,
+                reviewer_name=reviewer_name,
+                action="UPDATE_LIFECYCLE",
+                notes=updates.get("notes", "Lifecycle and deadline updated by officer"),
+                verified_fields=updates,
+                reviewed_at=datetime.utcnow(),
+            )
             session.add(review_event)
             session.commit()
             session.refresh(scheme)
@@ -308,3 +409,84 @@ class SchemeStorageRepository:
                 )
                 session.add(model)
             session.commit()
+
+    # --------------------------------------------------------------------------
+    # Official Updates & Announcements Tracking
+    # --------------------------------------------------------------------------
+
+    def save_update_event(self, event_schema: UpdateEventSchema) -> UpdateEventModel:
+        with self.get_session() as session:
+            existing = session.query(UpdateEventModel).filter(
+                (UpdateEventModel.id == event_schema.id) |
+                ((UpdateEventModel.title == event_schema.title) & (UpdateEventModel.source_url == event_schema.source_url))
+            ).first()
+            if existing:
+                existing.summary = event_schema.summary
+                existing.update_type = event_schema.update_type
+                existing.source_name = event_schema.source_name
+                existing.source_type = event_schema.source_type
+                existing.official_document_url = event_schema.official_document_url
+                existing.publication_date = event_schema.publication_date
+                existing.effective_date = event_schema.effective_date
+                existing.category = event_schema.category
+                existing.scheme_id = event_schema.scheme_id
+                session.commit()
+                session.refresh(existing)
+                return existing
+
+            model = UpdateEventModel(
+                id=event_schema.id,
+                title=event_schema.title,
+                summary=event_schema.summary,
+                update_type=event_schema.update_type,
+                source_name=event_schema.source_name,
+                source_type=event_schema.source_type,
+                source_url=event_schema.source_url,
+                official_document_url=event_schema.official_document_url,
+                publication_date=event_schema.publication_date,
+                effective_date=event_schema.effective_date,
+                detected_at=event_schema.detected_at,
+                scheme_id=event_schema.scheme_id,
+                category=event_schema.category,
+                is_verified=event_schema.is_verified,
+                verification_notes=event_schema.verification_notes,
+                raw_evidence=event_schema.raw_evidence,
+            )
+            session.add(model)
+            session.commit()
+            session.refresh(model)
+            return model
+
+    def list_update_events(
+        self,
+        search: Optional[str] = None,
+        update_type: Optional[str] = None,
+        source_type: Optional[str] = None,
+        category: Optional[str] = None,
+        page: int = 1,
+        limit: int = 20,
+    ):
+        with self.get_session() as session:
+            query = session.query(UpdateEventModel).filter(UpdateEventModel.is_verified == True)
+            if search:
+                term = f"%{search.strip()}%"
+                query = query.filter(
+                    (UpdateEventModel.title.ilike(term)) | (UpdateEventModel.summary.ilike(term))
+                )
+            if update_type:
+                query = query.filter(UpdateEventModel.update_type == update_type)
+            if source_type:
+                query = query.filter(UpdateEventModel.source_type == source_type)
+            if category:
+                query = query.filter(UpdateEventModel.category == category)
+
+            total = query.count()
+            items = query.order_by(
+                UpdateEventModel.publication_date.desc().nullslast(),
+                UpdateEventModel.detected_at.desc()
+            ).offset((page - 1) * limit).limit(limit).all()
+            return items, total
+
+    def get_update_event(self, update_id: str) -> Optional[UpdateEventModel]:
+        with self.get_session() as session:
+            return session.query(UpdateEventModel).filter(UpdateEventModel.id == update_id).first()

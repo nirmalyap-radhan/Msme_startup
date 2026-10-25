@@ -144,3 +144,124 @@ class SchemeReviewWorkflow:
             "verified_by_reviewer": updated_scheme.verified_by_reviewer,
             "verification_notes": updated_scheme.verification_notes,
         }
+
+    def reject_scheme(
+        self,
+        scheme_id: str,
+        reviewer_id: str,
+        reviewer_name: str,
+        reason: str
+    ) -> Dict[str, Any]:
+        """Rejects an irrelevant or unverified document with audit trail."""
+        if not reason or len(reason.strip()) < 5:
+            raise ReviewError("A rejection reason of at least 5 characters is required.")
+
+        updated = self.repository.reject_candidate_scheme(
+            scheme_id=scheme_id,
+            reviewer_id=reviewer_id,
+            reviewer_name=reviewer_name,
+            notes=reason,
+        )
+        return {
+            "scheme_id": updated.id,
+            "official_name": updated.official_name,
+            "status": updated.status,
+            "rejected_by": reviewer_name,
+            "rejection_reason": reason,
+        }
+
+    def update_scheme_lifecycle(
+        self,
+        scheme_id: str,
+        updates: Dict[str, Any],
+        reviewer_id: str,
+        reviewer_name: str,
+    ) -> Dict[str, Any]:
+        """Updates deadlines, rolling status, or URLs with reviewer audit trail."""
+        updated = self.repository.update_scheme_lifecycle(
+            scheme_id=scheme_id,
+            updates=updates,
+            reviewer_id=reviewer_id,
+            reviewer_name=reviewer_name,
+        )
+        return {
+            "scheme_id": updated.id,
+            "official_name": updated.official_name,
+            "application_status": updated.application_status,
+            "claim_status": updated.claim_status,
+            "application_deadline": updated.application_deadline.isoformat() if updated.application_deadline else None,
+            "claim_deadline": updated.claim_deadline.isoformat() if updated.claim_deadline else None,
+            "is_rolling": updated.is_rolling,
+            "last_verified_at": updated.last_verified_at.isoformat() if updated.last_verified_at else None,
+        }
+
+    def get_monitoring_dashboard_stats(self) -> Dict[str, Any]:
+        """Computes comprehensive scheme monitoring statistics for the admin dashboard."""
+        with self.repository.get_session() as session:
+            from services.scheme_ingestion.models import (
+                DiscoveredSourceRegistryModel,
+                IngestionJobModel,
+                SchemeDeadlineAlertModel,
+                SchemeModel,
+                SchemeStatus,
+            )
+
+            total_discovered = session.query(SchemeModel).count()
+            total_verified = session.query(SchemeModel).filter(SchemeModel.status == SchemeStatus.PUBLISHED.value).count()
+            awaiting_review = session.query(SchemeModel).filter(SchemeModel.status.in_([SchemeStatus.EXTRACTED.value, SchemeStatus.PENDING_REVIEW.value])).count()
+            open_applications = session.query(SchemeModel).filter(
+                SchemeModel.status == SchemeStatus.PUBLISHED.value,
+                SchemeModel.application_status == "open"
+            ).count()
+            closing_soon = session.query(SchemeModel).filter(
+                SchemeModel.status == SchemeStatus.PUBLISHED.value,
+                SchemeModel.application_status == "closing_soon"
+            ).count()
+            claims_accepting = session.query(SchemeModel).filter(
+                SchemeModel.status == SchemeStatus.PUBLISHED.value,
+                SchemeModel.claim_status.in_(["claims_open", "rolling_claims"])
+            ).count()
+            closed_or_discontinued = session.query(SchemeModel).filter(
+                SchemeModel.application_status.in_(["closed", "discontinued", "suspended"])
+            ).count()
+            unknown_availability = session.query(SchemeModel).filter(
+                SchemeModel.application_status.in_(["unknown", "verification_required"])
+            ).count()
+
+            active_alerts_count = session.query(SchemeDeadlineAlertModel).filter(
+                SchemeDeadlineAlertModel.is_dismissed == False
+            ).count()
+
+            failed_jobs_count = session.query(IngestionJobModel).filter(
+                IngestionJobModel.status == "failed"
+            ).count()
+
+            failed_sources_count = session.query(DiscoveredSourceRegistryModel).filter(
+                DiscoveredSourceRegistryModel.health_status != "healthy"
+            ).count()
+
+            sources = session.query(DiscoveredSourceRegistryModel).all()
+            sync_per_source = [
+                {
+                    "source_id": s.id,
+                    "source_name": s.name,
+                    "last_successful_at": s.last_successful_at.isoformat() if s.last_successful_at else None,
+                    "health_status": s.health_status,
+                }
+                for s in sources
+            ]
+
+            return {
+                "total_schemes_discovered": total_discovered,
+                "total_verified_schemes": total_verified,
+                "currently_open_applications": open_applications,
+                "schemes_accepting_claims": claims_accepting,
+                "deadlines_approaching": closing_soon,
+                "awaiting_review_count": awaiting_review,
+                "closed_or_discontinued_count": closed_or_discontinued,
+                "schemes_with_unknown_availability": unknown_availability,
+                "active_deadline_alerts": active_alerts_count,
+                "failed_ingestion_jobs": failed_jobs_count,
+                "failed_source_checks": failed_sources_count,
+                "last_successful_sync_per_source": sync_per_source,
+            }
