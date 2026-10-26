@@ -287,9 +287,13 @@
             </label>
             <select id="filterBusinessType" class="search-select-control">
               <option value="">Select business type</option>
-              <option value="micro">Micro Enterprise (&lt; ₹1 Cr)</option>
-              <option value="small">Small Enterprise (&lt; ₹10 Cr)</option>
-              <option value="medium">Medium Enterprise (&lt; ₹50 Cr)</option>
+              <option value="nano_sub50k">Nano Enterprise (< ₹50,000 / PM SVANidhi)</option>
+              <option value="ultra_micro">Ultra-Micro / Cottage (₹50,000 – ₹5 Lakh)</option>
+              <option value="tiny">Tiny Enterprise (₹5 Lakh – ₹25 Lakh)</option>
+              <option value="micro">Micro Enterprise (₹25 Lakh – ₹1 Cr)</option>
+              <option value="small">Small Enterprise (₹1 Cr – ₹10 Cr)</option>
+              <option value="medium">Medium Enterprise (₹10 Cr – ₹50 Cr)</option>
+              <option value="large">Large Enterprise (> ₹50 Cr)</option>
             </select>
           </div>
 
@@ -299,8 +303,32 @@
             </label>
             <select id="filterIndustrySector" class="search-select-control">
               <option value="">Select sector</option>
-              <option value="manufacturing">Manufacturing</option>
-              <option value="service">Service</option>
+              <optgroup label="Manufacturing">
+                <option value="manufacturing">Manufacturing &amp; Engineering</option>
+                <option value="food_processing">Agro &amp; Food Processing</option>
+              </optgroup>
+              <optgroup label="Services &amp; Commercial">
+                <option value="service">Commercial Services (General)</option>
+                <option value="it_services">IT, Software &amp; Digital Services</option>
+                <option value="hospitality">Hospitality, Hotels &amp; Tourism</option>
+                <option value="healthcare">Healthcare, Diagnostics &amp; Clinics</option>
+                <option value="logistics">Logistics, Transport &amp; Cold Storage</option>
+                <option value="retail_trade">Retail, Kirana &amp; Wholesale Trade</option>
+                <option value="food_services">Restaurants, Catering &amp; Food Carts</option>
+                <option value="education">Education &amp; Skill Development</option>
+                <option value="repair_services">Repair &amp; Maintenance Workshops</option>
+                <option value="automobile_services">Automobile &amp; EV Services</option>
+                <option value="handicrafts">Handicrafts &amp; Handloom Services</option>
+                <option value="construction_services">Construction, Electrical &amp; Civil Works</option>
+                <option value="professional_services">Professional &amp; Financial Services</option>
+                <option value="beauty_wellness">Beauty &amp; Wellness Services</option>
+                <option value="printing_media">Printing, Media &amp; Advertising</option>
+                <option value="renewable_services">Solar &amp; Renewable Energy Services</option>
+                <option value="agro_allied_services">Agri-allied, Dairy &amp; Poultry Services</option>
+              </optgroup>
+              <optgroup label="Custom">
+                <option value="other">Other / Custom Service</option>
+              </optgroup>
             </select>
           </div>
 
@@ -321,12 +349,41 @@
               <span class="icon">📍</span> Location
             </label>
             <select id="filterLocation" class="search-select-control">
-              <option value="Odisha">Odisha / All Districts</option>
-              <option value="Khordha">Khordha (Zone B)</option>
-              <option value="Cuttack">Cuttack (Zone B)</option>
-              <option value="Ganjam">Ganjam (Zone B)</option>
-              <option value="Sundargarh">Sundargarh (Zone A)</option>
-              <option value="Kalahandi">Kalahandi (Zone A)</option>
+              <option value="Odisha">Odisha / All 30 Districts</option>
+              <optgroup label="Zone A (Priority / Backward Districts)">
+                <option value="Angul">Angul (Zone A)</option>
+                <option value="Balangir">Balangir (Zone A)</option>
+                <option value="Bargarh">Bargarh (Zone A)</option>
+                <option value="Boudh">Boudh (Zone A)</option>
+                <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                <option value="Gajapati">Gajapati (Zone A)</option>
+                <option value="Kalahandi">Kalahandi (Zone A)</option>
+                <option value="Kandhamal">Kandhamal (Zone A)</option>
+                <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                <option value="Koraput">Koraput (Zone A)</option>
+                <option value="Malkangiri">Malkangiri (Zone A)</option>
+                <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                <option value="Nuapada">Nuapada (Zone A)</option>
+                <option value="Rayagada">Rayagada (Zone A)</option>
+                <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                <option value="Sundargarh">Sundargarh (Zone A)</option>
+              </optgroup>
+              <optgroup label="Zone B (Industrially Developing Districts)">
+                <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                <option value="Bhadrak">Bhadrak (Zone B)</option>
+                <option value="Cuttack">Cuttack (Zone B)</option>
+                <option value="Ganjam">Ganjam (Zone B)</option>
+                <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                <option value="Jajpur">Jajpur (Zone B)</option>
+                <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                <option value="Kendrapara">Kendrapara (Zone B)</option>
+                <option value="Khordha">Khordha (Bhubaneswar) (Zone B)</option>
+                <option value="Nayagarh">Nayagarh (Zone B)</option>
+                <option value="Puri">Puri (Zone B)</option>
+                <option value="Sambalpur">Sambalpur (Zone B)</option>
+              </optgroup>
             </select>
           </div>
 
@@ -769,18 +826,54 @@
                 <div class="form-group">
                   <label for="prof_class" class="form-label">Enterprise Class:</label>
                   <select id="prof_class" class="form-select">
-                    <option value="micro">Micro (Investment &lt; ₹1 Cr)</option>
+                    <option value="nano_sub50k">Nano (&lt; ₹50,000 / PM SVANidhi / SHG)</option>
+                    <option value="ultra_micro">Ultra-Micro / Cottage (₹50,000 – ₹5 Lakh)</option>
+                    <option value="tiny">Tiny Enterprise (₹5 Lakh – ₹25 Lakh)</option>
+                    <option value="micro" selected>Micro (Investment &lt; ₹1 Cr)</option>
                     <option value="small">Small (Investment &lt; ₹10 Cr)</option>
                     <option value="medium">Medium (Investment &lt; ₹50 Cr)</option>
+                    <option value="large">Large Enterprise (&gt; ₹50 Cr)</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="prof_sector" class="form-label">Sector:</label>
+                  <label for="prof_sector" class="form-label">Sector / Service Type:</label>
                   <select id="prof_sector" class="form-select">
-                    <option value="manufacturing">Manufacturing</option>
-                    <option value="service">Service</option>
+                    <optgroup label="Manufacturing">
+                      <option value="manufacturing" selected>Manufacturing</option>
+                      <option value="food_processing">Agro &amp; Food Processing</option>
+                    </optgroup>
+                    <optgroup label="Services &amp; Commercial">
+                      <option value="service">Commercial Services (General)</option>
+                      <option value="it_services">IT, Software &amp; ITeS / Digital</option>
+                      <option value="hospitality">Hospitality, Hotels, Homestays &amp; Tourism</option>
+                      <option value="healthcare">Healthcare, Diagnostics &amp; Pharmacies</option>
+                      <option value="logistics">Logistics, Transport, Warehousing &amp; Cold Storage</option>
+                      <option value="retail_trade">Retail, Kirana &amp; Wholesale Trade</option>
+                      <option value="food_services">Restaurants, Catering, Cloud Kitchens &amp; Food Carts</option>
+                      <option value="education">Education, Coaching &amp; Skill Development</option>
+                      <option value="repair_services">Repair, Workshop &amp; Maintenance</option>
+                      <option value="automobile_services">Automobile Garage &amp; EV Services</option>
+                      <option value="handicrafts">Handicrafts, Handloom &amp; Artisan Works</option>
+                      <option value="construction_services">Construction, Electrical, Plumbing &amp; Civil</option>
+                      <option value="professional_services">Professional, Accounting, Legal &amp; Consulting</option>
+                      <option value="beauty_wellness">Beauty, Salons, Wellness &amp; Fitness</option>
+                      <option value="printing_media">Printing, Media, Advertising &amp; Studio</option>
+                      <option value="renewable_services">Solar &amp; Renewable Energy Services</option>
+                      <option value="agro_allied_services">Agri-allied, Dairy, Poultry &amp; Farm Services</option>
+                    </optgroup>
+                    <optgroup label="Custom">
+                      <option value="other">✍️ Other / Write Your Own...</option>
+                    </optgroup>
                   </select>
                 </div>
+              </div>
+
+              <!-- Custom Sector input container (visible when 'other' is selected) -->
+              <div class="form-group" id="prof_sector_custom_group" style="display: none; margin-top: -0.25rem; margin-bottom: 1rem;">
+                <label for="prof_sector_custom" class="form-label" style="color: #1366d9; font-weight: 600;">
+                  ✍️ Specify Your Custom Business Sector / Service:
+                </label>
+                <input type="text" id="prof_sector_custom" class="form-input" placeholder="e.g. Drone Photography, Event Decor, Tailoring &amp; Embroidery...">
               </div>
 
               <div class="form-grid-2">
@@ -792,13 +885,42 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="prof_district" class="form-label">District:</label>
+                  <label for="prof_district" class="form-label">District (Odisha):</label>
                   <select id="prof_district" class="form-select">
-                    <option value="Khordha">Khordha (Zone B)</option>
-                    <option value="Sundargarh">Sundargarh (Zone A)</option>
-                    <option value="Kalahandi">Kalahandi (Zone A)</option>
-                    <option value="Ganjam">Ganjam (Zone B)</option>
-                    <option value="Cuttack">Cuttack (Zone B)</option>
+                    <optgroup label="Zone A (Priority / Backward Districts - Higher Subsidy)">
+                      <option value="Angul">Angul (Zone A)</option>
+                      <option value="Balangir">Balangir (Zone A)</option>
+                      <option value="Bargarh">Bargarh (Zone A)</option>
+                      <option value="Boudh">Boudh (Zone A)</option>
+                      <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                      <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                      <option value="Gajapati">Gajapati (Zone A)</option>
+                      <option value="Kalahandi">Kalahandi (Zone A)</option>
+                      <option value="Kandhamal">Kandhamal (Zone A)</option>
+                      <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                      <option value="Koraput">Koraput (Zone A)</option>
+                      <option value="Malkangiri">Malkangiri (Zone A)</option>
+                      <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                      <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                      <option value="Nuapada">Nuapada (Zone A)</option>
+                      <option value="Rayagada">Rayagada (Zone A)</option>
+                      <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                      <option value="Sundargarh">Sundargarh (Zone A)</option>
+                    </optgroup>
+                    <optgroup label="Zone B (Industrially Developing Districts)">
+                      <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                      <option value="Bhadrak">Bhadrak (Zone B)</option>
+                      <option value="Cuttack">Cuttack (Zone B)</option>
+                      <option value="Ganjam">Ganjam (Zone B)</option>
+                      <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                      <option value="Jajpur">Jajpur (Zone B)</option>
+                      <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                      <option value="Kendrapara">Kendrapara (Zone B)</option>
+                      <option value="Khordha" selected>Khordha (Zone B)</option>
+                      <option value="Nayagarh">Nayagarh (Zone B)</option>
+                      <option value="Puri">Puri (Zone B)</option>
+                      <option value="Sambalpur">Sambalpur (Zone B)</option>
+                    </optgroup>
                   </select>
                 </div>
               </div>
@@ -1144,23 +1266,71 @@
               <div class="form-group">
                 <label for="regClass" class="form-label">Enterprise Class:</label>
                 <select id="regClass" class="form-select">
-                  <option value="micro">Micro</option>
-                  <option value="small">Small</option>
-                  <option value="medium">Medium</option>
+                  <option value="nano_sub50k">Nano (< ₹50,000 / PM SVANidhi)</option>
+                  <option value="ultra_micro">Ultra-Micro (₹50,000 – ₹5 Lakh)</option>
+                  <option value="tiny">Tiny (₹5 Lakh – ₹25 Lakh)</option>
+                  <option value="micro" selected>Micro (₹25 Lakh – ₹1 Cr)</option>
+                  <option value="small">Small (₹1 Cr – ₹10 Cr)</option>
+                  <option value="medium">Medium (₹10 Cr – ₹50 Cr)</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="regSector" class="form-label">Sector:</label>
+                <label for="regSector" class="form-label">Sector / Service Type:</label>
                 <select id="regSector" class="form-select">
-                  <option value="manufacturing">Manufacturing</option>
-                  <option value="service">Service</option>
+                  <option value="manufacturing">Manufacturing &amp; Engineering</option>
+                  <option value="food_processing">Agro &amp; Food Processing</option>
+                  <option value="service" selected>Commercial Services (General)</option>
+                  <option value="it_services">IT &amp; Digital Services</option>
+                  <option value="hospitality">Hospitality &amp; Tourism</option>
+                  <option value="healthcare">Healthcare &amp; Clinics</option>
+                  <option value="logistics">Logistics &amp; Transport</option>
+                  <option value="retail_trade">Retail &amp; Wholesale Trade</option>
+                  <option value="food_services">Restaurants &amp; Catering</option>
+                  <option value="repair_services">Repair &amp; Maintenance</option>
+                  <option value="handicrafts">Handicrafts &amp; Handloom</option>
+                  <option value="other">Other / Custom Service</option>
                 </select>
               </div>
             </div>
             <div class="form-grid-2">
               <div class="form-group">
                 <label for="regDistrict" class="form-label">District (Odisha):</label>
-                <input type="text" id="regDistrict" class="form-input" value="Khordha">
+                <select id="regDistrict" class="form-select">
+                  <optgroup label="Zone A (Priority Districts)">
+                    <option value="Angul">Angul (Zone A)</option>
+                    <option value="Balangir">Balangir (Zone A)</option>
+                    <option value="Bargarh">Bargarh (Zone A)</option>
+                    <option value="Boudh">Boudh (Zone A)</option>
+                    <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                    <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                    <option value="Gajapati">Gajapati (Zone A)</option>
+                    <option value="Kalahandi">Kalahandi (Zone A)</option>
+                    <option value="Kandhamal">Kandhamal (Zone A)</option>
+                    <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                    <option value="Koraput">Koraput (Zone A)</option>
+                    <option value="Malkangiri">Malkangiri (Zone A)</option>
+                    <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                    <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                    <option value="Nuapada">Nuapada (Zone A)</option>
+                    <option value="Rayagada">Rayagada (Zone A)</option>
+                    <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                    <option value="Sundargarh">Sundargarh (Zone A)</option>
+                  </optgroup>
+                  <optgroup label="Zone B (Developing Districts)">
+                    <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                    <option value="Bhadrak">Bhadrak (Zone B)</option>
+                    <option value="Cuttack">Cuttack (Zone B)</option>
+                    <option value="Ganjam">Ganjam (Zone B)</option>
+                    <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                    <option value="Jajpur">Jajpur (Zone B)</option>
+                    <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                    <option value="Kendrapara">Kendrapara (Zone B)</option>
+                    <option value="Khordha" selected>Khordha (Bhubaneswar) (Zone B)</option>
+                    <option value="Nayagarh">Nayagarh (Zone B)</option>
+                    <option value="Puri">Puri (Zone B)</option>
+                    <option value="Sambalpur">Sambalpur (Zone B)</option>
+                  </optgroup>
+                </select>
               </div>
               <div class="form-group">
                 <label for="regUdyamNumber" class="form-label">Udyam Number (Optional):</label>

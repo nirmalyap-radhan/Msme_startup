@@ -1,0 +1,20 @@
+INFO:     Will watch for changes in these directories: ['/Users/nirmalyapradhan/Downloads/udyog_sathi_dev_prompts']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [4472] using WatchFiles
+INFO:     Started server process [4474]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+[Scheduler] Scheme discovery run error: SchemeStorageRepository.__init__() got an unexpected keyword argument 'session'
+INFO:     127.0.0.1:52743 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52746 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52750 - "POST /api/v1/eligibility/evaluate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52754 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52756 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52757 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52758 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52761 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52761 - "GET /health/ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52761 - "GET /api/v1/profiles/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52761 - "GET /api/v1/schemes/paginated?page=1&limit=6 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52766 - "GET /api/v1/updates?page=1&limit=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52761 - "GET /api/v1/schemes/paginated?page=1&limit=6 HTTP/1.1" 200 OK

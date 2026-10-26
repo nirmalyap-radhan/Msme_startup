@@ -119,7 +119,27 @@ class DeterministicEligibilityEvaluator:
         try:
             if operator == "=":
                 if isinstance(required_value, str) and isinstance(applicant_value, str):
-                    passed = (applicant_value.strip().lower() == required_value.strip().lower())
+                    req_norm = required_value.strip().lower()
+                    app_norm = applicant_value.strip().lower()
+                    passed = (app_norm == req_norm)
+
+                    # MSMED Enterprise Class Hierarchy Mapping
+                    if not passed and attr_name == "enterprise_class":
+                        if req_norm == "micro" and app_norm in ("nano", "nano_sub50k", "ultra_micro", "tiny", "micro_tiny", "cottage", "micro"):
+                            passed = True
+
+                    # Industrial Sector Hierarchy Mapping
+                    if not passed and attr_name == "sector":
+                        is_service_req = ("service" in req_norm)
+                        is_service_app = ("service" in app_norm or app_norm in (
+                            "it_services", "hospitality", "healthcare", "education",
+                            "logistics", "retail_trade", "repair_services", "handicrafts",
+                            "professional_services", "beauty_wellness", "food_services",
+                            "construction_services", "renewable_services", "agro_allied_services",
+                            "printing_media", "automobile_services", "other"
+                        ))
+                        if is_service_req and is_service_app:
+                            passed = True
                 else:
                     passed = (applicant_value == required_value)
                 res = ThreeValuedResult.TRUE if passed else ThreeValuedResult.FALSE
@@ -139,6 +159,27 @@ class DeterministicEligibilityEvaluator:
                 req_list = [str(x).lower().strip() for x in required_value] if isinstance(required_value, list) else [str(required_value).lower().strip()]
                 app_val_str = str(applicant_value).lower().strip()
                 passed = app_val_str in req_list
+
+                # Statutory MSME Hierarchy Mapping:
+                # Nano (< 50k), Ultra-Micro, and Tiny all fall within Micro Enterprise eligibility under MSMED Act
+                if not passed and attr_name == "enterprise_class":
+                    if "micro" in req_list and app_val_str in ("nano", "nano_sub50k", "ultra_micro", "tiny", "micro_tiny", "cottage", "micro"):
+                        passed = True
+
+                # Industrial Sector Hierarchy Mapping:
+                # Any service subcategory or custom service matches if 'service' is in eligible list
+                if not passed and attr_name == "sector":
+                    is_service_req = any("service" in r for r in req_list)
+                    is_service_app = ("service" in app_val_str or app_val_str in (
+                        "it_services", "hospitality", "healthcare", "education",
+                        "logistics", "retail_trade", "repair_services", "handicrafts",
+                        "professional_services", "beauty_wellness", "food_services",
+                        "construction_services", "renewable_services", "agro_allied_services",
+                        "printing_media", "automobile_services", "other"
+                    ))
+                    if is_service_req and is_service_app:
+                        passed = True
+
                 res = ThreeValuedResult.TRUE if passed else ThreeValuedResult.FALSE
                 reasoning = (
                     f"Applicant {attr_name} '{applicant_value}' is in eligible list ({', '.join(req_list)})."

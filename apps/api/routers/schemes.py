@@ -6,6 +6,7 @@ Enforces zero-mock production data: returns only verified, published government 
 import math
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from sqlalchemy import and_, cast, String
 from sqlalchemy.orm import Session
 
 from apps.api.schemas.schemes import (
@@ -72,16 +73,44 @@ def _build_schemes_query(
         query = query.filter(SchemeModel.is_rolling == is_rolling)
 
     if sector:
-        query = query.join(SchemeModel.eligibility_rules).filter(
-            EligibilityRuleModel.attribute_name == "sector",
-            EligibilityRuleModel.value_json.contains({"value": [sector.lower()]})
-        )
+        sec_clean = sector.lower().strip()
+        is_service = ("service" in sec_clean or sec_clean in (
+            "it_services", "hospitality", "healthcare", "education",
+            "logistics", "retail_trade", "repair_services", "handicrafts",
+            "professional_services", "beauty_wellness", "food_services",
+            "construction_services", "renewable_services", "agro_allied_services",
+            "printing_media", "automobile_services", "other"
+        ))
+        if is_service:
+            query = query.filter(SchemeModel.eligibility_rules.any(and_(
+                EligibilityRuleModel.attribute_name == "sector",
+                (
+                    cast(EligibilityRuleModel.value_json, String).ilike("%service%") |
+                    cast(EligibilityRuleModel.value_json, String).ilike(f"%{sec_clean}%")
+                )
+            )))
+        else:
+            query = query.filter(SchemeModel.eligibility_rules.any(and_(
+                EligibilityRuleModel.attribute_name == "sector",
+                cast(EligibilityRuleModel.value_json, String).ilike(f"%{sec_clean}%")
+            )))
 
     if enterprise_class:
-        query = query.join(SchemeModel.eligibility_rules).filter(
-            EligibilityRuleModel.attribute_name == "enterprise_class",
-            EligibilityRuleModel.value_json.contains({"value": [enterprise_class.lower()]})
-        )
+        cls_clean = enterprise_class.lower().strip()
+        is_micro_hierarchy = cls_clean in ("nano", "nano_sub50k", "ultra_micro", "tiny", "micro_tiny", "cottage", "micro")
+        if is_micro_hierarchy:
+            query = query.filter(SchemeModel.eligibility_rules.any(and_(
+                EligibilityRuleModel.attribute_name == "enterprise_class",
+                (
+                    cast(EligibilityRuleModel.value_json, String).ilike("%micro%") |
+                    cast(EligibilityRuleModel.value_json, String).ilike(f"%{cls_clean}%")
+                )
+            )))
+        else:
+            query = query.filter(SchemeModel.eligibility_rules.any(and_(
+                EligibilityRuleModel.attribute_name == "enterprise_class",
+                cast(EligibilityRuleModel.value_json, String).ilike(f"%{cls_clean}%")
+            )))
 
     return query
 

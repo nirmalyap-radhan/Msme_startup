@@ -16,6 +16,51 @@ class EligibilityController {
         this.runEvaluation();
       });
     }
+
+    // Toggle custom sector write-in input field
+    const sectorSelect = document.getElementById('prof_sector');
+    const customGroup = document.getElementById('prof_sector_custom_group');
+    if (sectorSelect && customGroup) {
+      sectorSelect.addEventListener('change', () => {
+        if (sectorSelect.value === 'other') {
+          customGroup.style.display = 'block';
+          const input = document.getElementById('prof_sector_custom');
+          if (input) input.focus();
+        } else {
+          customGroup.style.display = 'none';
+        }
+      });
+    }
+
+    // Dynamic suggested investment & turnover benchmarks by enterprise tier
+    const classSelect = document.getElementById('prof_class');
+    if (classSelect) {
+      classSelect.addEventListener('change', () => {
+        const invInput = document.getElementById('prof_investment');
+        const turnoverInput = document.getElementById('prof_turnover');
+        if (!invInput) return;
+        const c = classSelect.value;
+        if (c === 'nano_sub50k') {
+          invInput.value = '35000';
+          if (turnoverInput) turnoverInput.value = '80000';
+        } else if (c === 'ultra_micro') {
+          invInput.value = '250000';
+          if (turnoverInput) turnoverInput.value = '600000';
+        } else if (c === 'tiny') {
+          invInput.value = '1500000';
+          if (turnoverInput) turnoverInput.value = '3000000';
+        } else if (c === 'micro') {
+          invInput.value = '2500000';
+          if (turnoverInput) turnoverInput.value = '4500000';
+        } else if (c === 'small') {
+          invInput.value = '25000000';
+          if (turnoverInput) turnoverInput.value = '60000000';
+        } else if (c === 'medium') {
+          invInput.value = '150000000';
+          if (turnoverInput) turnoverInput.value = '300000000';
+        }
+      });
+    }
   }
 
   collectFormData() {
@@ -37,10 +82,15 @@ class EligibilityController {
       return null;
     };
 
+    const rawSector = getVal('prof_sector');
+    const finalSector = (rawSector === 'other')
+      ? (getVal('prof_sector_custom') || 'service')
+      : rawSector;
+
     return {
       enterprise_name: getVal('prof_name') || 'Enterprise',
       enterprise_class: getVal('prof_class'),
-      sector: getVal('prof_sector'),
+      sector: finalSector,
       state: getVal('prof_state') || 'Odisha',
       district: getVal('prof_district'),
       production_status: getVal('prof_production_status'),
