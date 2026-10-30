@@ -1,62 +1,82 @@
-# Udyog Sathi — Development Prompt Pack
+# Udyog Sathi — Unified MSME Scheme Platform
 
-## 🚀 Quick Run & Launch (Single Command)
-
-To run the project instantly without re-scanning files:
-```bash
-./run.sh
-# or
-./build.sh
-# or
-make run
-```
-- **Web App**: http://localhost:8000
-- **API Docs**: http://localhost:8000/docs
-- **Health Check**: http://localhost:8000/health/ready
-- **Stop Server**: `./build.sh --stop` (or `make stop`)
-- **Run Tests**: `./build.sh --test` (or `make test`)
+Real-world AI-powered government scheme discovery and assistance platform for MSMEs in Odisha, India.
 
 ---
 
-## Core rule
+## 📁 Two-Folder Project Structure
 
-**No fabricated production data. No demo schemes. No mock API responses. No fake dashboard metrics.**
-Use only source-traceable government scheme information that has passed the documented verification workflow. Empty states and honest service errors are preferable to invented content.
+The entire application is organized into two self-contained directories:
 
-## How to use this pack
+```
+Msme_startup/
+├── frontend/             # Frontend Client (Vite, Vanilla JS/CSS, Odia/Hindi i18n)
+│   ├── public/           # Static assets (images, css, js)
+│   ├── index.html        # Main web application entry point
+│   ├── package.json      # Frontend dependencies & npm scripts
+│   ├── vite.config.js    # Dev server configuration with backend proxy
+│   └── Dockerfile        # Production static build & Nginx container
+│
+├── backend/              # Backend API & Services (FastAPI, SQLite, OCR, AI Gateway)
+│   ├── app/              # FastAPI application (main.py, routers, schemas, security)
+│   ├── services/         # Core MSME intelligence (ingestion, eligibility, RAG, deadline)
+│   ├── data/             # Verified SQLite database & document vault
+│   ├── migrations/       # Alembic database migrations
+│   ├── scripts/          # Ingestion, audit, and backup utilities
+│   ├── tests/            # Test suite (pytest)
+│   ├── requirements.txt  # Python dependencies
+│   ├── .env              # Backend configuration & AI credentials
+│   └── Dockerfile        # Containerized backend service
+│
+└── docker-compose.yml    # Unified multi-container deployment
+```
 
-1. Copy this folder into the root of your existing Udyog Sathi repository.
-2. Start your coding agent in the repository root.
-3. Read `00_MASTER_PROMPT.md` first and follow its repository-audit instructions.
-4. Execute phases in order: `01_PHASE_REPOSITORY_AUDIT.md` through `06_PHASE_DEPLOYMENT_AND_RELEASE.md`.
-5. At the beginning of each phase, tell the agent to read `00_MASTER_PROMPT.md` and the relevant phase file.
-6. Do not ask the agent to skip ahead while previous phase exit criteria remain unmet.
-7. Update `STATUS.md` at the end of each phase with actual evidence and blockers.
+---
 
-## Prompt files
+## 🚀 Running the Application
 
-- `00_MASTER_PROMPT.md` — persistent rules, architecture principles, no-mock policy, security, quality gates.
-- `01_PHASE_REPOSITORY_AUDIT.md` — inspect the existing project and produce an evidence-based plan.
-- `02_PHASE_DATA_INGESTION.md` — real official-source ingestion, verification, versioning and scheme catalogue.
-- `03_PHASE_BACKEND_ELIGIBILITY.md` — database, API, profiles, deterministic eligibility and benefit calculations.
-- `04_PHASE_RAG_AI_INTEGRATIONS.md` — grounded retrieval, citations, LLM provider adapters and multilingual support.
-- `05_PHASE_FRONTEND_PRODUCT.md` — real frontend flows connected to backend and data.
-- `06_PHASE_TESTING_SECURITY_DEPLOYMENT.md` — integration tests, security review, deployment and release gates.
-- `STATUS.md` — record progress without claiming unverified completion.
-- `DATA_SOURCE_REGISTER.md` — register official sources, access method, verification and update status.
-- `DECISIONS.md` — record material architecture decisions and reasons.
-- `DEFINITION_OF_DONE.md` — release acceptance checklist.
-- `ENVIRONMENT.md` — safe environment variable inventory; never put secrets here.
-- `AGENT_WORKFLOW.md` — how to operate the coding agent safely.
+### 1. Backend (FastAPI + Uvicorn)
 
-## Non-negotiable execution behavior
+In a terminal, navigate to `backend`:
 
-- Inspect the actual repository before changing it.
-- Preserve working code unless there is evidence it needs changing.
-- Do not invent API endpoints, provider capabilities, scheme facts, or test results.
-- Do not expose or print secret values. Never commit `.env`.
-- Do not seed production with synthetic or placeholder records.
-- Test real integrations only when credentials and permissions exist; otherwise document the blocker and implement a safe, explicit unavailable state.
-- Keep synthetic fixtures strictly isolated to tests and ensure they cannot enter production.
-- Do not declare a phase complete without evidence for its exit criteria.
-# Msme_startup
+```powershell
+cd backend
+uvicorn app.main:app --reload
+```
+- **Backend URL**: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **API Documentation (Swagger UI)**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Health / Readiness Endpoint**: [http://127.0.0.1:8000/health/ready](http://127.0.0.1:8000/health/ready)
+
+### 2. Frontend (Vite)
+
+In a second terminal, navigate to `frontend`:
+
+```powershell
+cd frontend
+npm run dev
+```
+- **Web App**: [http://localhost:3000](http://localhost:3000)
+- The frontend dev server automatically proxies all `/api` and `/health` requests to `http://127.0.0.1:8000`.
+
+---
+
+## 🧪 Running Tests
+
+To run the automated test suite in the backend:
+
+```powershell
+cd backend
+python -m pytest
+```
+
+---
+
+## 🐳 Running with Docker Compose
+
+To run both `frontend` and `backend` in containerized production mode:
+
+```bash
+docker compose up --build
+```
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:8000`

@@ -1,0 +1,3 @@
+"""
+Compatibility shim for apps.
+"""

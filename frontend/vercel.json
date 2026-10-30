@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://udyog-sathi-api.onrender.com/api/$1"
+    },
+    {
+      "source": "/health/(.*)",
+      "destination": "https://udyog-sathi-api.onrender.com/health/$1"
+    }
+  ]
+}

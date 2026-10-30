@@ -1,10 +1,12 @@
 services:
+  # Backend FastAPI Web Service (Free Tier)
   - type: web
-    name: udyog-sathi
+    name: udyog-sathi-api
     env: docker
     plan: free
     region: oregon
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     healthCheckPath: /health/live
     envVars:
       - key: APP_ENV
@@ -19,3 +21,20 @@ services:
         sync: false
       - key: SARVAM_API_KEY
         sync: false
+
+  # Frontend Static Site on Render (Free Tier alternative to Vercel)
+  - type: static
+    name: udyog-sathi-ui
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://udyog-sathi-api.onrender.com/api/*
+      - type: rewrite
+        source: /health/*
+        destination: https://udyog-sathi-api.onrender.com/health/*
+

@@ -1,12 +1,12 @@
 version: '3.8'
 
 services:
-  web:
+  backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
-    image: udyog-sathi:latest
-    container_name: udyog_sathi_app
+    image: udyog-sathi-backend:latest
+    container_name: udyog_sathi_backend
     ports:
       - "8000:8000"
     environment:
@@ -20,10 +20,22 @@ services:
       - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}
       - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
     volumes:
-      - ./data:/app/data
+      - ./backend/data:/app/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health/live"]
       interval: 30s
       timeout: 5s
       retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: udyog-sathi-frontend:latest
+    container_name: udyog_sathi_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
