@@ -29,14 +29,15 @@ class SchemeIntelligenceScheduler:
 
     def _acquire_process_lock(self) -> bool:
         """Acquires a non-blocking flock to guarantee single-worker execution."""
-        os.makedirs(os.path.dirname(os.path.abspath(self.LOCK_FILE_PATH)), exist_ok=True)
         try:
+            os.makedirs(os.path.dirname(os.path.abspath(self.LOCK_FILE_PATH)), exist_ok=True)
             self._lock_file = open(self.LOCK_FILE_PATH, "w")
             fcntl.flock(self._lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
             self._lock_file.write(f"PID: {os.getpid()} - Started: {datetime.utcnow().isoformat()}\n")
             self._lock_file.flush()
             return True
-        except (IOError, BlockingIOError):
+        except (IOError, BlockingIOError, OSError) as e:
+            logger.warning(f"Could not acquire process lock: {e}")
             if self._lock_file:
                 try:
                     self._lock_file.close()
