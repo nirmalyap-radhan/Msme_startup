@@ -1,9 +1,11 @@
+
 """
 System Health and Readiness Router.
 """
 
-from datetime import datetime
-from fastapi import APIRouter, Depends
+from datetime import datetime, timezone
+
+from fastapi import APIRouter, Depends, Response, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -14,38 +16,47 @@ from services.scheme_ingestion.models import SchemeModel, SchemeStatus
 router = APIRouter(tags=["Health"])
 
 
-@router.head("/health/live")
+@router.api_route(
+    "/health/live",
+    methods=["GET", "HEAD"]
+)
 def liveness_check():
     """Liveness probe indicating API process is responding."""
+
     return {
         "status": "live",
         "app_name": api_config.app_name,
         "version": api_config.app_version,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
 
 @router.get("/health/ready")
 def readiness_check(db: Session = Depends(get_db)):
-    """Readiness probe checking database connectivity and published catalogue metrics."""
-    db_status = "unhealthy"
-    published_count = 0
+    """Readiness probe checking database connectivity."""
 
     try:
         db.execute(text("SELECT 1"))
-        db_status = "healthy"
+
         published_count = db.query(SchemeModel).filter(
             SchemeModel.status == SchemeStatus.PUBLISHED.value
         ).count()
-    except Exception as e:
-        db_status = f"error: {str(e)}"
 
-    is_ready = (db_status == "healthy")
+        return {
+            "status": "ready",
+            "database": "healthy",
+            "published_schemes_count": published_count,
+            "environment": api_config.app_env,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
 
-    return {
-        "status": "ready" if is_ready else "not_ready",
-        "database": db_status,
-        "published_schemes_count": published_count,
-        "environment": api_config.app_env,
-        "timestamp": datetime.utcnow().isoformat(),
-    }
+    except Exception:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "status": "not_ready",
+                "database": "unhealthy",
+                "environment": api_config.app_env,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+        )
