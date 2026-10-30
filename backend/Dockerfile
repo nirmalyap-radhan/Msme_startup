@@ -31,6 +31,7 @@ COPY --chown=appuser:appuser services/ ./services/
 COPY --chown=appuser:appuser scripts/ ./scripts/
 COPY --chown=appuser:appuser migrations/ ./migrations/
 COPY --chown=appuser:appuser data/ ./data/
+COPY --chown=appuser:appuser web/ ./web/
 COPY --chown=appuser:appuser alembic.ini .
 
 # Ensure data directory has correct permissions

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" width="40" height="40">
+  <defs>
+    <linearGradient id="gearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c4a6e"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+  <!-- Gear Body -->
+  <path d="M19 6 L23 6 L23.8 8.8 C25 9.3 26 10 26.9 10.8 L29.7 9.8 L31.8 13.4 L29.6 15.3 C29.8 16 30 16.7 30 17.5 C30 18.3 29.8 19 29.6 19.7 L31.8 21.6 L29.7 25.2 L26.9 24.2 C26 25 25 25.7 23.8 26.2 L23 29 L19 29 L18.2 26.2 C17 25.7 16 25 15.1 24.2 L12.3 25.2 L10.2 21.6 L12.4 19.7 C12.2 19 12 18.3 12 17.5 C12 16.7 12.2 16 12.4 15.3 L10.2 13.4 L12.3 9.8 L15.1 10.8 C16 10 17 9.3 18.2 8.8 Z" fill="url(#gearGrad)"/>
+  <circle cx="21" cy="17.5" r="5" fill="#ffffff"/>
+  <!-- Sprouting Growth Leaf Overlay on Right -->
+  <path d="M22 28 C22 28, 25 20, 36 15 C36 24, 30 32, 22 34 Z" fill="url(#leafGrad)"/>
+  <path d="M22 34 C24 37, 28 39, 32 38 C32 34, 28 31, 24 30 Z" fill="#f97316"/>
+  <!-- Leaf Stem -->
+  <path d="M22 28 C23 23, 27 19, 34 16" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+</svg>

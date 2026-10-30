@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Udyog Sathi - Your trusted AI-powered guide to Odisha and Central Government schemes for MSMEs — from eligibility to application.">
+  <meta name="theme-color" content="#0c1e3d">
+  <title>Udyog Sathi | Your Guide to Government Schemes - Government of Odisha</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, Noto Sans Oriya, Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Oriya:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/animations.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. GOVERNMENT UTILITY BAR (Slim Dark Navy Bar Across Top)
+       ======================================================================== -->
+  <aside class="gov-utility-bar" aria-label="Official Government Header">
+    <div class="container gov-utility-container">
+      <div class="gov-identities">
+        <!-- Government of Odisha Identity -->
+        <div class="gov-identity-item">
+          <img src="/static/images/emblem_odisha.svg" alt="Emblem of Odisha" class="gov-emblem-img">
+          <div class="gov-identity-text">
+            <span class="gov-title-en" data-i18n="gov_odisha">Government of Odisha</span>
+            <span class="gov-title-local" data-i18n="gov_odisha_local">ଓଡ଼ିଶା ସରକାର</span>
+          </div>
+        </div>
+
+        <div class="gov-divider"></div>
+
+        <!-- Ministry of MSME / Government of India Identity -->
+        <div class="gov-identity-item">
+          <img src="/static/images/emblem_india.svg" alt="Government of India" class="gov-emblem-img">
+          <div class="gov-identity-text">
+            <span class="gov-title-en" data-i18n="gov_india">Ministry of Micro, Small &amp; Medium Enterprises</span>
+            <span class="gov-title-sub" data-i18n="gov_india_sub">Government of India</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gov-utility-tools">
+        <!-- Skip to content -->
+        <a href="javascript:void(0)" class="gov-utility-link" data-i18n="skip_to_content" onclick="document.getElementById('main-content').scrollIntoView({behavior:'smooth'})">Skip to main content</a>
+
+        <!-- Font Size Controls (A-, A, A+) -->
+        <div class="font-resizer-group" title="Adjust text size" role="toolbar" aria-label="Text Size Controls">
+          <button class="font-btn" id="fontDecrBtn" aria-label="Decrease font size">A-</button>
+          <button class="font-btn active" id="fontResetBtn" aria-label="Reset font size">A</button>
+          <button class="font-btn" id="fontIncrBtn" aria-label="Increase font size">A+</button>
+        </div>
+
+        <!-- Language Modal Trigger Button & Dropdown -->
+        <div class="lang-controls-wrapper" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+          <button class="gov-lang-btn" id="btnOpenLangModal" title="Select Language / ଭାଷା ଚୟନ କରନ୍ତୁ / भाषा चुनें" aria-label="Open Language Selector Popup" style="background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); color: #ffffff; padding: 2px 8px; border-radius: var(--radius-xs); font-size: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span id="currentLangDisplayName">English</span>
+            <span style="font-size: 0.65rem; opacity: 0.85;">▼</span>
+          </button>
+          <div class="lang-dropdown-wrapper" style="display: none;">
+            <select id="languageSelect" class="gov-lang-select" aria-label="Select Language">
+              <option value="en">English</option>
+              <option value="od">ଓଡ଼ିଆ (Odia)</option>
+              <option value="hi">हिन्दी (Hindi)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Light / Dark Theme Toggle -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Switch Theme (Light/Dark)" aria-label="Toggle Light and Dark Theme">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       2. MAIN NAVIGATION HEADER (Clean White Bar)
+       ======================================================================== -->
+  <header class="main-nav-header">
+    <div class="container main-nav-container">
+      <!-- Brand Logo & Name -->
+      <a href="javascript:void(0)" class="brand-logo" onclick="window.app.switchTab('home')" aria-label="Udyog Sathi | ଉଦ୍ୟୋଗ ସାଥୀ">
+        <div class="logo-mark">
+          <img src="/static/images/logo_udyog_sathi.svg" alt="Udyog Sathi Logo">
+        </div>
+        <div class="brand-info">
+          <span class="brand-title" data-i18n="app_title">Udyog Sathi</span>
+          <span class="brand-tagline" data-i18n="app_tagline">Your Guide to Government Schemes</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links (All 8 Dedicated Functional Pages) -->
+      <nav class="main-nav-menu" role="navigation" aria-label="Main Navigation">
+        <button class="nav-link-btn active" data-tab="home" data-i18n="nav_home">Home</button>
+        <button class="nav-link-btn" data-tab="catalogue" data-i18n="nav_schemes">Schemes</button>
+        <button class="nav-link-btn" data-tab="updates" data-i18n="nav_updates">Updates</button>
+        <button class="nav-link-btn" data-tab="eligibility" data-i18n="nav_eligibility">Check Eligibility</button>
+        <button class="nav-link-btn" data-tab="apply" data-i18n="nav_apply">Apply Guide</button>
+        <button class="nav-link-btn" data-tab="learning" data-i18n="nav_learning">Learning Hub</button>
+        <button class="nav-link-btn" data-tab="resources" data-i18n="nav_resources">Resources</button>
+        <button class="nav-link-btn" data-tab="about" data-i18n="nav_about">About</button>
+      </nav>
+
+      <!-- Right Action Controls -->
+      <div class="main-nav-actions">
+        <!-- Search Icon Button -->
+        <button class="btn-nav-search" id="headerSearchBtn" title="Search Schemes" aria-label="Search Schemes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Login Button -->
+        <button class="btn-nav-login" id="btnAuthTrigger" data-i18n="nav_login" onclick="window.app.openAuthModal('login')">
+          Login
+        </button>
+
+        <!-- Register Button -->
+        <button class="btn-nav-register" id="btnRegisterTrigger" data-i18n="nav_register">
+          Register
+        </button>
+
+        <!-- Authenticated Profile Badge (Hidden until login) -->
+        <div id="userProfileBadge" style="display: none;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN VIEWPORT CONTENT
+       ======================================================================== -->
+  <main id="main-content">
+
+    <!-- ----------------------------------------------------------------------
+         3. HERO SECTION (Light, Inspiring Government Aesthetic)
+         ---------------------------------------------------------------------- -->
+    <section class="hero-portal-section" id="landingHeroSection">
+      <div class="container hero-grid">
+        <!-- Left Hero Content Column -->
+        <div class="hero-content-col">
+          <h1 class="hero-headline" data-i18n="hero_headline">
+            Turning<br>
+            Entrepreneurship into<br>
+            <span class="text-blue">Opportunity</span>
+          </h1>
+
+          <p class="hero-subtext" data-i18n="hero_subtext">
+            Your trusted AI-powered guide to Odisha and Central Government schemes for MSMEs — from eligibility to application.
+          </p>
+
+          <!-- Three Compact Statistics Row -->
+          <div class="hero-stats-row">
+            <div class="stat-box">
+              <div class="stat-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-number-wrap">
+                  <span class="stat-number" id="statSchemesCount" data-i18n="hero_stat_schemes_num">11+</span>
+                </div>
+                <span class="stat-title" data-i18n="hero_stat_schemes_title">Government Schemes</span>
+                <span class="stat-desc" data-i18n="hero_stat_schemes_desc">Published Legal Gazettes</span>
+              </div>
+            </div>
+
+            <div class="stat-box">
+              <div class="stat-icon-wrap" style="color: #059669;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2l8 5H4l8-5z"/>
+                </svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-number-wrap">
+                  <span class="stat-number" data-i18n="hero_stat_coverage_num">2</span>
+                </div>
+                <span class="stat-title" data-i18n="hero_stat_coverage_title">Coverage</span>
+                <span class="stat-desc" data-i18n="hero_stat_coverage_desc">Odisha + Central</span>
+              </div>
+            </div>
+
+            <div class="stat-box">
+              <div class="stat-icon-wrap" style="color: #ea580c;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="stat-details">
+                <div class="stat-number-wrap">
+                  <span class="stat-number" data-i18n="hero_stat_goal_num">1</span>
+                </div>
+                <span class="stat-title" data-i18n="hero_stat_goal_title">Mission Goal</span>
+                <span class="stat-desc" data-i18n="hero_stat_goal_desc">Stronger Entrepreneurs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="hero-cta-actions">
+            <button class="btn btn-hero-primary" data-i18n="hero_cta_find_schemes" onclick="window.app.switchTab('catalogue')">
+              Find Schemes for Your Business &rarr;
+            </button>
+            <button class="btn btn-hero-secondary" data-i18n="hero_cta_check_eligibility" onclick="window.app.switchTab('eligibility')">
+              Check Your Eligibility
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Hero Visual Column (Young Indian Entrepreneur & Heritage Composite) -->
+        <div class="hero-visual-col">
+          <div class="hero-visual-card">
+            <img src="/static/images/hero_entrepreneur.jpg" alt="Indian MSME Entrepreneur in Odisha" class="hero-image-main">
+            
+            <!-- Cursive Script Overlay -->
+            <div class="floating-cursive-text" data-i18n="hero_overlay_empowering">
+              Empowering<br>Odisha's<br>Entrepreneurs
+            </div>
+
+            <!-- Atmanirbhar Bharat Badge -->
+            <div class="floating-badge atmanirbhar-badge">
+              <strong data-i18n="hero_atmanirbhar">Atmanirbhar Bharat</strong>
+            </div>
+
+            <!-- Vertical Features Stack on Right Edge -->
+            <div class="hero-side-features">
+              <div class="feature-pill">
+                <span class="icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20M7 20V8l5 4V8l5 4V4h3v16"/></svg>
+                </span>
+                <span data-i18n="hero_pill_msmes">Stronger MSMEs</span>
+              </div>
+              <div class="feature-pill">
+                <span class="icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <span data-i18n="hero_pill_jobs">More Jobs</span>
+              </div>
+              <div class="feature-pill">
+                <span class="icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+                <span data-i18n="hero_pill_viksit_odisha">Viksit Odisha</span>
+              </div>
+              <div class="feature-pill">
+                <span class="icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></svg>
+                </span>
+                <span data-i18n="hero_pill_viksit_bharat">Viksit Bharat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         4. PERSONALIZED SCHEME SEARCH PANEL (Floating Rounded Card)
+         ---------------------------------------------------------------------- -->
+    <section class="container search-panel-wrapper" id="personalizedSearchSection">
+      <div class="search-panel-card">
+        <div class="search-panel-header">
+          <div class="search-panel-titles">
+            <h3 data-i18n="search_panel_title">Find the Right Scheme for You</h3>
+            <p data-i18n="search_panel_desc">Tell us about your business and get relevant government schemes</p>
+          </div>
+          <div class="search-panel-badges">
+            <span class="badge-ai-assist">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+              <span data-i18n="badge_powered_ai">Powered by AI</span>
+            </span>
+            <span class="badge-verified-src">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span data-i18n="badge_verified_sources">Verified from Official Sources</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- 4 Filter Dropdowns in a Row + Search Button -->
+        <div class="search-form-row">
+          <div class="search-field-box">
+            <label for="filterBusinessType" class="search-field-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              <span data-i18n="label_business_type">Business Type</span>
+            </label>
+            <select id="filterBusinessType" class="search-select-control">
+              <option value="" data-i18n="select_business_type">Select business type</option>
+              <option value="nano_sub50k" data-i18n="opt_nano">Nano Enterprise (&lt; ₹50,000 / PM SVANidhi)</option>
+              <option value="ultra_micro" data-i18n="opt_ultra_micro">Ultra-Micro / Cottage (₹50,000 – ₹5 Lakh)</option>
+              <option value="tiny" data-i18n="opt_tiny">Tiny Enterprise (₹5 Lakh – ₹25 Lakh)</option>
+              <option value="micro" data-i18n="opt_micro">Micro Enterprise (₹25 Lakh – ₹1 Cr)</option>
+              <option value="small" data-i18n="opt_small">Small Enterprise (₹1 Cr – ₹10 Cr)</option>
+              <option value="medium" data-i18n="opt_medium">Medium Enterprise (₹10 Cr – ₹50 Cr)</option>
+              <option value="large" data-i18n="opt_large">Large Enterprise (&gt; ₹50 Cr)</option>
+            </select>
+          </div>
+
+          <div class="search-field-box">
+            <label for="filterIndustrySector" class="search-field-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              <span data-i18n="label_industry_sector">Industry Sector</span>
+            </label>
+            <select id="filterIndustrySector" class="search-select-control">
+              <option value="" data-i18n="select_sector">Select sector</option>
+              <optgroup label="Manufacturing">
+                <option value="manufacturing">Manufacturing &amp; Engineering</option>
+                <option value="food_processing">Agro &amp; Food Processing</option>
+              </optgroup>
+              <optgroup label="Services &amp; Commercial">
+                <option value="service">Commercial Services (General)</option>
+                <option value="it_services">IT, Software &amp; Digital Services</option>
+                <option value="hospitality">Hospitality, Hotels &amp; Tourism</option>
+                <option value="healthcare">Healthcare, Diagnostics &amp; Clinics</option>
+                <option value="logistics">Logistics, Transport &amp; Cold Storage</option>
+                <option value="retail_trade">Retail, Kirana &amp; Wholesale Trade</option>
+                <option value="food_services">Restaurants, Catering &amp; Food Carts</option>
+                <option value="education">Education &amp; Skill Development</option>
+                <option value="repair_services">Repair &amp; Maintenance Workshops</option>
+                <option value="automobile_services">Automobile &amp; EV Services</option>
+                <option value="handicrafts">Handicrafts &amp; Handloom Services</option>
+                <option value="construction_services">Construction, Electrical &amp; Civil Works</option>
+                <option value="professional_services">Professional &amp; Financial Services</option>
+                <option value="beauty_wellness">Beauty &amp; Wellness Services</option>
+                <option value="printing_media">Printing, Media &amp; Advertising</option>
+                <option value="renewable_services">Solar &amp; Renewable Energy Services</option>
+                <option value="agro_allied_services">Agri-allied, Dairy &amp; Poultry Services</option>
+              </optgroup>
+              <optgroup label="Custom">
+                <option value="other">Other / Custom Service</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="search-field-box">
+            <label for="filterBusinessStage" class="search-field-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              <span data-i18n="label_business_stage">Business Stage</span>
+            </label>
+            <select id="filterBusinessStage" class="search-select-control">
+              <option value="" data-i18n="select_stage">Select stage</option>
+              <option value="production" data-i18n="opt_in_production">In Commercial Production</option>
+              <option value="early" data-i18n="opt_under_implementation">Under Implementation</option>
+              <option value="new" data-i18n="opt_proposed_new">Proposed New Unit</option>
+            </select>
+          </div>
+
+          <div class="search-field-box">
+            <label for="filterLocation" class="search-field-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span data-i18n="label_location">Location</span>
+            </label>
+            <select id="filterLocation" class="search-select-control">
+              <option value="Odisha">Odisha / All 30 Districts</option>
+              <optgroup label="Zone A (Priority / Backward Districts)">
+                <option value="Angul">Angul (Zone A)</option>
+                <option value="Balangir">Balangir (Zone A)</option>
+                <option value="Bargarh">Bargarh (Zone A)</option>
+                <option value="Boudh">Boudh (Zone A)</option>
+                <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                <option value="Gajapati">Gajapati (Zone A)</option>
+                <option value="Kalahandi">Kalahandi (Zone A)</option>
+                <option value="Kandhamal">Kandhamal (Zone A)</option>
+                <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                <option value="Koraput">Koraput (Zone A)</option>
+                <option value="Malkangiri">Malkangiri (Zone A)</option>
+                <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                <option value="Nuapada">Nuapada (Zone A)</option>
+                <option value="Rayagada">Rayagada (Zone A)</option>
+                <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                <option value="Sundargarh">Sundargarh (Zone A)</option>
+              </optgroup>
+              <optgroup label="Zone B (Industrially Developing Districts)">
+                <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                <option value="Bhadrak">Bhadrak (Zone B)</option>
+                <option value="Cuttack">Cuttack (Zone B)</option>
+                <option value="Ganjam">Ganjam (Zone B)</option>
+                <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                <option value="Jajpur">Jajpur (Zone B)</option>
+                <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                <option value="Kendrapara">Kendrapara (Zone B)</option>
+                <option value="Khordha">Khordha (Bhubaneswar) (Zone B)</option>
+                <option value="Nayagarh">Nayagarh (Zone B)</option>
+                <option value="Puri">Puri (Zone B)</option>
+                <option value="Sambalpur">Sambalpur (Zone B)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <button id="btnSearchPersonalized" class="btn btn-primary btn-search-schemes" data-i18n="btn_search_schemes">
+            Search Schemes &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         5. FIVE QUICK ACTION CARDS (Horizontal row with circular icons & arrows)
+         ---------------------------------------------------------------------- -->
+    <section class="container quick-actions-section" id="quickActionsSection">
+      <div class="quick-actions-grid">
+        <!-- Action 1: Explore Schemes -->
+        <div class="action-card" onclick="window.app.switchTab('catalogue')">
+          <div class="action-card-top">
+            <div class="action-icon-circle action-icon-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <span class="action-arrow">&rarr;</span>
+          </div>
+          <div>
+            <h4 class="action-card-title" data-i18n="qa_explore_title">Explore Schemes</h4>
+            <p class="action-card-desc" data-i18n="qa_explore_desc">Find relevant Odisha and Central Government schemes</p>
+          </div>
+        </div>
+
+        <!-- Action 2: Check Eligibility -->
+        <div class="action-card" onclick="window.app.switchTab('eligibility')">
+          <div class="action-card-top">
+            <div class="action-icon-circle action-icon-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <span class="action-arrow">&rarr;</span>
+          </div>
+          <div>
+            <h4 class="action-card-title" data-i18n="qa_elig_title">Check Eligibility</h4>
+            <p class="action-card-desc" data-i18n="qa_elig_desc">See if you qualify based on your business details</p>
+          </div>
+        </div>
+
+        <!-- Action 3: Get Document Checklist -->
+        <div class="action-card" onclick="window.app.openChecklistModal('OD-MSME-C0B98FA5')">
+          <div class="action-card-top">
+            <div class="action-icon-circle action-icon-amber">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            </div>
+            <span class="action-arrow">&rarr;</span>
+          </div>
+          <div>
+            <h4 class="action-card-title" data-i18n="qa_checklist_title">Document Checklist</h4>
+            <p class="action-card-desc" data-i18n="qa_checklist_desc">Know the documents required for application</p>
+          </div>
+        </div>
+
+        <!-- Action 4: Application Guidance -->
+        <div class="action-card" onclick="window.app.switchTab('tracker')">
+          <div class="action-card-top">
+            <div class="action-icon-circle action-icon-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+            </div>
+            <span class="action-arrow">&rarr;</span>
+          </div>
+          <div>
+            <h4 class="action-card-title" data-i18n="qa_guide_title">Application Guidance</h4>
+            <p class="action-card-desc" data-i18n="qa_guide_desc">Step-by-step process with official links</p>
+          </div>
+        </div>
+
+        <!-- Action 5: Ask Udyog Sathi (AI) -->
+        <div class="action-card" data-tab="assistant" onclick="window.app.switchTab('assistant')">
+          <div class="action-card-top">
+            <div class="action-icon-circle action-icon-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <span class="action-arrow">&rarr;</span>
+          </div>
+          <div>
+            <h4 class="action-card-title" data-i18n="qa_ai_title">Ask Udyog Sathi (AI)</h4>
+            <p class="action-card-desc" data-i18n="qa_ai_desc">Get instant answers from official scheme information</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         5B. INTERACTIVE DATA VISUALIZATIONS & SCHEME ANALYTICS
+         ---------------------------------------------------------------------- -->
+    <section class="container" id="portalChartsSection" style="margin-bottom: 2.5rem;">
+      <div class="portal-section-header">
+        <div>
+          <h3 data-i18n="chart_sector_title">Odisha MSME Scheme Intelligence &amp; Analytics</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Interactive breakdown of verified government assistance, industrial sectors, and jurisdiction distribution.</p>
+        </div>
+      </div>
+      <div class="charts-dashboard-grid">
+        <div class="chart-card">
+          <h4 class="chart-card-title" data-i18n="chart_sector_title">Scheme Distribution by Industrial Sector</h4>
+          <p class="chart-card-sub">Active verified policies across key Odisha priority sectors</p>
+          <div class="chart-canvas-box">
+            <canvas id="chartSectorDistribution"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h4 class="chart-card-title" data-i18n="chart_jurisdiction_title">State vs Central Schemes</h4>
+          <p class="chart-card-sub">Distribution of Odisha State Government and Central Government assistance</p>
+          <div class="chart-canvas-box">
+            <canvas id="chartJurisdictionSplit"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         6. TWO-COLUMN SECTION: POPULAR CATEGORIES & LATEST UPDATES
+         ---------------------------------------------------------------------- -->
+    <section class="container two-column-portal-grid" id="categoriesUpdatesSection">
+      <!-- Left Column: Popular Scheme Categories (6 Photographic Cards) -->
+      <div class="categories-col">
+        <div class="portal-section-header">
+          <h3 data-i18n="popular_categories_title">Popular Scheme Categories</h3>
+          <a href="javascript:void(0)" class="view-all-link" data-i18n="view_all_schemes" onclick="window.app.switchTab('catalogue')">View All Schemes &rarr;</a>
+        </div>
+
+        <div class="categories-grid-6">
+          <!-- Category 1: Finance & Credit Support -->
+          <div class="category-card" data-category="finance">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_finance.jpg" alt="Finance & Credit Support" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-blue">₹</div>
+              <span class="cat-title" data-i18n="cat_finance">Finance &amp; Credit Support</span>
+            </div>
+          </div>
+
+          <!-- Category 2: Subsidy & Incentives -->
+          <div class="category-card" data-category="subsidy">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_subsidy.jpg" alt="Subsidy & Incentives" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 10v11M19 10v11M9 10v11M15 10v11M12 2l8 5H4l8-5z"/></svg>
+              </div>
+              <span class="cat-title" data-i18n="cat_subsidy">Subsidy &amp; Capital Incentives</span>
+            </div>
+          </div>
+
+          <!-- Category 3: Skill Development -->
+          <div class="category-card" data-category="skills">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_skills.jpg" alt="Skill Development" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-green">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              </div>
+              <span class="cat-title" data-i18n="cat_skills">Skill Development</span>
+            </div>
+          </div>
+
+          <!-- Category 4: Technology & Innovation -->
+          <div class="category-card" data-category="tech">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_technology.jpg" alt="Technology & Innovation" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              </div>
+              <span class="cat-title" data-i18n="cat_tech">Technology &amp; Innovation</span>
+            </div>
+          </div>
+
+          <!-- Category 5: Market Access -->
+          <div class="category-card" data-category="market">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_market.jpg" alt="Market Access" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-amber">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              </div>
+              <span class="cat-title" data-i18n="cat_market">Market Access &amp; Export</span>
+            </div>
+          </div>
+
+          <!-- Category 6: Infrastructure Support -->
+          <div class="category-card" data-category="infrastructure">
+            <div class="category-thumb-wrapper">
+              <img src="/static/images/cat_infrastructure.jpg" alt="Infrastructure Support" class="category-thumb-img">
+            </div>
+            <div class="category-footer-bar">
+              <div class="cat-icon-badge action-icon-blue">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M7 20V9l5 3V9l5 3v8"></path></svg>
+              </div>
+              <span class="cat-title" data-i18n="cat_infra">Infrastructure Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Latest Updates Panel -->
+      <div class="updates-col">
+        <div class="portal-section-header">
+          <h3 data-i18n="latest_updates_title">Latest Government Updates</h3>
+          <a href="javascript:void(0)" onclick="window.app.switchTab('updates')" class="view-all-link" data-i18n="view_all_updates">View All Updates &rarr;</a>
+        </div>
+
+        <div class="updates-panel-card" id="latestUpdatesList">
+          <div style="padding: 1.5rem; text-align: center; color: #64748b; font-size: 0.875rem;">
+            Loading verified announcements...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB: DEDICATED SCHEME DISCOVERY & CATALOGUE VIEW
+         ====================================================================== -->
+    <section class="tab-content-panel container" id="tab-catalogue" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <section class="schemes-portal-section" id="schemesSection" style="padding-top: 0;">
+        <div class="portal-section-header" style="margin-bottom: 1.5rem;">
+          <div>
+            <h3 data-i18n="catalog_title">Verified Government &amp; Banking MSME Schemes</h3>
+            <p style="font-size: 0.85rem; color: #64748b;" data-i18n="catalog_subtitle">Authoritative Central &amp; Odisha State programs and Public Sector Bank credit products grounded in official notifications</p>
+          </div>
+          <!-- Live Backend Connectivity Pill -->
+          <div class="status-indicator-pill" id="systemHealthBadge" style="background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-size: 0.775rem; font-weight: 600; color: #065f46;">
+            <span class="pulse-dot active" id="systemStatusDot" style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <span id="systemStatusText" data-i18n="catalog_status_dot">Official Database Connected</span>
+          </div>
+        </div>
+
+        <!-- Search & Filters Toolbar -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+            <div style="flex: 1; min-width: 280px; position: relative;">
+              <input
+                type="text"
+                id="schemeSearchInput"
+                class="form-input"
+                placeholder="Search published schemes by keyword, interest subvention, subsidy..."
+                data-i18n-placeholder="catalog_search_ph"
+                aria-label="Search published schemes"
+                style="padding-left: 2.25rem;"
+              />
+              <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #94a3b8; display: flex; align-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              </span>
+            </div>
+
+            <!-- Category Filter Dropdown -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="schemeCategoryFilter" style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); white-space: nowrap;" data-i18n="catalog_lbl_category">Category:</label>
+              <select id="schemeCategoryFilter" class="form-select" style="min-width: 180px; padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                <option value="">All Categories</option>
+                <option value="finance_credit">Finance &amp; Credit Support</option>
+                <option value="subsidy_incentives">Subsidy &amp; Capital Incentives</option>
+                <option value="skill_development">Skill Development</option>
+                <option value="technology_innovation">Technology &amp; Innovation</option>
+                <option value="market_access">Market Access &amp; Export</option>
+                <option value="infrastructure">Infrastructure Support</option>
+              </select>
+            </div>
+
+            <!-- Authority / Organization Filter -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="schemeOrgFilter" style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); white-space: nowrap;" data-i18n="catalog_lbl_authority">Authority:</label>
+              <select id="schemeOrgFilter" class="form-select" style="min-width: 180px; padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                <option value="">All Sponsoring Authorities</option>
+                <option value="Government of Odisha">Government of Odisha</option>
+                <option value="Ministry of MSME">Ministry of MSME (Govt of India)</option>
+                <option value="SIDBI">SIDBI</option>
+                <option value="CGTMSE">CGTMSE</option>
+                <option value="State Bank of India">State Bank of India</option>
+                <option value="Bank of Baroda">Bank of Baroda</option>
+                <option value="Punjab National Bank">Punjab National Bank</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Jurisdiction & Sponsoring Tier Filter Chips -->
+          <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; border-top: 1px solid var(--border-light); padding-top: 0.75rem;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading);" data-i18n="catalog_scope_lbl">Scope:</span>
+            <button class="btn btn-secondary btn-sm jurisdiction-filter-btn active" data-jurisdiction="" data-type="" data-i18n="catalog_scope_all">All Schemes &amp; Products</button>
+            <button class="btn btn-secondary btn-sm jurisdiction-filter-btn" data-jurisdiction="Odisha" data-type="government_scheme" data-i18n="catalog_scope_odisha">Government of Odisha</button>
+            <button class="btn btn-secondary btn-sm jurisdiction-filter-btn" data-jurisdiction="Central" data-type="government_scheme" data-i18n="catalog_scope_central">Central Government</button>
+            <button class="btn btn-secondary btn-sm jurisdiction-filter-btn" data-jurisdiction="" data-type="bank_product" data-i18n="catalog_scope_banks">Public Sector Banks</button>
+          </div>
+
+          <!-- Filter Chips Row: Status, Sector, Class -->
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--border-light); padding-top: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading);" data-i18n="catalog_status_lbl">Status:</span>
+              <button class="btn btn-secondary btn-sm status-filter-btn active" data-status="" data-i18n="catalog_status_all">All</button>
+              <button class="btn btn-secondary btn-sm status-filter-btn" data-status="open" data-i18n="catalog_status_open"><span class="status-indicator-dot dot-green" style="margin-right: 4px;"></span>Open for Applications</button>
+              <button class="btn btn-secondary btn-sm status-filter-btn" data-status="closing_soon" data-i18n="catalog_status_closing"><span class="status-indicator-dot dot-amber" style="margin-right: 4px;"></span>Closing Soon</button>
+              <button class="btn btn-secondary btn-sm status-filter-btn" data-status="claims_open" data-i18n="catalog_status_rolling"><span class="status-indicator-dot dot-blue" style="margin-right: 4px;"></span>Rolling Claims</button>
+              <button class="btn btn-secondary btn-sm status-filter-btn" data-status="closed" data-i18n="catalog_status_closed"><span class="status-indicator-dot dot-gray" style="margin-right: 4px;"></span>Closed</button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <span style="font-size: 0.8rem; font-weight: 700; color: #0c1e3d;" data-i18n="catalog_sector_lbl">Sector:</span>
+                <button class="btn btn-secondary btn-sm sector-filter-btn active" data-sector="" data-i18n="catalog_sec_all">All</button>
+                <button class="btn btn-secondary btn-sm sector-filter-btn" data-sector="manufacturing" data-i18n="catalog_sec_mfg">Manufacturing</button>
+                <button class="btn btn-secondary btn-sm sector-filter-btn" data-sector="service" data-i18n="catalog_sec_svc">Service</button>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                <span style="font-size: 0.8rem; font-weight: 700; color: #0c1e3d;" data-i18n="catalog_class_lbl">Class:</span>
+                <button class="btn btn-secondary btn-sm class-filter-btn active" data-class="" data-i18n="catalog_class_all">All</button>
+                <button class="btn btn-secondary btn-sm class-filter-btn" data-class="micro" data-i18n="catalog_class_micro">Micro</button>
+                <button class="btn btn-secondary btn-sm class-filter-btn" data-class="small" data-i18n="catalog_class_small">Small</button>
+                <button class="btn btn-secondary btn-sm class-filter-btn" data-class="medium" data-i18n="catalog_class_medium">Medium</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schemes Grid Container -->
+        <div class="schemes-grid" id="schemesGrid" aria-live="polite">
+          <!-- Rendered by catalogue.js -->
+        </div>
+
+        <!-- Schemes Server-Side Pagination Bar -->
+        <div class="schemes-pagination-bar" id="schemesPaginationBar" style="display: none; justify-content: space-between; align-items: center; margin-top: 2rem; padding: 1rem 1.25rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+          <div id="schemesPaginationInfo" style="font-size: 0.875rem; color: #64748b; font-weight: 600;">
+            Showing verified schemes...
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="btn btn-outline btn-sm" id="btnSchemesPrevPage" onclick="window.catalogue.changePage(-1)">← Previous</button>
+            <span id="schemesPageIndicator" style="font-size: 0.85rem; font-weight: 700; color: #0c1e3d; padding: 0 0.5rem;">Page 1 of 1</span>
+            <button class="btn btn-outline btn-sm" id="btnSchemesNextPage" onclick="window.catalogue.changePage(1)">Next →</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ----------------------------------------------------------------------
+         HIDDEN / DEDICATED MODULE TAB PANELS (Preserved from Phase 5)
+         ---------------------------------------------------------------------- -->
+
+    <!-- TAB: OFFICIAL ANNOUNCEMENTS & UPDATES FEED -->
+    <section class="tab-content-panel container" id="tab-updates" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-panel);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.775rem; font-weight: 700; color: #1e3a8a; background: #eef2ff; border: 1px solid #c7d2fe; padding: 3px 10px; border-radius: 20px; margin-bottom: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+              <span>Verified Intelligence Stream</span>
+            </div>
+            <h3 style="font-size: 1.35rem; color: #0c1e3d; font-weight: 800; margin: 0;">Official Government &amp; Banking Updates</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Synchronized from official Odisha gazettes, Central MSME portals, and Public Sector Bank releases (Zero-Mock verified).</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.app.switchTab('home')">← Back to Home</button>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.75rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+            <div style="flex: 1; min-width: 260px; position: relative;">
+              <input
+                type="text"
+                id="updatesSearchInput"
+                class="form-input"
+                placeholder="Search updates by keyword, notification number, amendment..."
+                aria-label="Search updates"
+                style="padding-left: 2.25rem;"
+              />
+              <span style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #94a3b8; display: flex; align-items: center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </span>
+            </div>
+
+            <!-- Update Type Filter -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="updatesTypeFilter" style="font-size: 0.8rem; font-weight: 700; color: #0c1e3d; white-space: nowrap;">Type:</label>
+              <select id="updatesTypeFilter" class="form-select" style="min-width: 170px; padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                <option value="">All Update Types</option>
+                <option value="new_scheme">New Scheme</option>
+                <option value="policy_gazette">Gazette Notification</option>
+                <option value="bank_product">Bank MSME Facility</option>
+                <option value="amendment">Policy Amendment</option>
+                <option value="deadline_extension">Deadline Extension</option>
+              </select>
+            </div>
+
+            <!-- Source Filter -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="updatesSourceFilter" style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); white-space: nowrap;">Source:</label>
+              <select id="updatesSourceFilter" class="form-select" style="min-width: 180px; padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                <option value="">All Sources</option>
+                <option value="odisha_govt">Government of Odisha</option>
+                <option value="central_govt">Government of India</option>
+                <option value="bank_psu">Public Sector Banks</option>
+                <option value="dfi">Development Financial Inst.</option>
+              </select>
+            </div>
+
+            <!-- Category Filter -->
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <label for="updatesCategoryFilter" style="font-size: 0.8rem; font-weight: 700; color: #0c1e3d; white-space: nowrap;">Category:</label>
+              <select id="updatesCategoryFilter" class="form-select" style="min-width: 170px; padding: 0.35rem 0.75rem; font-size: 0.825rem;">
+                <option value="">All Categories</option>
+                <option value="finance_credit">Finance &amp; Credit</option>
+                <option value="subsidy_incentives">Subsidy &amp; Incentives</option>
+                <option value="skill_development">Skill Development</option>
+                <option value="technology_innovation">Technology &amp; Innovation</option>
+                <option value="market_access">Market Access</option>
+                <option value="infrastructure">Infrastructure</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Updates List Container -->
+        <div id="fullUpdatesList" style="display: flex; flex-direction: column; gap: 1rem;" aria-live="polite">
+          <!-- Rendered by UpdatesController.loadFullUpdates() -->
+        </div>
+
+        <!-- Updates Pagination Bar -->
+        <div class="schemes-pagination-bar" id="updatesPaginationBar" style="display: none; justify-content: space-between; align-items: center; margin-top: 2rem; padding: 1rem 1.25rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
+          <div id="updatesPaginationInfo" style="font-size: 0.875rem; color: #64748b; font-weight: 600;">
+            Showing verified announcements...
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="btn btn-outline btn-sm" id="btnUpdatesPrev" onclick="window.updates.changePage(-1)">← Previous</button>
+            <span id="updatesPageIndicator" style="font-size: 0.85rem; font-weight: 700; color: #0c1e3d; padding: 0 0.5rem;">Page 1 of 1</span>
+            <button class="btn btn-outline btn-sm" id="btnUpdatesNext" onclick="window.updates.changePage(1)">Next →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: DETERMINISTIC ELIGIBILITY EVALUATOR -->
+    <section class="tab-content-panel container" id="tab-eligibility" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-panel);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+          <div>
+            <h3 style="font-size: 1.35rem; color: #0c1e3d; font-weight: 800;" data-i18n="elig_title">Deterministic Three-Valued Eligibility Evaluator</h3>
+            <p style="font-size: 0.85rem; color: #64748b;" data-i18n="elig_subtitle">Evaluates your enterprise against verified legal rules using 3-valued mathematical logic (Passed, Failed, Unknown).</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.app.switchTab('home')">← Back to Home</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 2rem;">
+          <!-- Left: Form -->
+          <div>
+            <form id="eligibilityForm">
+              <div class="form-group">
+                <label for="eligibilitySchemeSelect" class="form-label" data-i18n="elig_lbl_target">Target Scheme:</label>
+                <select id="eligibilitySchemeSelect" class="form-select">
+                  <option value="" data-i18n="elig_opt_all_schemes">All Published Odisha Schemes (Batch Scan)</option>
+                  <option value="OD-MSME-C0B98FA5">CM-SRIM 2024 (Interest Subvention)</option>
+                  <option value="OD-MSME-AFD17307">IPR 2022 (Capital Investment Subsidy)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="prof_name" class="form-label" data-i18n="elig_lbl_ent_name">Enterprise Name:</label>
+                <input type="text" id="prof_name" class="form-input" value="Utkal Green Tech">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_class" class="form-label" data-i18n="elig_lbl_ent_class">Enterprise Class:</label>
+                  <select id="prof_class" class="form-select">
+                    <option value="nano_sub50k" data-i18n="opt_nano">Nano (&lt; ₹50,000 / PM SVANidhi / SHG)</option>
+                    <option value="ultra_micro" data-i18n="opt_ultra_micro">Ultra-Micro / Cottage (₹50,000 – ₹5 Lakh)</option>
+                    <option value="tiny" data-i18n="opt_tiny">Tiny Enterprise (₹5 Lakh – ₹25 Lakh)</option>
+                    <option value="micro" selected data-i18n="opt_micro">Micro (Investment &lt; ₹1 Cr)</option>
+                    <option value="small" data-i18n="opt_small">Small (Investment &lt; ₹10 Cr)</option>
+                    <option value="medium" data-i18n="opt_medium">Medium (Investment &lt; ₹50 Cr)</option>
+                    <option value="large" data-i18n="opt_large">Large Enterprise (&gt; ₹50 Cr)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prof_sector" class="form-label" data-i18n="elig_lbl_sector">Sector / Service Type:</label>
+                  <select id="prof_sector" class="form-select">
+                    <optgroup label="Manufacturing">
+                      <option value="manufacturing" selected>Manufacturing</option>
+                      <option value="food_processing">Agro &amp; Food Processing</option>
+                    </optgroup>
+                    <optgroup label="Services &amp; Commercial">
+                      <option value="service">Commercial Services (General)</option>
+                      <option value="it_services">IT, Software &amp; ITeS / Digital</option>
+                      <option value="hospitality">Hospitality, Hotels, Homestays &amp; Tourism</option>
+                      <option value="healthcare">Healthcare, Diagnostics &amp; Pharmacies</option>
+                      <option value="logistics">Logistics, Transport, Warehousing &amp; Cold Storage</option>
+                      <option value="retail_trade">Retail, Kirana &amp; Wholesale Trade</option>
+                      <option value="food_services">Restaurants, Catering, Cloud Kitchens &amp; Food Carts</option>
+                      <option value="education">Education, Coaching &amp; Skill Development</option>
+                      <option value="repair_services">Repair, Workshop &amp; Maintenance</option>
+                      <option value="automobile_services">Automobile Garage &amp; EV Services</option>
+                      <option value="handicrafts">Handicrafts, Handloom &amp; Artisan Works</option>
+                      <option value="construction_services">Construction, Electrical, Plumbing &amp; Civil</option>
+                      <option value="professional_services">Professional, Accounting, Legal &amp; Consulting</option>
+                      <option value="beauty_wellness">Beauty, Salons, Wellness &amp; Fitness</option>
+                      <option value="printing_media">Printing, Media, Advertising &amp; Studio</option>
+                      <option value="renewable_services">Solar &amp; Renewable Energy Services</option>
+                      <option value="agro_allied_services">Agri-allied, Dairy, Poultry &amp; Farm Services</option>
+                    </optgroup>
+                    <optgroup label="Custom">
+                      <option value="other">Other / Custom Specification</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Custom Sector input container (visible when 'other' is selected) -->
+              <div class="form-group" id="prof_sector_custom_group" style="display: none; margin-top: -0.25rem; margin-bottom: 1rem;">
+                <label for="prof_sector_custom" class="form-label" style="color: #1366d9; font-weight: 600;">
+                  Specify Your Custom Business Sector / Service:
+                </label>
+                <input type="text" id="prof_sector_custom" class="form-input" placeholder="e.g. Drone Photography, Event Decor, Tailoring &amp; Embroidery...">
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_state" class="form-label" data-i18n="elig_lbl_state">State:</label>
+                  <select id="prof_state" class="form-select">
+                    <option value="Odisha">Odisha</option>
+                    <option value="Other">Outside Odisha</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prof_district" class="form-label" data-i18n="elig_lbl_district">District (Odisha):</label>
+                  <select id="prof_district" class="form-select">
+                    <optgroup label="Zone A (Priority / Backward Districts - Higher Subsidy)">
+                      <option value="Angul">Angul (Zone A)</option>
+                      <option value="Balangir">Balangir (Zone A)</option>
+                      <option value="Bargarh">Bargarh (Zone A)</option>
+                      <option value="Boudh">Boudh (Zone A)</option>
+                      <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                      <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                      <option value="Gajapati">Gajapati (Zone A)</option>
+                      <option value="Kalahandi">Kalahandi (Zone A)</option>
+                      <option value="Kandhamal">Kandhamal (Zone A)</option>
+                      <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                      <option value="Koraput">Koraput (Zone A)</option>
+                      <option value="Malkangiri">Malkangiri (Zone A)</option>
+                      <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                      <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                      <option value="Nuapada">Nuapada (Zone A)</option>
+                      <option value="Rayagada">Rayagada (Zone A)</option>
+                      <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                      <option value="Sundargarh">Sundargarh (Zone A)</option>
+                    </optgroup>
+                    <optgroup label="Zone B (Industrially Developing Districts)">
+                      <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                      <option value="Bhadrak">Bhadrak (Zone B)</option>
+                      <option value="Cuttack">Cuttack (Zone B)</option>
+                      <option value="Ganjam">Ganjam (Zone B)</option>
+                      <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                      <option value="Jajpur">Jajpur (Zone B)</option>
+                      <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                      <option value="Kendrapara">Kendrapara (Zone B)</option>
+                      <option value="Khordha" selected>Khordha (Zone B)</option>
+                      <option value="Nayagarh">Nayagarh (Zone B)</option>
+                      <option value="Puri">Puri (Zone B)</option>
+                      <option value="Sambalpur">Sambalpur (Zone B)</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_production_status" class="form-label" data-i18n="elig_lbl_commercial">Commercial Production:</label>
+                  <select id="prof_production_status" class="form-select">
+                    <option value="in_production" data-i18n="elig_opt_in_prod">In Production</option>
+                    <option value="under_implementation" data-i18n="elig_opt_proposed">Under Implementation</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prof_udyam" class="form-label" data-i18n="elig_lbl_udyam">Udyam Registered:</label>
+                  <select id="prof_udyam" class="form-select">
+                    <option value="true" data-i18n="elig_opt_udyam_yes">Yes, Valid Udyam Certificate</option>
+                    <option value="false" data-i18n="elig_opt_udyam_no">No</option>
+                    <option value="">Unknown</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_investment" class="form-label" data-i18n="elig_lbl_plant">Plant &amp; Machinery (₹):</label>
+                  <input type="number" id="prof_investment" class="form-input" value="2500000">
+                </div>
+                <div class="form-group">
+                  <label for="prof_turnover" class="form-label" data-i18n="elig_lbl_turnover">Annual Turnover (₹):</label>
+                  <input type="number" id="prof_turnover" class="form-input" value="4500000">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="prof_loan" class="form-label" data-i18n="elig_lbl_loan">Working Capital Loan (₹):</label>
+                  <input type="number" id="prof_loan" class="form-input" value="1000000">
+                </div>
+                <div class="form-group">
+                  <label for="prof_interest" class="form-label" data-i18n="elig_lbl_interest">Annual Interest Paid (₹):</label>
+                  <input type="number" id="prof_interest" class="form-input" value="120000">
+                </div>
+              </div>
+
+              <button type="submit" id="btnRunEligibility" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;" data-i18n="elig_btn_evaluate">
+                Evaluate Eligibility (Deterministic Engine)
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Results -->
+          <div id="eligibilityResultsContainer" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem;">
+            <div style="text-align: center; padding: 3rem 1rem; color: #64748b;">
+              <div style="margin-bottom: 0.5rem; color: #1e3a8a;">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              </div>
+              <h4 style="color: #0c1e3d;" data-i18n="elig_ready_title">Ready for Assessment</h4>
+              <p style="font-size: 0.85rem; margin-top: 0.25rem;" data-i18n="elig_ready_desc">Fill parameters and click <strong>Evaluate Eligibility</strong> to compute exact subsidies from official gazettes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: AI SATHI ADVISOR & VOICE -->
+    <section class="tab-content-panel container" id="tab-assistant" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-panel);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; color: #1366d9;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+            </div>
+            <div>
+              <h3 style="font-size: 1.25rem; color: #0c1e3d; font-weight: 800;">AI Sathi Policy Advisor</h3>
+              <p style="font-size: 0.8rem; color: #64748b;">Grounded in official Odisha MSME notifications | Sarvam Odia Voice</p>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.app.switchTab('home')">← Back to Home</button>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <span style="font-size: 0.75rem; font-weight: 700; color: #64748b;">Suggested:</span>
+          <button class="btn btn-secondary btn-sm suggested-query-btn" data-query="What is the interest subsidy rate for micro enterprises under CM-SRIM?">
+            Interest subsidy under CM-SRIM?
+          </button>
+          <button class="btn btn-secondary btn-sm suggested-query-btn" data-query="How much capital investment subsidy is offered for solar/EV manufacturing under IPR 2022?">
+            Solar/EV subsidy under IPR 2022?
+          </button>
+          <button class="btn btn-secondary btn-sm suggested-query-btn" data-query="Am I eligible for CM-SRIM if my enterprise is outside Odisha?">
+            Eligibility outside Odisha?
+          </button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chatMessages" style="height: 380px; overflow-y: auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div class="chat-bubble assistant" style="background: #f0f7ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 1rem 1.25rem; max-width: 85%;">
+            <div style="font-weight: 700; font-size: 0.85rem; color: #1366d9; margin-bottom: 0.35rem;">AI Sathi Advisor | ନମସ୍କାର (Namaskar)</div>
+            <p style="font-size: 0.925rem; color: #1e293b; line-height: 1.5;">Welcome to Udyog Sathi. Ask any question regarding Government of Odisha MSME schemes, interest subventions, or capital subsidies. All responses include clickable legal page citations and voice synthesis in Odia (ଓଡ଼ିଆ).</p>
+          </div>
+        </div>
+
+        <!-- Chat Form -->
+        <form id="chatForm" style="display: flex; gap: 0.75rem;">
+          <input
+            type="text"
+            id="chatInput"
+            class="form-input"
+            placeholder="Ask a question about Odisha MSME schemes, subsidies, or documents..."
+            required
+            style="flex: 1;"
+          />
+          <button type="submit" id="btnSendMessage" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">
+            Send &rarr;
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB: USER-MANAGED APPLICATION TRACKER -->
+    <section class="tab-content-panel container" id="tab-tracker" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-panel);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+          <div>
+            <h3 style="font-size: 1.35rem; color: #0c1e3d; font-weight: 800;">User-Managed Compliance Ledger</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Track your official portal filing reference numbers and internal compliance milestones.</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.app.switchTab('home')">← Back to Home</button>
+        </div>
+
+        <div id="trackerListContainer">
+          <!-- Loaded by tracker.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: DISCOVERY, MONITORING & REVIEWER GOVERNANCE QUEUE -->
+    <section class="tab-content-panel container" id="tab-admin" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow-panel);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+          <div>
+            <h3 style="font-size: 1.35rem; color: #0c1e3d; font-weight: 800;">Scheme Discovery, Deadline Monitoring &amp; Governance</h3>
+            <p style="font-size: 0.85rem; color: #64748b;">Statutory management for portal crawlers, live deadline alerts, and legal gazette verification sign-offs.</p>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="window.app.switchTab('home')">← Back to Home</button>
+        </div>
+
+        <div id="adminQueueContainer">
+          <!-- Loaded by admin.js -->
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- ======================================================================
+         TAB: DEDICATED MSME APPLICATION ROADMAP & APPLY GUIDE
+         ====================================================================== -->
+    <section class="tab-content-panel container" id="tab-apply" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div class="page-header-banner">
+        <h2 class="page-banner-title" data-i18n="apply_page_title">MSME Application Roadmap &amp; Guidelines</h2>
+        <p class="page-banner-subtitle" data-i18n="apply_page_subtitle">
+          Step-by-step verified guide to applying for Odisha state incentives, single-window clearances, and central credit schemes.
+        </p>
+      </div>
+
+      <!-- 5-Step Process Roadmap -->
+      <div class="process-roadmap-grid">
+        <!-- Step 1 -->
+        <div class="roadmap-step-card">
+          <div class="step-badge-number">1</div>
+          <div class="step-card-content">
+            <h3 class="step-card-title" data-i18n="step1_heading">Step 1: Obtain National Udyam Registration</h3>
+            <p class="step-card-desc" data-i18n="step1_desc">
+              Udyam registration is mandatory and zero-cost on the official Ministry of MSME portal. Requires Aadhaar and PAN.
+            </p>
+            <ul class="step-checklist-items">
+              <li>Aadhaar number of proprietor/partner/director</li>
+              <li>Enterprise PAN Card &amp; GSTIN</li>
+              <li>Bank account details &amp; IFSC code</li>
+              <li>Zero administrative fee / 100% paperless</li>
+            </ul>
+            <div style="margin-top: 1rem;">
+              <a href="https://udyamregistration.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                Open Official Udyam Portal ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="roadmap-step-card">
+          <div class="step-badge-number">2</div>
+          <div class="step-card-content">
+            <h3 class="step-card-title" data-i18n="step2_heading">Step 2: Register on Odisha GO-SWIFT Portal</h3>
+            <p class="step-card-desc" data-i18n="step2_desc">
+              Government of Odisha Single Window Portal (investodisha.gov.in) provides one-stop statutory clearances and land allotments within 15-30 days.
+            </p>
+            <ul class="step-checklist-items">
+              <li>Combined Application Form (CAF) for 30+ statutory services</li>
+              <li>Time-bound statutory approvals under Odisha Right to Public Services Act</li>
+              <li>Pollution Control Board Consent to Establish (CTE)</li>
+              <li>IDCO industrial land and shed allotment</li>
+            </ul>
+            <div style="margin-top: 1rem;">
+              <a href="https://investodisha.gov.in" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                Visit GO-SWIFT Portal ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="roadmap-step-card">
+          <div class="step-badge-number">3</div>
+          <div class="step-card-content">
+            <h3 class="step-card-title" data-i18n="step3_heading">Step 3: Prepare Detailed Project Report (DPR)</h3>
+            <p class="step-card-desc" data-i18n="step3_desc">
+              Compile technical feasibility, financial viability, machinery quotations, and environmental compliance documentation.
+            </p>
+            <ul class="step-checklist-items">
+              <li>Comprehensive project cost breakdown (Land, Building, Plant &amp; Machinery)</li>
+              <li>Pro-forma invoices and quotations from registered equipment suppliers</li>
+              <li>3-year projected cash-flow statement and debt-service coverage ratio</li>
+              <li>Pollution category categorization (Green, Orange, White)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="roadmap-step-card">
+          <div class="step-badge-number">4</div>
+          <div class="step-card-content">
+            <h3 class="step-card-title" data-i18n="step4_heading">Step 4: Bank In-Principle Sanction &amp; Subsidy Claim</h3>
+            <p class="step-card-desc" data-i18n="step4_desc">
+              Submit DPR to financial institution for term loan under CGTMSE or state credit schemes; file subsidy claim with DIC.
+            </p>
+            <ul class="step-checklist-items">
+              <li>Submit loan application to Scheduled Commercial Bank or OSFC</li>
+              <li>Obtain formal loan sanction letter and disbursement schedule</li>
+              <li>Lodge Capital Investment Subsidy claim with District Industries Centre (DIC)</li>
+              <li>Enroll under CGTMSE for collateral-free guarantee cover up to ₹5 Crore</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="roadmap-step-card">
+          <div class="step-badge-number">5</div>
+          <div class="step-card-content">
+            <h3 class="step-card-title" data-i18n="step5_heading">Step 5: Inspection &amp; Joint Verification</h3>
+            <p class="step-card-desc" data-i18n="step5_desc">
+              District Industries Centre (DIC) inspection committee conducts physical verification prior to subsidy disbursement.
+            </p>
+            <ul class="step-checklist-items">
+              <li>Joint on-site physical verification by General Manager, DIC &amp; financing bank</li>
+              <li>Verification of commercial production commencement date</li>
+              <li>Direct Benefit Transfer (DBT) credit into enterprise term-loan account</li>
+              <li>Annual compliance filing for ongoing interest subvention</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
+        <h3 style="font-size: 1.35rem; color: var(--text-heading); font-weight: 800; margin-bottom: 1.25rem;">
+          Frequently Asked Questions on MSME Applications
+        </h3>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.5rem;">
+              Q: Is Udyam registration sufficient to claim Odisha MSME Policy 2022 subsidies?
+            </h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+              Udyam registration is a mandatory statutory prerequisite. However, to claim capital investment subsidies or interest subventions under the Odisha MSMED Policy 2022, you must also obtain commercial production certificates and file claims directly with your local District Industries Centre (DIC).
+            </p>
+          </div>
+
+          <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.5rem;">
+              Q: What is the maximum subsidy available under CM-SRIM in Odisha?
+            </h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+              Under the Chief Minister's Special Relief for Industry &amp; MSMEs (CM-SRIM), eligible enterprises receive 5% to 6% per annum interest subvention on term loans and working capital, with additional incentives for women-led and SC/ST enterprises.
+            </p>
+          </div>
+
+          <div style="border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.5rem;">
+              Q: Can I apply for both Central and State Government schemes simultaneously?
+            </h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
+              Yes! An enterprise can leverage credit schemes like PMEGP or CGTMSE from the Central Government alongside state-level incentives like stamp duty exemptions and power tariff concessions under the Odisha MSMED Policy 2022, provided there is no duplication of the exact same subsidy component.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB: DEDICATED LEARNING HUB
+         ====================================================================== -->
+    <section class="tab-content-panel container" id="tab-learning" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div class="page-header-banner">
+        <h2 class="page-banner-title" data-i18n="learning_page_title">Odisha Entrepreneurship Learning Hub</h2>
+        <p class="page-banner-subtitle" data-i18n="learning_page_subtitle">
+          Practical, state-specific guides, regulatory compliance handbooks, and industrial policy breakdowns for MSMEs.
+        </p>
+      </div>
+
+      <div class="learning-modules-grid">
+        <!-- Module 1 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Business Inception</span>
+          <h3 class="module-title">Starting a New MSME in Odisha</h3>
+          <p class="module-desc">
+            A comprehensive guide covering statutory business clearances, choosing legal structures (Proprietorship, LLP, Pvt Ltd), obtaining PAN, GSTIN, and local municipal trade licenses.
+          </p>
+          <div class="module-meta">
+            <span>Guide • 10 min read</span>
+            <a href="https://investodisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Statutory Certification</span>
+          <h3 class="module-title">National Udyam Registration Guide</h3>
+          <p class="module-desc">
+            Step-by-step walkthrough of registering on the Ministry of MSME portal, classification criteria (Micro, Small, Medium), Aadhaar authentication, and generating official certificates.
+          </p>
+          <div class="module-meta">
+            <span>Compliance • 8 min read</span>
+            <a href="https://udyamregistration.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Policy &amp; Subsidies</span>
+          <h3 class="module-title">Understanding Odisha MSMED Policy 2022</h3>
+          <p class="module-desc">
+            In-depth analysis of Capital Investment Subsidy (CIS), 5% interest subvention, land conversion fee waiver, stamp duty exemption, and special provisions for women entrepreneurs.
+          </p>
+          <div class="module-meta">
+            <span>Policy • 15 min read</span>
+            <a href="https://msme.odisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Credit &amp; Finance</span>
+          <h3 class="module-title">Accessing Collateral-Free Loans via CGTMSE</h3>
+          <p class="module-desc">
+            How to secure bank loans up to ₹5.00 Crore without pledging tangible collateral or third-party guarantee using the Credit Guarantee Fund Trust for Micro &amp; Small Enterprises.
+          </p>
+          <div class="module-meta">
+            <span>Financing • 12 min read</span>
+            <a href="https://www.cgtmse.in" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+
+        <!-- Module 5 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Environmental Clearances</span>
+          <h3 class="module-title">Pollution Control NOC (OSPCB) in Odisha</h3>
+          <p class="module-desc">
+            Understanding White, Green, Orange, and Red industry classifications under the Odisha State Pollution Control Board. How to obtain Consent to Establish (CTE) and Consent to Operate (CTO).
+          </p>
+          <div class="module-meta">
+            <span>Regulatory • 10 min read</span>
+            <a href="https://ospcboard.org" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+
+        <!-- Module 6 -->
+        <div class="learning-module-card">
+          <span class="module-badge">Innovation &amp; IP</span>
+          <h3 class="module-title">Trademark &amp; Patent Subsidy in Odisha</h3>
+          <p class="module-desc">
+            How Odisha MSMEs can claim 100% reimbursement of statutory filing fees for registered trademarks, design rights, and domestic/international patents under state innovation support.
+          </p>
+          <div class="module-meta">
+            <span>Intellectual Property • 8 min read</span>
+            <a href="https://msme.odisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: var(--primary-blue); font-weight: 600;">Read Guide ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB: DEDICATED RESOURCES & DOWNLOADS
+         ====================================================================== -->
+    <section class="tab-content-panel container" id="tab-resources" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div class="page-header-banner">
+        <h2 class="page-banner-title" data-i18n="resources_page_title">Official Policy Documents, Gazettes &amp; Downloads</h2>
+        <p class="page-banner-subtitle" data-i18n="resources_page_subtitle">
+          Authentic Odisha Gazette notifications, policy guidelines, and contact directory for District Industries Centres.
+        </p>
+      </div>
+
+      <!-- Downloadable Policy Documents -->
+      <h3 style="font-size: 1.25rem; color: var(--text-heading); font-weight: 800; margin-bottom: 1.25rem;">
+        Official Gazette Publications &amp; Guidelines
+      </h3>
+      <div class="resources-grid">
+        <!-- Resource 1 -->
+        <div class="resource-card">
+          <div class="resource-file-icon">PDF</div>
+          <div class="resource-info">
+            <div class="resource-name">Odisha MSMED Policy 2022 Gazette</div>
+            <div class="resource-meta">Official Extraordinary Gazette No. 2481 • 54 Pages</div>
+            <a href="https://msme.odisha.gov.in/sites/default/files/2022-12/MSME_POLICY_2022.pdf" target="_blank" rel="noopener noreferrer" class="resource-btn">
+              Download Gazette PDF ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Resource 2 -->
+        <div class="resource-card">
+          <div class="resource-file-icon">PDF</div>
+          <div class="resource-info">
+            <div class="resource-name">CM-SRIM Operational Guidelines</div>
+            <div class="resource-meta">Notification No. 7946 • Department of MSME</div>
+            <a href="https://msme.odisha.gov.in/sites/default/files/2023-01/CM-SRIM_Guidelines.pdf" target="_blank" rel="noopener noreferrer" class="resource-btn">
+              Download Guidelines PDF ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Resource 3 -->
+        <div class="resource-card">
+          <div class="resource-file-icon">PDF</div>
+          <div class="resource-info">
+            <div class="resource-name">Trade Mark Assistance Scheme</div>
+            <div class="resource-meta">Notification No. 7206 • MSMED Policy Guidelines</div>
+            <a href="https://msme.odisha.gov.in" target="_blank" rel="noopener noreferrer" class="resource-btn">
+              Download Operational Guide ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Resource 4 -->
+        <div class="resource-card">
+          <div class="resource-file-icon">PDF</div>
+          <div class="resource-info">
+            <div class="resource-name">PMEGP Central Guidelines</div>
+            <div class="resource-meta">Ministry of MSME / KVIC Operational Manual</div>
+            <a href="https://www.kviconline.gov.in/pmegpeportal/pmegphome/index.jsp" target="_blank" rel="noopener noreferrer" class="resource-btn">
+              View KVIC Manual ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- Resource 5 -->
+        <div class="resource-card">
+          <div class="resource-file-icon">PDF</div>
+          <div class="resource-info">
+            <div class="resource-name">CGTMSE Guarantee Guidelines</div>
+            <div class="resource-meta">Credit Guarantee Trust for Micro &amp; Small Enterprises</div>
+            <a href="https://www.cgtmse.in/About-Us.aspx" target="_blank" rel="noopener noreferrer" class="resource-btn">
+              Download CGTMSE Brochure ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- District Industries Centres Directory -->
+      <h3 style="font-size: 1.25rem; color: var(--text-heading); font-weight: 800; margin: 2rem 0 1rem 0;">
+        District Industries Centres (DIC) Contact Directory — Odisha
+      </h3>
+      <div class="dic-table-wrapper">
+        <table class="table-gov">
+          <thead>
+            <tr>
+              <th>District</th>
+              <th>Office Name</th>
+              <th>Location / Address</th>
+              <th>Zone Category</th>
+              <th>Contact Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Khordha (Bhubaneswar)</strong></td>
+              <td>General Manager, DIC Khordha</td>
+              <td>Industrial Estate, Rasulgarh, Bhubaneswar 751010</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>0674-2580194</td>
+            </tr>
+            <tr>
+              <td><strong>Cuttack</strong></td>
+              <td>General Manager, DIC Cuttack</td>
+              <td>Madhupatna, Industrial Estate, Cuttack 753010</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>0671-2344168</td>
+            </tr>
+            <tr>
+              <td><strong>Ganjam (Berhampur)</strong></td>
+              <td>General Manager, DIC Ganjam</td>
+              <td>Industrial Estate, Berhampur 760008</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>0680-2220478</td>
+            </tr>
+            <tr>
+              <td><strong>Sambalpur</strong></td>
+              <td>General Manager, DIC Sambalpur</td>
+              <td>Khetrajpur, Sambalpur 768003</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>0663-2400325</td>
+            </tr>
+            <tr>
+              <td><strong>Sundargarh (Rourkela)</strong></td>
+              <td>General Manager, DIC Rourkela</td>
+              <td>Industrial Area, Rourkela 769004</td>
+              <td><span class="badge badge-warning">Zone A (Priority)</span></td>
+              <td>0661-2500874</td>
+            </tr>
+            <tr>
+              <td><strong>Balasore</strong></td>
+              <td>General Manager, DIC Balasore</td>
+              <td>OT Road, Balasore 756001</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>06782-262047</td>
+            </tr>
+            <tr>
+              <td><strong>Angul</strong></td>
+              <td>General Manager, DIC Angul</td>
+              <td>Collectorate Road, Angul 759122</td>
+              <td><span class="badge badge-warning">Zone A (Priority)</span></td>
+              <td>06764-230349</td>
+            </tr>
+            <tr>
+              <td><strong>Koraput (Jeypore)</strong></td>
+              <td>General Manager, DIC Koraput</td>
+              <td>Main Road, Jeypore 764001</td>
+              <td><span class="badge badge-warning">Zone A (Priority)</span></td>
+              <td>06854-232145</td>
+            </tr>
+            <tr>
+              <td><strong>Mayurbhanj (Baripada)</strong></td>
+              <td>General Manager, DIC Mayurbhanj</td>
+              <td>Takatpur, Baripada 757003</td>
+              <td><span class="badge badge-warning">Zone A (Priority)</span></td>
+              <td>06792-252718</td>
+            </tr>
+            <tr>
+              <td><strong>Jharsuguda</strong></td>
+              <td>General Manager, DIC Jharsuguda</td>
+              <td>Beheramal, Jharsuguda 768203</td>
+              <td><span class="badge badge-info">Zone B</span></td>
+              <td>06645-272045</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         TAB: DEDICATED ABOUT UDYOG SATHI
+         ====================================================================== -->
+    <section class="tab-content-panel container" id="tab-about" style="display: none; padding: 2rem 1.5rem 4rem 1.5rem;">
+      <div class="page-header-banner">
+        <h2 class="page-banner-title" data-i18n="about_page_title">About Udyog Sathi Odisha</h2>
+        <p class="page-banner-subtitle" data-i18n="about_page_subtitle">
+          The authoritative AI-powered digital assistance and scheme discovery platform for the entrepreneurs of Odisha.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
+          <h3 style="font-size: 1.3rem; color: var(--text-heading); font-weight: 800; margin-bottom: 0.75rem;" data-i18n="about_mission_title">
+            Our Mission
+          </h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="about_mission_desc">
+            To ensure every entrepreneur in Odisha easily discovers, understands, and claims official state and central government incentives without administrative friction.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-card);">
+          <h3 style="font-size: 1.3rem; color: var(--text-heading); font-weight: 800; margin-bottom: 0.75rem;" data-i18n="about_zero_mock_title">
+            Zero-Mock Transparency Commitment
+          </h3>
+          <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="about_zero_mock_desc">
+            Every scheme, subsidy formula, and rule on this platform is verified and extracted from official Odisha Government Gazettes. We do not display synthetic demo schemes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Institutional Framework -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.25rem; box-shadow: var(--shadow-card); margin-bottom: 3rem;">
+        <h3 style="font-size: 1.35rem; color: var(--text-heading); font-weight: 800; margin-bottom: 1rem;">
+          Institutional Framework &amp; Partner Departments
+        </h3>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+          Udyog Sathi interfaces directly with statutory institutions across Odisha to deliver accurate policy data:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+          <div style="padding: 1.25rem; background: var(--bg-subtle); border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.35rem;">MSME Department</h4>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); line-height: 1.4;">Nodal department formulating state industrial policies and incentive notifications.</p>
+          </div>
+          <div style="padding: 1.25rem; background: var(--bg-subtle); border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.35rem;">Directorate of Industries</h4>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); line-height: 1.4;">Administrative wing supervising the 30 District Industries Centres (DICs).</p>
+          </div>
+          <div style="padding: 1.25rem; background: var(--bg-subtle); border-radius: 8px; border: 1px solid var(--border-color);">
+            <h4 style="font-size: 1rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 0.35rem;">IPICOL &amp; IDCO</h4>
+            <p style="font-size: 0.825rem; color: var(--text-secondary); line-height: 1.4;">Industrial promotion and infrastructure corporation managing GO-SWIFT single window.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;">
+          <h4 style="font-size: 1rem; color: #1e40af; font-weight: 700; margin-bottom: 0.35rem;" data-i18n="about_contact_title">
+            Department of MSME, Government of Odisha
+          </h4>
+          <p style="font-size: 0.875rem; color: #1e3a8a; margin-bottom: 0.25rem;" data-i18n="about_contact_address">
+            Kharavel Bhavan, Lok Seva Marg, Bhubaneswar, Odisha 751001
+          </p>
+          <p style="font-size: 0.875rem; color: #1e3a8a; font-weight: 700;" data-i18n="about_helpline">
+            MSME Helpline: 1800-345-7111 / 0674-2536841
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODALS
+       ======================================================================== -->
+
+  <!-- Modal 1: Scheme Detail & Legal Evidence Modal -->
+  <div class="modal-overlay" id="schemeDetailModal" role="dialog" aria-modal="true">
+    <div class="modal-card" id="schemeDetailContent">
+      <!-- Populated dynamically by catalogue.js -->
+    </div>
+  </div>
+
+  <!-- Modal 2: Add Application Tracking Modal -->
+  <div class="modal-overlay" id="addApplicationModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; color: #0c1e3d; font-weight: 800;">Record Official Scheme Filing</h3>
+        <button class="modal-close" onclick="window.tracker.closeAddModal()">&times;</button>
+      </div>
+      <form id="addApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="appSchemeSelect" class="form-label">Official Scheme Filed:</label>
+            <select id="appSchemeSelect" class="form-select" required>
+              <option value="">-- Choose Verified Scheme --</option>
+            </select>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="appStatusSelect" class="form-label">Current Status:</label>
+              <select id="appStatusSelect" class="form-select" required>
+                <option value="draft">Draft (Preparing Docs)</option>
+                <option value="submitted">Submitted on Portal</option>
+                <option value="under_scrutiny">Under Departmental Scrutiny</option>
+                <option value="queried">Queried (Clarification Needed)</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="disbursed">Benefit Disbursed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="appFilingDate" class="form-label">Filing Date:</label>
+              <input type="date" id="appFilingDate" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="appAckRef" class="form-label">Official Acknowledgement / Ref Number:</label>
+            <input type="text" id="appAckRef" class="form-input" placeholder="e.g. OD-MSME-2024-88419">
+          </div>
+
+          <div class="form-group">
+            <label for="appPortalUrl" class="form-label">Submission Portal URL:</label>
+            <input type="url" id="appPortalUrl" class="form-input" placeholder="https://msme.odisha.gov.in" value="https://msme.odisha.gov.in">
+          </div>
+
+          <div class="form-group">
+            <label for="appNotes" class="form-label">Internal Compliance Notes:</label>
+            <textarea id="appNotes" class="form-input" rows="2" placeholder="Record DIC submission details, query responses..."></textarea>
+          </div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.tracker.closeAddModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Save Tracking Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Edit Application Modal -->
+  <div class="modal-overlay" id="editApplicationModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 1.15rem; color: #0c1e3d; font-weight: 800;">Update Filing Record</h3>
+          <div style="font-size: 0.8rem; color: #64748b;"><span id="editAppSchemeName"></span> (<span id="editAppId"></span>)</div>
+        </div>
+        <button class="modal-close" onclick="window.tracker.closeEditModal()">&times;</button>
+      </div>
+      <form id="editApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="editAppStatusSelect" class="form-label">Status:</label>
+            <select id="editAppStatusSelect" class="form-select" required>
+              <option value="draft">Draft</option>
+              <option value="submitted">Submitted on Portal</option>
+              <option value="under_scrutiny">Under Departmental Scrutiny</option>
+              <option value="queried">Queried</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="disbursed">Benefit Disbursed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="editAppAckRef" class="form-label">Acknowledgement Reference:</label>
+            <input type="text" id="editAppAckRef" class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="editAppNotes" class="form-label">Updated Notes:</label>
+            <textarea id="editAppNotes" class="form-input" rows="3"></textarea>
+          </div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.tracker.closeEditModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Reviewer Dossier Modal -->
+  <div class="modal-overlay" id="reviewerDossierModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 750px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 1.15rem; color: #0c1e3d; font-weight: 800;">Departmental Scheme Verification Dossier</h3>
+          <div style="font-size: 0.8rem; color: #64748b;">Compare extraction against legal notification</div>
+        </div>
+        <button class="modal-close" onclick="window.admin.closeDossierModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="reviewerDossierContent"></div>
+      <form id="verifySchemeForm">
+        <div style="padding: 1rem 1.5rem; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+          <div class="form-group">
+            <label for="dossierNotes" class="form-label" style="color: #0c1e3d;">
+              Audit Verification Notes (Min 10 characters confirming check against gazette):
+            </label>
+            <textarea id="dossierNotes" class="form-input" rows="2" placeholder="e.g. Verified against Department of MSME Gazette Notification No. 12948/MSME." required></textarea>
+          </div>
+        </div>
+        <div style="padding: 1rem 1.5rem; background: #f1f5f9; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.admin.closeDossierModal()">Cancel</button>
+          <button type="submit" id="btnSubmitSignOff" class="btn btn-primary btn-sm">Sign-Off &amp; Publish Scheme</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Authentication (Login / Register) Modal -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <div style="display: flex; gap: 0.5rem; background: #f1f5f9; padding: 3px; border-radius: 8px;">
+          <button type="button" id="authTabLogin" class="btn btn-sm btn-outline active" onclick="window.app.toggleAuthView('login')">Sign In</button>
+          <button type="button" id="authTabRegister" class="btn btn-sm btn-outline" onclick="window.app.toggleAuthView('register')">Register Enterprise</button>
+        </div>
+        <button class="modal-close" onclick="window.app.closeAuthModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Sign In Form -->
+        <div id="authLoginSection">
+          <form id="loginForm">
+            <div id="loginError" style="display: none; background: #fef2f2; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; border: 1px solid #fecaca;"></div>
+            <div class="form-group">
+              <label for="loginEmail" class="form-label">Email Address:</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="entrepreneur@odishamsme.in" required>
+            </div>
+            <div class="form-group">
+              <label for="loginPassword" class="form-label">Password:</label>
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.75rem;">
+              Sign In to Account
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="authRegisterSection" style="display: none;">
+          <form id="registerForm">
+            <div id="registerError" style="display: none; background: #fef2f2; color: #dc2626; padding: 0.65rem 0.85rem; border-radius: 6px; font-size: 0.85rem; margin-bottom: 1rem; border: 1px solid #fecaca;"></div>
+            <div class="form-group">
+              <label for="regEnterpriseName" class="form-label">Enterprise Name:</label>
+              <input type="text" id="regEnterpriseName" class="form-input" placeholder="e.g. Konark Precision Engineering" required>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regEmail" class="form-label">Email Address:</label>
+                <input type="email" id="regEmail" class="form-input" placeholder="founder@konark.in" required>
+              </div>
+              <div class="form-group">
+                <label for="regPassword" class="form-label">Password:</label>
+                <input type="password" id="regPassword" class="form-input" placeholder="••••••••" required>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regClass" class="form-label">Enterprise Class:</label>
+                <select id="regClass" class="form-select">
+                  <option value="nano_sub50k">Nano (&lt; ₹50,000 / PM SVANidhi)</option>
+                  <option value="ultra_micro">Ultra-Micro (₹50,000 – ₹5 Lakh)</option>
+                  <option value="tiny">Tiny (₹5 Lakh – ₹25 Lakh)</option>
+                  <option value="micro" selected>Micro (₹25 Lakh – ₹1 Cr)</option>
+                  <option value="small">Small (₹1 Cr – ₹10 Cr)</option>
+                  <option value="medium">Medium (₹10 Cr – ₹50 Cr)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="regSector" class="form-label">Sector / Service Type:</label>
+                <select id="regSector" class="form-select">
+                  <option value="manufacturing">Manufacturing &amp; Engineering</option>
+                  <option value="food_processing">Agro &amp; Food Processing</option>
+                  <option value="service" selected>Commercial Services (General)</option>
+                  <option value="it_services">IT &amp; Digital Services</option>
+                  <option value="hospitality">Hospitality &amp; Tourism</option>
+                  <option value="healthcare">Healthcare &amp; Clinics</option>
+                  <option value="logistics">Logistics &amp; Transport</option>
+                  <option value="retail_trade">Retail &amp; Wholesale Trade</option>
+                  <option value="food_services">Restaurants &amp; Catering</option>
+                  <option value="repair_services">Repair &amp; Maintenance</option>
+                  <option value="handicrafts">Handicrafts &amp; Handloom</option>
+                  <option value="other">Other / Custom Service</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="regDistrict" class="form-label">District (Odisha):</label>
+                <select id="regDistrict" class="form-select">
+                  <optgroup label="Zone A (Priority Districts)">
+                    <option value="Angul">Angul (Zone A)</option>
+                    <option value="Balangir">Balangir (Zone A)</option>
+                    <option value="Bargarh">Bargarh (Zone A)</option>
+                    <option value="Boudh">Boudh (Zone A)</option>
+                    <option value="Deogarh">Deogarh (Debagarh) (Zone A)</option>
+                    <option value="Dhenkanal">Dhenkanal (Zone A)</option>
+                    <option value="Gajapati">Gajapati (Zone A)</option>
+                    <option value="Kalahandi">Kalahandi (Zone A)</option>
+                    <option value="Kandhamal">Kandhamal (Zone A)</option>
+                    <option value="Keonjhar">Keonjhar (Kendujhar) (Zone A)</option>
+                    <option value="Koraput">Koraput (Zone A)</option>
+                    <option value="Malkangiri">Malkangiri (Zone A)</option>
+                    <option value="Mayurbhanj">Mayurbhanj (Zone A)</option>
+                    <option value="Nabarangpur">Nabarangpur (Zone A)</option>
+                    <option value="Nuapada">Nuapada (Zone A)</option>
+                    <option value="Rayagada">Rayagada (Zone A)</option>
+                    <option value="Subarnapur">Subarnapur (Sonepur) (Zone A)</option>
+                    <option value="Sundargarh">Sundargarh (Zone A)</option>
+                  </optgroup>
+                  <optgroup label="Zone B (Developing Districts)">
+                    <option value="Balasore">Balasore (Baleswar) (Zone B)</option>
+                    <option value="Bhadrak">Bhadrak (Zone B)</option>
+                    <option value="Cuttack">Cuttack (Zone B)</option>
+                    <option value="Ganjam">Ganjam (Zone B)</option>
+                    <option value="Jagatsinghpur">Jagatsinghpur (Zone B)</option>
+                    <option value="Jajpur">Jajpur (Zone B)</option>
+                    <option value="Jharsuguda">Jharsuguda (Zone B)</option>
+                    <option value="Kendrapara">Kendrapara (Zone B)</option>
+                    <option value="Khordha" selected>Khordha (Bhubaneswar) (Zone B)</option>
+                    <option value="Nayagarh">Nayagarh (Zone B)</option>
+                    <option value="Puri">Puri (Zone B)</option>
+                    <option value="Sambalpur">Sambalpur (Zone B)</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="regUdyamNumber" class="form-label">Udyam Number (Optional):</label>
+                <input type="text" id="regUdyamNumber" class="form-input" placeholder="UDYAM-OD-00-0000000">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.75rem;">
+              Complete Enterprise Registration
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer"></div>
+
+  <!-- ========================================================================
+       FOOTER (Authoritative Government Style)
+       ======================================================================== -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      <div>
+        <div style="font-weight: 800; color: #ffffff; font-size: 1.15rem; margin-bottom: 0.65rem;">
+          Udyog Sathi | Department of MSME
+        </div>
+        <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; max-width: 440px;">
+          Unified AI-powered scheme advisory and deterministic eligibility portal for Micro, Small &amp; Medium Enterprises in the State of Odisha.
+        </p>
+      </div>
+
+      <div>
+        <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 0.75rem;">Official Portals &amp; Tools</div>
+        <ul style="list-style: none; padding: 0; font-size: 0.85rem; line-height: 2;">
+          <li><a href="https://msme.odisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: #93c5fd;">Odisha MSME Department ↗</a></li>
+          <li><a href="https://investodisha.gov.in" target="_blank" rel="noopener noreferrer" style="color: #93c5fd;">GO-SWIFT Single Window ↗</a></li>
+          <li><a href="https://udyamregistration.gov.in" target="_blank" rel="noopener noreferrer" style="color: #93c5fd;">National Udyam Portal ↗</a></li>
+          <li><button class="nav-link-btn" data-tab="assistant" style="background:none; border:none; color:#93c5fd; padding:0; font:inherit; cursor:pointer; text-align:left;">AI Scheme Assistant ↗</button></li>
+          <li><button class="nav-link-btn" data-tab="tracker" style="background:none; border:none; color:#93c5fd; padding:0; font:inherit; cursor:pointer; text-align:left;">Application Tracker ↗</button></li>
+          <li><button class="nav-link-btn" data-tab="admin" style="background:none; border:none; color:#93c5fd; padding:0; font:inherit; cursor:pointer; text-align:left;">Reviewer Audit Queue ↗</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 0.75rem;">Zero-Mock Compliance</div>
+        <p style="font-size: 0.825rem; color: #cbd5e1; line-height: 1.5;">
+          All calculations, conditions, and AI citations reference official gazette notifications published by the Government of Odisha. Final sanction of any incentive is subject to statutory departmental scrutiny.
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom-bar">
+      <span>© 2026 Udyog Sathi. Built for the entrepreneurs of Odisha.</span>
+      <span>Official Government Notification Grounded | Official Department of MSME Guidelines | Zero Synthetic Data</span>
+    </div>
+  </footer>
+
+  <!-- Frontend JavaScript Controllers -->
+  <script src="/static/js/chart.umd.js"></script>
+  <script src="/static/js/charts.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/catalogue.js"></script>
+  <script src="/static/js/updates.js"></script>
+  <script src="/static/js/eligibility.js"></script>
+  <script src="/static/js/assistant.js"></script>
+  <script src="/static/js/tracker.js"></script>
+  <script src="/static/js/admin.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

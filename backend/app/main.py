@@ -104,12 +104,26 @@ for candidate in [
 if STATIC_DIR and os.path.isdir(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+LOCALES_DIR = None
+for candidate in [
+    os.path.join(FRONTEND_DIR, "public", "locales"),
+    os.path.join(FRONTEND_DIR, "locales"),
+    os.path.join(FRONTEND_DIR, "dist", "locales"),
+    os.path.join(BASE_DIR, "web", "locales"),
+]:
+    if os.path.isdir(candidate):
+        LOCALES_DIR = candidate
+        break
+
+if LOCALES_DIR and os.path.isdir(LOCALES_DIR):
+    app.mount("/locales", StaticFiles(directory=LOCALES_DIR), name="locales")
+
 
 @app.get("/")
 def root(request: Request):
     accept = request.headers.get("accept", "")
-    if "text/html" in accept and "application/json" not in accept:
-        if INDEX_HTML and os.path.isfile(INDEX_HTML):
+    if INDEX_HTML and os.path.isfile(INDEX_HTML):
+        if "application/json" not in accept or "text/html" in accept:
             return FileResponse(INDEX_HTML)
     return {
         "platform": "Udyog Sathi",
