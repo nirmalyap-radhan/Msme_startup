@@ -109,21 +109,23 @@ if STATIC_DIR and os.path.isdir(STATIC_DIR):
 def root(request: Request):
     accept = request.headers.get("accept", "")
     if "text/html" in accept and "application/json" not in accept:
-        if os.path.isfile(INDEX_HTML):
+        if INDEX_HTML and os.path.isfile(INDEX_HTML):
             return FileResponse(INDEX_HTML)
     return {
         "platform": "Udyog Sathi",
         "jurisdiction": "Government of Odisha",
-        "description": "Unified MSME Services & Government Scheme Discovery Platform",
+        "status": "online",
         "version": api_config.app_version,
         "api_docs": "/docs",
+        "health_check": "/health/ready",
+        "message": "Udyog Sathi Backend API is live. Visit /docs for interactive Swagger API testing.",
         "disclaimer": "Udyog Sathi is an advisory discovery platform backed by verified government records. Final scheme sanction is subject to departmental scrutiny.",
     }
 
 
-@app.get("/app", response_class=FileResponse)
+@app.get("/app")
 def serve_app():
-    if os.path.isfile(INDEX_HTML):
+    if INDEX_HTML and os.path.isfile(INDEX_HTML):
         return FileResponse(INDEX_HTML)
-    return JSONResponse(status_code=404, content={"detail": "Web application not found."})
+    return JSONResponse(status_code=404, content={"detail": "Web application not found. Please access the frontend URL or explore APIs at /docs."})
 
