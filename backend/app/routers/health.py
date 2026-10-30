@@ -14,7 +14,7 @@ from services.scheme_ingestion.models import SchemeModel, SchemeStatus
 router = APIRouter(tags=["Health"])
 
 
-@router.get("/health/live")
+@router.head("/health/live")
 def liveness_check():
     """Liveness probe indicating API process is responding."""
     return {
