@@ -22,12 +22,10 @@ services:
       - key: SARVAM_API_KEY
         sync: false
 
-  # Frontend Static Site on Render (Free Tier)
+  # Frontend Static Site on Render (Global Edge CDN)
   - type: web
     name: udyog-sathi-ui
     runtime: static
-    plan: free
-    region: oregon
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
