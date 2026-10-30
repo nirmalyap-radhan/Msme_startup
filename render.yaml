@@ -22,14 +22,15 @@ services:
       - key: SARVAM_API_KEY
         sync: false
 
-  # Frontend Static Site on Render (Free Tier alternative to Vercel)
-  - type: static
+  # Frontend Static Site on Render (Free Tier)
+  - type: web
     name: udyog-sathi-ui
+    runtime: static
     plan: free
     region: oregon
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: ./dist
     routes:
       - type: rewrite
         source: /api/*
@@ -37,4 +38,7 @@ services:
       - type: rewrite
         source: /health/*
         destination: https://udyog-sathi-api.onrender.com/health/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
 
